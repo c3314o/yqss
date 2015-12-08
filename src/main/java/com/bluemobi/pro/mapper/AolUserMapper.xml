@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bluemobi.pro.service.impl.AolUserService">
+	
+	<resultMap type="com.bluemobi.pro.entity.AolUser" id="AolUserMap">
+		<id property="aolUserId" column="CHILD_ID"/>
+		<result property="name" column="name"/>
+		<result property="headPic" column="headPic" />
+		<result property="fnote" column="FNOTE"/>
+		<result property="userId" column="AOL_USER_ID"/>
+	</resultMap>
+	
+	<!-- 获取关注人列表 -->
+	<select id="findFocus" parameterType="string" resultMap="AolUserMap">
+		SELECT
+			ar.AOL_USER_ID,
+			u.name,
+			IFNULL(u.headPic,"") headPic,
+			ar.FNOTE,
+			ar.CHILD_ID
+		FROM
+			aolchild_relation ar
+		LEFT JOIN
+			user u
+		ON
+			ar.AOL_USER_ID = u.user_id
+		WHERE
+			CHILD_ID = #{memberId}
+	</select>
+</mapper> 

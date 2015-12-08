@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bluemobi.pro.service.impl.UserService">
+	
+	<resultMap type="com.bluemobi.pro.entity.User" id="findUserResultMap">
+		<id column="user_id" property="userId" />
+		<result column="mobile" property="mobile" typeHandler="com.bluemobi.mybatis.StringIfNull"/>
+		<result column="email" property="email" typeHandler="com.bluemobi.mybatis.StringIfNull"/>
+		<result column="account" property="account" typeHandler="com.bluemobi.mybatis.StringIfNull" />
+		<result column="password" property="password" typeHandler="com.bluemobi.mybatis.StringIfNull"/>
+		<result column="headPic" property="headPic"  typeHandler="com.bluemobi.mybatis.StringIfNull"/>
+		<result column="name" property="name"  typeHandler="com.bluemobi.mybatis.StringIfNull"/>
+		<result column="sex" property="sex" typeHandler="com.bluemobi.mybatis.StringIfNull"/>
+		<result column="birthday" property="birthday"  typeHandler="com.bluemobi.mybatis.StringIfNull"/>
+		<result column="height" property="height"  typeHandler="com.bluemobi.mybatis.StringIfNull"/>
+		<result column="weight" property="weight" typeHandler="com.bluemobi.mybatis.StringIfNull"/>
+		<result column="deviceCode" property="deviceCode"  typeHandler="com.bluemobi.mybatis.StringIfNull"/>
+		<result column="userToken" property="userToken"  typeHandler="com.bluemobi.mybatis.StringIfNull"/>
+		<result column="iosToken" property="iosToken" typeHandler="com.bluemobi.mybatis.StringIfNull"/>
+		<result column="bak1" property="bak1" typeHandler="com.bluemobi.mybatis.StringIfNull"/>
+		<result column="bak2" property="bak2" typeHandler="com.bluemobi.mybatis.StringIfNull"/>
+		<result column="bak3" property="bak3" typeHandler="com.bluemobi.mybatis.StringIfNull"/>
+		<result column="bak4" property="bak4" typeHandler="com.bluemobi.mybatis.StringIfNull"/>
+		<result column="bak5" property="bak5" typeHandler="com.bluemobi.mybatis.StringIfNull"/>
+		<result column="bak6" property="bak6" typeHandler="com.bluemobi.mybatis.StringIfNull"/>
+		<result column="bak7" property="bak7" typeHandler="com.bluemobi.mybatis.StringIfNull"/>
+		<result column="bak8" property="bak8" typeHandler="com.bluemobi.mybatis.StringIfNull"/>
+		<result column="regcode" property="regcode" typeHandler="com.bluemobi.mybatis.StringIfNull"/>
+		<result column="remark" property="remark"  typeHandler="com.bluemobi.mybatis.StringIfNull"/>
+		<result column="dr" property="dr" typeHandler="com.bluemobi.mybatis.StringIfNull"/>
+		<result column="ts" property="ts" typeHandler="com.bluemobi.mybatis.StringIfNull"/>
+		<result column="city" property="city"  typeHandler="com.bluemobi.mybatis.StringIfNull"/>
+		<result column="maritalStatus" property="maritalStatus"  typeHandler="com.bluemobi.mybatis.StringIfNull"/>
+		<result column="isHighOrSugar" property="isHighOrSugar"  typeHandler="com.bluemobi.mybatis.StringIfNull"/>
+	</resultMap>
+	
+	<!-- 新增老人端用户 -->
+	<insert id="insert" parameterType="com.bluemobi.pro.entity.User">
+		INSERT INTO
+			user
+		(
+			user_id,
+			mobile,
+			email,
+			account,
+			password,
+			headPic,
+			name,
+			sex,
+			birthday,
+			height,
+			weight,
+			deviceCode,
+			userToken,
+			iosToken,
+			bak1,
+			bak2,
+			bak3,
+			bak4,
+			bak5,
+			bak6,
+			bak7,
+			bak8,
+			regcode,
+			remark,
+			dr,
+			ts,
+			city,
+			maritalStatus,
+			isHighOrSugar
+		)
+		VALUES
+		(
+			#{userId},
+			#{mobile},
+			#{email},
+			#{account},
+			#{password},
+			#{headPic},
+			#{name},
+			#{sex},
+			#{birthday},
+			#{height},
+			#{weight},
+			#{deviceCode},
+			#{userToken},
+			#{iosToken},
+			#{bak1},
+			#{bak2},
+			#{bak3},
+			#{bak4},
+			#{bak5},
+			#{bak6},
+			#{bak7},
+			#{bak8},
+			#{regcode},
+			#{remark},
+			#{dr},
+			#{ts},
+			#{city},
+			#{maritalStatus},
+			#{isHighOrSugar}
+		)
+	</insert>
+	
+	<!-- 根据ID删除用户数据 -->
+	<delete id="delete" parameterType="string">
+		DELETE FROM
+			user
+		WHERE
+			id = #{_parameter}
+	</delete>
+	
+	<!-- 修改用户信息 -->
+	<update id="update" parameterType="com.bluemobi.pro.entity.User">
+		UPDATE
+			user
+		<set>
+			<if test="mobile != null and mobile != ''">
+				mobile = #{mobile},
+			</if>
+			<if test="email != null and email != ''">
+				email = #{email},
+			</if>
+			<if test="account != null and account != ''">
+				account = #{account},
+			</if>
+			<if test="password != null and password != ''">
+				password = #{password},
+			</if>
+			<if test="headPic != null and headPic != ''">
+				headPic = #{headPic},
+			</if>
+			<if test="name != null and name != ''">
+				name = #{name},
+			</if>
+			<if test="sex != null and sex != ''">
+				sex = #{sex},
+			</if>
+			<if test="birthday != null and birthday != ''">
+				birthday = #{birthday},
+			</if>
+			<if test="height != null and height != ''">
+				height = #{height},
+			</if>
+			<if test="weight != null and weight != ''">
+				weight = #{weight},
+			</if>
+			<if test="deviceCode != null and deviceCode != ''">
+				deviceCode = #{deviceCode},
+			</if>
+			<if test="userToken != null and userToken != ''">
+				userToken = #{userToken},
+			</if>
+			<if test="iosToken != null and iosToken != ''">
+				iosToken = #{iosToken},
+			</if>
+			<if test="bak1 != null and bak1 != ''">
+				bak1 = #{bak1},
+			</if>
+			<if test="bak2 != null and bak2 != ''">
+				bak2 = #{bak2},
+			</if>
+			<if test="bak3 != null and bak3 != ''">
+				bak3 = #{bak3},
+			</if>
+			<if test="bak4 != null and bak4 != ''">
+				bak4 = #{bak4},
+			</if>
+			<if test="bak5 != null and bak5 != ''">
+				bak5 = #{bak5},
+			</if>
+			<if test="bak6 != null and bak6 != ''">
+				bak6 = #{bak6},
+			</if>
+			<if test="bak7 != null and bak7 != ''">
+				bak7 = #{bak7},
+			</if>
+			<if test="bak1 != null and bak1 != ''">
+				bak8 = #{bak8},
+			</if>
+			<if test="regcode != null and regcode != ''">
+				regcode = #{regcode},
+			</if>
+			<if test="remark != null and remark != ''">
+				remark = #{remark},
+			</if>
+			<if test="dr != null and dr != ''">
+				dr = #{dr},
+			</if>
+			<if test="ts != null and ts != ''">
+				ts = #{ts},
+			</if>
+			<if test="city != null and city != ''">
+				city = #{city},
+			</if>
+			<if test="maritalStatus != null and maritalStatus != ''">
+				maritalStatus = #{maritalStatus},
+			</if>
+			<if test="isHighOrSugar != null and isHighOrSugar != ''">
+				isHighOrSugar = #{isHighOrSugar},
+			</if>
+		</set>
+		<where>
+			user_id = #{userId}
+		</where>
+	</update>
+	
+	<!-- 根据手机号查询用户信息 -->
+	<select id="findUserByMobile" parameterType="com.bluemobi.pro.entity.User" resultMap="findUserResultMap">
+		SELECT
+			u.user_id,
+			u.mobile,
+			u.email,
+			u.headPic,
+			u.name,
+			u.sex,
+			u.birthday,
+			u.height,
+			u.weight,
+			u.password,
+			u.bak1
+		FROM
+			user u
+		WHERE
+			u.mobile = #{mobile}
+	</select>
+</mapper> 

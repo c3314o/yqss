@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bluemobi.pro.service.impl.DetectionService">
+	
+	<resultMap type="com.bluemobi.pro.entity.DetectionT" id="detectionTMap">
+		<id column="ID" property="id"/>
+		<result column="TITLE" property="title" typeHandler="com.bluemobi.mybatis.StringIfNull"/>
+		<result column="IMAGE" property="image" typeHandler="com.bluemobi.mybatis.StringIfNull"/>
+		<result column="CREATE_DATE" property="createDate" />
+		<result column="CREATE_USER" property="createUser" typeHandler="com.bluemobi.mybatis.StringIfNull"/>
+	</resultMap>
+	
+	<resultMap type="com.bluemobi.pro.entity.DetectionQ" id="detectionQMap">
+		<id column="ID" property="id"/>
+		<result column="QNO" property="qno"/>
+		<result column="TITLE" property="title"/>
+		<result column="T_ID" property="tid"/>
+		<result column="A" property="a"/>
+		<result column="B" property="b"/>
+		<result column="C" property="c"/>
+		<result column="D" property="d"/>
+	</resultMap>
+	
+	<resultMap type="com.bluemobi.pro.entity.DetectionA" id="detectionAMap">
+		<id column="ID" property="id"/>
+		<result column="DETECTION_Q_Id" property="detectionQId"/>
+		<result column="ANSWER" property="answer"/>
+	</resultMap>
+	
+	<!-- 查询题目类型集合 -->
+	<select id="pageDetection" parameterType="map" resultMap="detectionTMap">
+		SELECT
+			t.ID,
+			t.TITLE,
+			t.IMAGE
+		FROM
+			t_detection_t t
+	</select>
+	
+	<!-- 根据类型ID 查询该类型下的所有题目 -->
+	<select id="findAllQuestion" parameterType="com.bluemobi.pro.entity.DetectionQ" resultMap="detectionQMap">
+		SELECT
+			q.ID,
+			q.QNO,
+			q.TITLE,
+			q.T_ID,
+			q.A,
+			q.B,
+			q.C,
+			q.D
+		FROM
+			t_detection_q q
+		WHERE
+			q.T_ID = #{tid}
+	</select>
+	
+	<!-- 提交答案 -->
+	<insert id="insertAnswer" parameterType="com.bluemobi.pro.entity.DetectionA">
+		INSERT INTO
+			t_detection_a
+		(
+			ID,
+			DETECTION_T_Id,
+			DETECTION_Q_Id,
+			ANSWER,
+			`USER_ID`
+			
+		)
+		VALUES
+		(
+			#{id},
+			#{detectionTId},
+			#{detectionQId},
+			#{answer},
+			#{userId}
+		)
+	</insert>
+	
+	<!-- 获取自己答题的答案 -->
+	<select id="findAnswer" parameterType="com.bluemobi.pro.entity.DetectionA" resultMap="detectionAMap">
+		SELECT
+			t.ID,
+			t.DETECTION_Q_Id,
+			t.ANSWER
+		FROM
+			t_detection_a t
+		WHERE
+			t.DETECTION_T_Id = #{detectionTId}
+		AND
+			t.USER_ID = #{userId}
+	</select>
+</mapper> 

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bluemobi.pro.service.impl.MeasureService">
+	
+	<resultMap type="com.bluemobi.pro.entity.Measure" id="measureMap">
+		<id column="measure_id" property="measureId"/>
+		<result column="user_id" property="userId"/> 
+		<result column="device_id" property="deviceId"/>
+		<result column="measureState" property="measureState"/>
+		<result column="measureType" property="measureType"/>
+		<result column="result1" property="result1"/>
+		<result column="result2" property="result2"/>
+		<result column="result3" property="result3"/>
+		<result column="result4" property="result4"/>
+		<result column="result5" property="result5"/>
+		<result column="sendMsg" property="sendMsg"/>
+		<result column="sendTime" property="sendTime"/>
+		<result column="bak1" property="bak1"/>
+	</resultMap>
+	
+	<insert id="insert" parameterType="com.bluemobi.pro.entity.Measure">
+		INSERT INTO
+			measure
+		(
+			measure_id,
+			user_id,
+			device_id,
+			measureState,
+			measureType,
+			result1,
+			result2,
+			result3,
+			result4,
+			result5,
+			sendMsg,
+			sendTime,
+			bak1,
+			bak6
+		)
+		VALUES
+		(
+			#{measureId},
+			#{userId},
+			#{deviceId},
+			#{measureState},
+			#{measureType},
+			#{result1},
+			#{result2},
+			#{result3},
+			#{result4},
+			#{result5},
+			#{sendMsg},
+			#{sendTime},
+			#{bak1},
+			#{bak6}
+		)
+	</insert>
+	
+	<!-- 删除测量结果 -->
+	<delete id="deleteById" parameterType="string">
+		DELETE
+		FROM
+			measure
+		WHERE
+			measure_id = #{measureId}
+	</delete>
+	
+	<!-- 根据用户ID查询测量结果 -->
+	<select id="findMeasureValue" parameterType="com.bluemobi.pro.entity.Measure" resultMap="measureMap">
+		SELECT
+			measure_id,
+			user_id,
+			device_id,
+			measureState,
+			measureType,
+			result1,
+			result2,
+			result3,
+			result4,
+			result5,
+			sendMsg,
+			sendTime,
+			bak1,
+			bak6
+		FROM
+			measure
+		WHERE
+			1 = 1
+		AND
+			user_id = #{userId}
+		<if test="dateDown != null and dateDown != ''">
+			AND bak6 &gt; #{dateDown}
+		</if>
+		<if test="dateUp != null and dateUp != ''">
+			AND bak6 &lt; #{dateUp}
+		</if>
+		ORDER BY bak6 DESC
+	</select>
+</mapper> 

@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bluemobi.pro.service.impl.DeviceService">
+	
+	<resultMap type="com.bluemobi.pro.entity.Device" id="deviceMap">
+		<id column="device_id" property="deviceId" />
+		<result column="user_id" property="userId"/>
+		<result column="deviceProYear" property="deviceProYear"/>
+		<result column="deviceProMonth" property="deviceProMonth"/>
+		<result column="deviceType" property="deviceType"/>
+		<result column="deviceSerial" property="deviceSerial"/>
+		<result column="version" property="version"/>
+		<result column="bak1" property="bak1"/>
+	</resultMap>
+	
+	<!-- 根据设备ID，查询设备信息 -->
+	<select id="findDeviceById" parameterType="string" resultMap="deviceMap">
+		SELECT
+			d.device_id,
+			d.deviceProYear,
+			d.deviceProMonth,
+			d.deviceType,
+			d.deviceSerial,
+			d.version,
+			d.bak1
+		FROM
+			device d
+		WHERE
+			d.device_id = #{_parameter}
+	</select>
+	
+	<!-- 根据用户ID查询设备集合 -->
+	<select id="findDeviceByUserId" parameterType="string" resultMap="deviceMap">
+		SELECT
+			d.device_id,
+			d.deviceProYear,
+			d.deviceProMonth,
+			d.deviceType,
+			d.deviceSerial,
+			d.version,
+			d.bak1
+		FROM
+			device d
+		WHERE
+			d.user_id = #{_parameter}
+	</select>
+	
+	<!-- 删除设备 -->
+	<delete id="deleteByDeviceId" parameterType="string">
+		DELETE
+		FROM
+			device
+		WHERE
+			device_id = #{_parameter}
+	</delete>
+	
+	<!-- 更新设备 -->
+	<update id="update" parameterType="com.bluemobi.pro.entity.Device">
+		UPDATE
+			device
+		<set>
+			<if test="userId != null and userId != ''">
+				user_id = #{userId},
+			</if>
+			<if test="deviceProYear != null and deviceProYear != ''">
+				deviceProYear = #{deviceProYear},
+			</if>
+			<if test="deviceProMonth != null and deviceProMonth != ''">
+				deviceProMonth = #{deviceProMonth},
+			</if>
+			<if test="deviceType != null and deviceType != ''">
+				deviceType = #{deviceType},
+			</if>
+			<if test="deviceSerial != null and deviceSerial != ''">
+				deviceSerial = #{deviceSerial},
+			</if>
+			<if test="version != null and version != ''">
+				version = #{version},
+			</if>
+			<if test="bak1 != null and bak1 != ''">
+				bak1 = #{bak1},
+			</if>
+		</set>
+		<where>
+			device_id = #{deviceId}
+		</where>
+	</update>
+	
+	<!-- 新增设备 -->
+	<insert id="insert" parameterType="com.bluemobi.pro.entity.Device" keyProperty="device_id" useGeneratedKeys="true">
+		INSERT INTO
+			device
+		(
+			device_id,
+			user_id,
+			deviceProYear,
+			deviceProMonth,
+			deviceType,
+			deviceSerial,
+			version,
+			bak1
+		)
+		VALUES
+		(
+			#{deviceId},
+			#{userId},
+			#{deviceProYear},
+			#{deviceProMonth},
+			#{deviceType},
+			#{deviceSerial},
+			#{version},
+			#{bak1}
+		)
+	</insert>
+	
+	<!-- 新增绑定数据 -->
+	<insert id="insertBind" parameterType="com.bluemobi.pro.entity.UserDevice">
+		INSERT INTO
+			userdevice
+		(
+			id,
+			device_id,
+			user_id,
+			bindTime,
+			isAdmin
+		)
+		VALUES
+		(
+			#{id},
+			#{device_id},
+			#{user_id},
+			#{bindTime},
+			#{isAdmin}
+		)
+	</insert>
+</mapper> 

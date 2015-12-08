@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bluemobi.pro.service.impl.PathologyService">
+	
+	<resultMap type="com.bluemobi.pro.entity.Pathology" id="pathologyMap">
+		<id column="ID" property="id"/>
+		<result column="TITLE" property="title" typeHandler="com.bluemobi.mybatis.StringIfNull"/>
+		<result column="CONTENT" property="content" typeHandler="com.bluemobi.mybatis.StringIfNull"/>
+		<result column="IMAGE" property="image" typeHandler="com.bluemobi.mybatis.StringIfNull"/>
+		<result column="URL" property="url" typeHandler="com.bluemobi.mybatis.StringIfNull"/>
+		<result column="CREATE_DATE" property="createDate"/>
+	</resultMap>
+	
+	<!-- 病理列表 -->
+	<select id="page" parameterType="map" resultMap="pathologyMap">
+		SELECT
+			t.ID,
+			t.TITLE,
+			t.CONTENT,
+			t.IMAGE,
+			t.URL,
+			t.CREATE_DATE
+		FROM
+			t_pathology t
+		WHERE
+			1 = 1
+		<if test="type != null and type != ''">
+			AND t.TYPE = #{type}
+		</if>
+	</select>
+	
+	<!-- 病理详情  -->
+	<select id="findById" parameterType="com.bluemobi.pro.entity.Pathology" resultMap="pathologyMap">
+		SELECT
+			t.ID,
+			t.TITLE,
+			t.CONTENT,
+			t.IMAGE,
+			t.URL,
+			t.CREATE_DATE
+		FROM
+			t_pathology t
+		WHERE
+			t.ID = #{id}
+	</select>
+</mapper> 

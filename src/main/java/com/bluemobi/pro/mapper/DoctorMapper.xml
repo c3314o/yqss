@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bluemobi.pro.service.impl.DoctorService">
+	
+	<resultMap type="com.bluemobi.pro.entity.Doctor" id="doctorMap">
+		<id column="ID" property="id"/>
+		<result column="NAME" property="name" typeHandler="com.bluemobi.mybatis.StringIfNull"/>
+		<result column="DETAIL" property="detail" typeHandler="com.bluemobi.mybatis.StringIfNull"/>
+		<result column="DEPART" property="depart" typeHandler="com.bluemobi.mybatis.StringIfNull"/>
+		<result column="DOMAIN" property="domain" typeHandler="com.bluemobi.mybatis.StringIfNull"/>
+		<result column="MOBILE" property="mobile" typeHandler="com.bluemobi.mybatis.StringIfNull"/>
+		<result column="TEL" property="tel" typeHandler="com.bluemobi.mybatis.StringIfNull"/>
+		<result column="HEAD" property="head" typeHandler="com.bluemobi.mybatis.StringIfNull"/>
+		<result column="GENDER" property="gender" typeHandler="com.bluemobi.mybatis.IntegerIfNull"/>
+		<result column="AGE" property="age" typeHandler="com.bluemobi.mybatis.IntegerIfNull"/>
+		<result column="LEVEL" property="level" typeHandler="com.bluemobi.mybatis.StringIfNull"/>
+		<result column="BIRTHDAY" property="birthday" typeHandler="com.bluemobi.mybatis.StringIfNull"/>
+		<result column="ONLINE" property="online" typeHandler="com.bluemobi.mybatis.StringIfNull"/>
+		<result column="TYPE" property="type" typeHandler="com.bluemobi.mybatis.IntegerIfNull"/>
+	</resultMap>
+	
+	<!-- 家庭医生列表 -->
+	<select id="page" parameterType="map" resultMap="doctorMap">
+		SELECT
+			t.ID,
+			t.NAME,
+			t.DETAIL,
+			t.DEPART,
+			t.DOMAIN,
+			t.HEAD,
+			t.LEVEL, 
+			t.REWARD,
+			t.HOSPITAL
+		FROM
+			t_doctor t
+		ORDER BY
+			t.ID
+	</select>
+	
+	<!-- 根据ID查询医生详细信息 -->
+	<select id="findDoctorById" parameterType="com.bluemobi.pro.entity.Doctor" resultMap="doctorMap">
+		SELECT
+			t.ID,
+			t.NAME,
+			t.DETAIL,
+			t.DEPART,
+			t.DOMAIN,
+			t.HEAD,
+			t.LEVEL, 
+			t.REWARD,
+			t.HOSPITAL
+		FROM
+			t_doctor t
+		WHERE
+			t.ID = #{id}
+	</select>
+</mapper> 
