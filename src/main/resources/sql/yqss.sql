@@ -30,9 +30,9 @@ CREATE TABLE `users` (
   `id_card` varchar(30) default '' comment '身份证',
   `school_id` int(4) default 0 comment '学校ID',
   `school_name` varchar(20) default '' comment '学校名称',
-  `address` varchar(500) default '' comment '详细地址'
+  `address` varchar(500) default '' comment '详细地址',
   
-  `status` int(2) default 1 comment '用户状态 1正常 2:禁用'
+  `status` int(2) default 1 comment '用户状态 1正常 2:禁用',
   `create_date` datetime comment '创建时间',
   
   PRIMARY KEY (`id`)
@@ -55,13 +55,12 @@ create table `borrow_info`(
   `id` int(32) not null auto_increment,
   `user_id` int(32) not null comment '所属用户ID',
   `limit_money` int(4) default 0 comment '贷款额度',
-  ``
   `max_day` int(2) default 0 comment '最大期限',
   `period` int(2) default 0 comment '期数',
   `type` int(32) default 0 comment '借款原因 ',
   
   `repay_date` datetime comment '还款时间',
-  `repay_date_app` bigint comment ''
+  `repay_date_app` bigint comment '',
   
   `create_date` datetime comment '创建时间',
   
@@ -73,7 +72,7 @@ DROP TABLE IF EXISTS `repay_record`;
 create table `repay_record`(
    `id` int(32) not null auto_increment,
    `borrow_info_id` int(32) not null comment '还款记录',
-   `money` double default not null comment '还款额度',
+   `money` double(10,2) default 0 not null comment '还款额度',
    `repay_date` bigint comment '还款时间',
    
    `create_date` datetime comment '创建时间',
@@ -88,7 +87,7 @@ create table `buy_borrow_info`(
    `product_id` int(32) not null comment '商品ID',
    
    `name` varchar(200) not null default '' comment '商品名称',
-   `price` double not null default 0 comment '商品价格',
+   `price` double(10,2) not null default 0 comment '商品价格',
    `period` int(2) default 0 comment '期数',
    
    `residue_money` double comment '剩余钱数',
@@ -103,7 +102,7 @@ DROP TABLE IF EXISTS `buy_repay_record`;
 create table `buy_repay_record`(
    `id` int(32) not null auto_increment,
    `borrow_info_id` int(32) not null comment '还款记录',
-   `money` double default not null comment '还款额度',
+   `money` double(10,2) default 0 not null comment '还款额度',
    `repay_date` bigint comment '还款时间',
    
    `create_date` datetime comment '创建时间',
@@ -128,18 +127,20 @@ DROP TABLE IF EXISTS `product_type`;
 
 create table `product_type`(
     `id` int(32) not null auto_increment,
-    `name` varchar(20) default comment '商品类型',
+    `name` varchar(20) default '' comment '商品类型',
     
     `create_date` datetime comment '创建时间',
     PRIMARY KEY (`id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+insert into `product_type` (`name`,`create_date`) values ('手机',NOW()),('电脑',now()),('生活用品',now()),('图书音响',now());
 
 DROP TABLE IF EXISTS `product`;
 
 create table `product` (
 	`id` int(32) not null auto_increment,
 	`name` varchar(200) not null default '' comment '商品名称',
-	`price` double not null default 0 comment '商品价格',
+	`price` double(10,2) not null default 0 comment '商品价格',
 	`content` varchar(500) default '' comment '商品描述',
 	
 	`is_list`int(2) default 1 comment '是否上架 1:上架 2:下架',
@@ -154,8 +155,8 @@ create table `product_images`(
 	`id` int(32) not null auto_increment,
 	`product_id` int(32) not null comment '商品ID',
 	`image_url` varchar(200) default '' comment '图片url',
-	`height` double default 0 comment '图片高度',
-	`width` double default 0 comment '图片宽度',
+	`height` double(10,2) default 0 comment '图片高度',
+	`width` double(10,2) default 0 comment '图片宽度',
 	`small_url` varchar(200) default '' comment '缩略图',
 	
 	`create_date` datetime comment '创建时间',
@@ -168,14 +169,14 @@ create table `product_comment`(
 	`id` int(32) not null auto_increment,
 	`product_id` int(32) not null comment '商品ID',
 	`user_id` int(32) not null comment '评论用户ID',
-	`content` varchar (500) default '' comment '评论内容',
-	`score` int(2) default 5 comment '评论等级 1-5'
+	`content` varchar(500) default '' comment '评论内容',
+	`score` int(2) default 5 comment '评论等级 1-5',
 	
 	`comment_date` bigint comment '评论事件',
 	
-	`create_date` datatime comment '创建时间',
+	`create_date` datetime comment '创建时间',
 	PRIMARY KEY (`id`)
-)NGINE=InnoDB DEFAULT CHARSET=utf8;
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `orders`;
 
@@ -188,8 +189,8 @@ create table `orders`(
 	`id_card` varchar(50) default '' comment '购买人身份证',
 	`mobile`varchar(50) default '' comment '购买人手机号',
 	`school_id` int(4) default 0 comment '购买人学校ID',
-	`school_name` varchar(20) default 0 comment '购买人学校名称'
-	`address` varchar(200) default 0 comment '收货地址'
+	`school_name` varchar(20) default 0 comment '购买人学校名称',
+	`address` varchar(200) default 0 comment '收货地址',
 	
 	`order_date` bigint comment '下单时间',
 	
@@ -213,7 +214,7 @@ create table `hr_message` (
 	`company` varchar(50) default '' comment '公司名字',
 	`position` varchar(50) default '' comment '职位',
 	`counts` int(2) default 1 comment '招聘人数',
-	`is_list` int(2) default 1 comment '是否发布 1:发布 2:不发布'
+	`is_list` int(2) default 1 comment '是否发布 1:发布 2:不发布',
 	
 	`create_date` datetime comment '创建时间',
 	PRIMARY KEY (`id`)
@@ -229,11 +230,6 @@ create table `collection` (
    PRIMARY KEY (`id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-DROP TABLE IF EXISTS `ads`;
-
-create table `ads` (
-
-)
 
 DROP TABLE IF EXISTS `second_hand`;
 
@@ -241,18 +237,20 @@ create table `second_hand` (
 	`id` int(32) not null auto_increment,
 	`title` varchar(50) not null comment '标题',
 	`content`varchar(500) default '' comment '二手商品描述',
-	`price` double(2) default 0 comment '商品价格',
+	`price` double(10,2) default 0 comment '商品价格',
 	`user_id` int(32) not null comment '所属用户ID',
 	
 	PRIMARY KEY (`id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+DROP TABLE IF EXISTS `second_hand_images`;
+
 create table `second_hand_images` (
 	`id` int(32) not null auto_increment,
-	`second_hand_id` not null comment '所属二手物品',
+	`second_hand_id` int(32) not null comment '所属二手物品',
 	`image_url` varchar(200) default '' comment '图片url',
-	`height` double default 0 comment '图片高度',
-	`width` double default 0 comment '图片宽度',
+	`height` double(10,2) default 0 comment '图片高度',
+	`width` double(10,2) default 0 comment '图片宽度',
 	`small_url` varchar(200) default '' comment '缩略图',
 	PRIMARY KEY (`id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -279,7 +277,7 @@ create table `helper` (
   `answer` varchar(500) default '' comment '答案',
   
   `sys_user_id` int(32) not null comment '',
-  `create_date` datatime comment '创建时间',
+  `create_date` datetime comment '创建时间',
   
    PRIMARY KEY (`id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
