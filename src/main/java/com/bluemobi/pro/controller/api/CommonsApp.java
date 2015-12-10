@@ -1,7 +1,6 @@
 package com.bluemobi.pro.controller.api;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -17,13 +16,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.bluemobi.cache.CacheService;
 import com.bluemobi.constant.ErrorCode;
-import com.bluemobi.location.Location;
-import com.bluemobi.location.LocationUtils;
-import com.bluemobi.pro.entity.AolUser;
 import com.bluemobi.pro.entity.FeedBack;
 import com.bluemobi.pro.entity.RegisterUser;
-import com.bluemobi.pro.entity.User;
-import com.bluemobi.pro.service.impl.AolUserService;
+import com.bluemobi.pro.entity.UserInfo;
+import com.bluemobi.pro.entity.UserLogin;
 import com.bluemobi.pro.service.impl.FeedBackService;
 import com.bluemobi.pro.service.impl.UserService;
 import com.bluemobi.utils.CommonUtils;
@@ -44,9 +40,6 @@ public class CommonsApp {
 
 	@Autowired
 	private FeedBackService fservice;
-
-	@Autowired
-	private AolUserService aolUserService;
 
 	/**
 	 * 发送验证码
@@ -99,7 +92,7 @@ public class CommonsApp {
 
 		try {
 			String requestCode = user.getCode();
-			String code = cacheService.get(user.getMobile());
+			String code = cacheService.get(user.getCode());
 			if (service.isExist(user)) {
 				return Result.failure(ErrorCode.ERROR_05);
 			}
@@ -124,16 +117,22 @@ public class CommonsApp {
 	 */
 	@RequestMapping(value = "login", method = RequestMethod.POST)
 	@ResponseBody
-	public Result checkLogin(User user) {
+	public Result checkLogin(UserLogin userLogin) {
 
-		User respUser = null;
+		UserInfo userInfo = null;
+		UserLogin _userLogin = null;
 		try {
-			respUser = service.findUserByMobile(user);
-			if (respUser == null || !respUser.getPassword().equals(user.getPassword())) {
+			_userLogin = service.findUserByMobile(userLogin);
+			if (_userLogin == null || !_userLogin.getPassword().equals(userLogin.getPassword())) {
 				return Result.failure(ErrorCode.ERROR_03);
 			}
-			respUser.setPassword(null);
-			return Result.success(respUser);
+			
+			// 根据用户ID查询用户信息
+			userInfo = new UserInfo();
+			userInfo.setUserId(_userLogin.getId());
+			userInfo = service.findUserInfoById(userInfo);
+			
+			return Result.success(userInfo);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return Result.failure();
@@ -153,71 +152,19 @@ public class CommonsApp {
 		return Result.success();
 	}
 
-	@RequestMapping(value = "record", method = RequestMethod.POST)
-	@ResponseBody
-	public Result record(@RequestParam Map<String, Object> params) {
-
-		if (ParamUtils.existEmpty(params, "userId"))
-			return Result.failure(ErrorCode.ERROR_02);
-
-		String aolUserId = params.get("userId").toString();
-		Double lon = params.get("lon") == null ? null : Double.parseDouble(params.get("lon").toString());
-		Double lat = params.get("lat") == null ? null : Double.parseDouble(params.get("lat").toString());
-		String address = params.get("address") == null ? "" : params.get("address").toString();
-		Location location = new Location(aolUserId, lon, lat,address);
-
-		LocationUtils.create().receivceLocation(location);
-		return Result.success();
-	}
-
 	@RequestMapping(value = "uploadHead", method = RequestMethod.POST)
 	@ResponseBody
-	public Result uploadHead(User user, @RequestParam("head") MultipartFile file) {
+	public Result uploadHead(UserInfo userInfo, @RequestParam("head") MultipartFile file) {
 
 		String headPic = null;
 		try {
 			headPic = ImageUtils.saveImage(file, false)[0];
-			user.setHeadPic(headPic);
-			service.modifyUser(user);
+			userInfo.setHeadPic(headPic);
+			service.modifyUser(userInfo);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		return Result.success();
-	}
-
-	// 实时获取用户坐标
-	@RequestMapping(value = "coordinates", method = RequestMethod.POST)
-	@ResponseBody
-	public Result getCoordinates(@RequestParam Map<String, Object> params) {
-
-		if (ParamUtils.existEmpty(params, "aolUserId"))
-			return Result.failure(ErrorCode.ERROR_02);
-
-		String aolUserId = params.get("aolUserId").toString();
-		Location location = LocationUtils.create().getLocation(aolUserId);
-		if (location == null)
-			return Result.failure(ErrorCode.ERROR_14);
-		// 用户已下线
-
-		// -------------------
-		// 测试
-		// -------------------
-		// Location location = LocationUtils.create().getTest(aolUserId);
-		return Result.success(location);
-	}
-
-	// 查询关注人列表
-	@RequestMapping(value = "foucsList", method = RequestMethod.POST)
-	@ResponseBody
-	public Result findFoucsList(@RequestParam Map<String, Object> params) {
-		List<AolUser> aolUserList = null;
-		try {
-			aolUserList = aolUserService.findFocus(params.get("memberId").toString());
-		} catch (Exception e) {
-			e.printStackTrace();
-			return Result.failure();
-		}
-		return Result.success(aolUserList);
 	}
 }

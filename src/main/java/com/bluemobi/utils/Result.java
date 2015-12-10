@@ -3,12 +3,8 @@ package com.bluemobi.utils;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-
 import com.bluemobi.constant.ErrorCode;
 import com.bluemobi.sys.page.Page;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 /**
  * 

@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.bluemobi.pro.entity.User;
+import com.bluemobi.constant.ExcludeFile;
 
 public class BeanUtils {
 
@@ -50,6 +50,9 @@ public class BeanUtils {
 			
 			PropertyDescriptor pd = null;
 			for (Field field : fields) {
+				
+				ExcludeFile xf = field.getAnnotation(ExcludeFile.class);
+				if( xf == null ) continue;
 				String k = field.getName();
 				Object v = null;
 				pd = new PropertyDescriptor(k, data.getClass());
@@ -71,18 +74,6 @@ public class BeanUtils {
 			e.printStackTrace();
 		}
 		return map;
-	}
-	
-	public static void main(String[] args) {
-		User user = new User();
-		user.setUserId("123456");
-		user.setName("admin");
-		user.setBak1(null);
-		
-		Map<String,Object> map = beanToMap(user);
-		for (Map.Entry<String, Object> obj : map.entrySet()) {
-			System.out.println("key:" + obj.getKey() + ":value :" + obj.getValue());
-		}
 	}
 }
 

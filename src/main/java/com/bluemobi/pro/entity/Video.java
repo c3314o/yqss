@@ -1,34 +1,64 @@
 package com.bluemobi.pro.entity;
 
-public class Video {
+/**
+ * 
+ * @ClassName: Video
+ * @Description: 视频
+ * @author yesong
+ * @date 2015年12月10日
+ *
+ */
+public class Video extends BaseEntity {
 
-	private String pic;
-	private String flash;
-	private String time;
+	/**
+	 * 视频标题
+	 */
+	private String title;
 
-	public String getPic() {
-		return pic;
+	/**
+	 * 视频介绍
+	 */
+	private String content;
+	
+	/**
+	 * 视频背景图片
+	 */
+	private String image;
+
+	/**
+	 * 视频地址
+	 */
+	private String url;
+	
+	public String getUrl() {
+		return url;
 	}
 
-	public void setPic(String pic) {
-		this.pic = pic;
+	public void setUrl(String url) {
+		this.url = url;
 	}
 
-
-	public String getFlash() {
-		return flash;
+	public String getTitle() {
+		return title;
 	}
 
-	public void setFlash(String flash) {
-		this.flash = flash;
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
-	public String getTime() {
-		return time;
+	public String getContent() {
+		return content;
 	}
 
-	public void setTime(String time) {
-		this.time = time;
+	public void setContent(String content) {
+		this.content = content;
 	}
 
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
+	}
 }

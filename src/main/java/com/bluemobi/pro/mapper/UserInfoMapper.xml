@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bluemobi.pro.entity.UserInfo">
+	
+	<resultMap type="com.bluemobi.pro.entity.UserInfo" id="userInfoResultMap">
+		<id column="id" property="id" />
+		<result column="user_id" property="userId" />
+		<result column="name" property="name" />
+		<result column="gender" property="gender" />
+		<result column="mobile" property="mobile" />
+		<result column="id_card" property="identity" />
+		<result column="school_name" property="school" />
+		<result column="address" property="address" />
+		<result column="head_url" property="headPic" />
+	</resultMap>
+	
+	<!-- 新增用户 -->
+	<insert id="insert" parameterType="com.bluemobi.pro.entity.UserInfo">
+		INSERT INTO
+			users_info
+		(
+		   <if test="userId != null and userId != ''">
+		   		user_id,
+		   </if>
+			<if test="name != null and name != ''">
+				name,
+			</if>
+			<if test="gender != null and gender != ''">
+				gender,
+			</if>
+			<if test="mobile != null and mobile != ''">
+				mobile,
+			</if>
+			<if test="identity != null and identity != ''">
+				id_card,
+			</if>
+			<if test="school != null and school != ''">
+				school_name,
+			</if>
+			<if test="address != null and address != ''">
+				address,
+			</if>
+			<if test="headPic != null and headPic != ''">
+				head_url,
+			</if>
+			status,
+			create_date
+		)
+		VALUES
+		(
+			 <if test="userId != null and userId != ''">
+		   		#{userId},
+		   </if>
+			<if test="name != null and name != ''">
+				#{name},
+			</if>
+			<if test="gender != null and gender != ''">
+				#{gender},
+			</if>
+			<if test="mobile != null and mobile != ''">
+				#{mobile},
+			</if>
+			<if test="identity != null and identity != ''">
+				#{identity},
+			</if>
+			<if test="school != null and school != ''">
+				#{school},
+			</if>
+			<if test="address != null and address != ''">
+				#{address},
+			</if>
+			<if test="headPic != null and headPic != ''">
+				#{headPic}
+			</if>
+			1,
+			NOW()
+		)
+	</insert>
+	
+	<!-- 删除用户 -->
+	<delete id="delete" parameterType="int">
+		DELETE FROM
+			users_info
+		WHERE
+			id = #{_paramater}
+	</delete>
+	
+	<!-- 更新用户信息 -->
+	<update id="update" parameterType="com.bluemobi.pro.entity.UserInfo">
+		UPDATE
+			users_info
+		<set>
+			<if test="name != null and name != ''">
+				name = #{name},
+			</if>
+			<if test="gender != null and gender != ''">
+				gender = #{gender},
+			</if>
+			<if test="mobile != null and mobile != ''">
+				mobile = #{mobile},
+			</if>
+			<if test="identity != null and identity != ''">
+				id_card = #{identity},
+			</if>
+			<if test="school != null and school != ''">
+				school_name = #{school},
+			</if>
+			<if test="address != null and address != ''">
+				address = #{address},
+			</if>
+			<if test="headPic != null and headPic != ''">
+				head_url = #{headPic}
+			</if>
+		</set>
+		WHERE
+			1 = 1
+	    <if test="userId != null and userId != ''">
+	    	AND
+	    		user_id = #{userId}
+	    </if>			
+	</update>
+	
+	<!-- 根据用户ID查询用户信息 -->
+	<select id="findOne" parameterType="com.bluemobi.pro.entity.UserInfo" resultMap="userInfoResultMap">
+		SELECT
+			t.id,
+			t.user_id,
+			t.name,
+			t.mobile,
+			t.gender,
+			t.id_card,
+			t.school_name,
+			t.address,
+			t.head_url
+		FROM
+			users_info
+		WHERE
+			 1 = 1
+	    <if test="userId != null and userId != ''">
+	    	AND
+	    		user_id = #{userId}
+	    </if>
+	</select>
+	
+	<!-- 根据查询条件查询用户信息 -->
+	<select id="findList" parameterType="com.bluemobi.pro.entity.UserInfo" resultMap="userInfoResultMap">
+		SELECT
+			t.id,
+			t.user_id,
+			t.name,
+			t.mobile,
+			t.gender,
+			t.id_card,
+			t.school_name,
+			t.address,
+			t.head_url
+		FROM
+			users_info
+		WHERE
+			 1 = 1
+	    <if test="name != null and name != ''">
+	    	AND
+	    		name LIKE CONCAT('%',#{name},'%')
+	    </if>
+	    <if test="mobile != null and mobile != ''">
+	    	AND
+	    		mobile LIKE CONCAT('%', #{mobile} ,'%')
+	    </if>
+	    <if test="identity != null and identity != ''">
+	    	AND
+	    		id_card LIKE CONCAT('%',#{identity}, '%')
+	    </if>
+	    <if test="address != null and address != ''">
+	    	AND
+	    		address LIKE CONCAT('%',#{address}, '%')
+	    </if>
+	    <if test="school != null and school != ''">
+	    	AND
+	    		school_name LIKE CONCAT('%', #{school} ,'%')
+	    </if>
+	</select>
+</mapper> 

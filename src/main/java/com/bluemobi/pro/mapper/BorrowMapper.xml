@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bluemobi.pro.entity.BorrowInfo">
+
+	<resultMap type="com.bluemobi.pro.entity.BorrowInfo" id="borrowResultMap">
+		<id column="id" property="id" />
+		<result column="user_id" property="userId" />
+		<result column="limit_money" property="borrow"/>
+		<result column="jk_date" property="jkTime"/>
+		<collection property="list" ofType="com.bluemobi.pro.entity.BorrowRepayRecord" 
+						column="{borrow_info_id2 = id}" select="findBorrowRRListByBid"/>
+	</resultMap>
+	
+	<resultMap type="com.bluemobi.pro.entity.BorrowRepayRecord" id="borrowrrResultMap">
+		<id column="id" property="id" />
+		<result column="borrow_info_id" property="borrowId" />
+		<result column="money" property="amount" />
+		<result column="repay_date" property="repayTime"/>
+	</resultMap>	
+	
+	<!-- 根据用户ID查询借款信息 -->
+	<select id="findBorrowListByUserId" resultMap="borrowResultMap" parameterType="int">
+		SELECT
+			t.id,
+			t.user_id,
+			t.limit_money,
+			t.jk_date
+		FROM
+			borrow_info t
+		WHERE
+			t.user_id = {_paramater}
+	</select>
+	
+	<!-- 根据借款ID查询还款记录 -->
+	<select id="findBorrowRRListByBid" resultMap="borrowrrResultMap" parameterType="map">
+		SELECT
+			t.id,
+			t.borrow_info_id,
+			t.money,
+			t.repay_date
+		FROM
+			repay_record t
+		WHERE
+			t.borrow_info_id = #{borrow_info_id2}
+	</select>
+	
+	<!-- 删除还款信息 -->
+	<delete id="deleteBorrow" parameterType="int">
+		DELETE FROM
+			borrow_info
+		WHERE
+			id = #{_paramater}
+	</delete>
+	
+	<!-- 新增还款记录 -->
+	<insert id="insertBorrowRR" parameterType="com.bluemobi.pro.entity.BorrowRepayRecord">
+		INSERT INTO
+			repay_record
+		(
+			borrow_info_id,
+			money,
+			create_date
+		)
+		VALUES
+		(
+			#{borrowId},
+			#{amount},
+			#{createDate}
+		)
+	</insert>
+</mapper> 

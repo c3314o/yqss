@@ -1,20 +1,17 @@
 package com.bluemobi.pro.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.bluemobi.pro.entity.RegisterUser;
-import com.bluemobi.pro.entity.User;
+import com.bluemobi.pro.entity.UserInfo;
+import com.bluemobi.pro.entity.UserLogin;
 import com.bluemobi.sys.service.BaseService;
-import com.bluemobi.utils.UUIDUtil;
 
 @Service
 public class UserService extends BaseService{
 
-	private static final String PRIFIX = UserService.class.getName();
+	public static final String PRIFIX_USER_LOGIN = UserLogin.class.getName();
+	public static final String PRIFIX_USER_INFO = UserInfo.class.getName();
 	
 	/**
 	 * 新增用户记录
@@ -22,10 +19,30 @@ public class UserService extends BaseService{
 	 * @return
 	 * @throws Exception
 	 */
-	public int addUser(RegisterUser user) throws Exception {
-		user.setUserId(UUIDUtil.generateUUID());
-		user.setBak4("0");
-		return this.getBaseDao().save(PRIFIX + ".insert", user);
+	@Transactional
+	public int addUser(UserLogin user) throws Exception {
+		
+		// 新增用户登录信息
+		this.getBaseDao().save(PRIFIX_USER_LOGIN + ".insert", user);
+		
+		// 新增用户基本信息
+		UserInfo userInfo = new UserInfo();
+		userInfo.setUserId(user.getId());
+		return this.getBaseDao().save(PRIFIX_USER_INFO + ".insert", user);
+	}
+	
+	/**
+	 * 
+     * @Title: findUserInfoById
+     * @Description: 根据用户ID查询用户信息
+     * @param @param userInfo
+     * @param @return
+     * @param @throws Exception    参数
+     * @return UserInfo    返回类型
+     * @throws
+	 */
+	public UserInfo findUserInfoById(UserInfo userInfo) throws Exception {
+		return this.getBaseDao().get(PRIFIX_USER_INFO + "findOne", userInfo);
 	}
 	
 	/**
@@ -34,10 +51,10 @@ public class UserService extends BaseService{
 	 * @return
 	 * @throws Exception 
 	 */
-	public Boolean isExist(User user) throws Exception  {
+	public Boolean isExist(UserLogin user) throws Exception  {
 		
-		User reUser = findUserByMobile(user);
-		if(reUser != null && reUser.getMobile() != null && reUser.getUserId() != null) {
+		UserLogin userLogin = findUserByMobile(user);
+		if(userLogin != null && userLogin.getUsername() != null && userLogin.getId() != null) {
 			return Boolean.valueOf(true);
 		}
 		return Boolean.valueOf(false);
@@ -49,9 +66,9 @@ public class UserService extends BaseService{
 	 * @return
 	 * @throws Exception
 	 */
-	public User findUserByMobile(User user) throws Exception {
-		User reUser = this.getBaseDao().getObject(PRIFIX + ".findUserByMobile", user);
-		return reUser;
+	public UserLogin findUserByMobile(UserLogin user) throws Exception {
+		UserLogin userLogin = this.getBaseDao().getObject(PRIFIX_USER_LOGIN + ".findOne", user);
+		return userLogin;
 	} 
 	
 	/**
@@ -59,8 +76,22 @@ public class UserService extends BaseService{
 	 * @param user
 	 * @throws Exception
 	 */
-	public void modifyUser(User user) throws Exception {
-		this.getBaseDao().update(PRIFIX + ".update", user);
+	public void modifyUser(UserInfo userInfo) throws Exception {
+		this.getBaseDao().update(PRIFIX_USER_INFO + ".update", userInfo);
 	}
 	
+	/**
+	 * 
+	 * @Title: modifyUserLoginPassword 
+	 * @Description: 修改用户登录信息密码 
+	 * @param 
+	 * @param user
+	 * @param 
+	 * @throws Exception 参数 
+	 * @return void 返回类型 
+	 * @throws
+	 */
+	public void modifyUserLoginPassword(UserLogin user) throws Exception {
+		this.getBaseDao().update(PRIFIX_USER_LOGIN + "update", user);
+	}
 }

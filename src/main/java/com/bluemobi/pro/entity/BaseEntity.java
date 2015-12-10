@@ -2,15 +2,15 @@ package com.bluemobi.pro.entity;
 
 public class BaseEntity {
 
-	private Long id;
+	private Integer id;
 	
 	private String createDate;
 
-	public Long getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

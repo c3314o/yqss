@@ -112,6 +112,43 @@ public class YqssUtils {
 	}
 
 	/**
+	 * 
+     * @Title: totalDays
+     * @Description: 计算借款总天数
+     * @param @param residueDate
+     * @param @return    参数
+     * @return int    返回类型
+     * @throws
+	 */
+	public static int totalDays(String borrowDateString) {
+	
+		Calendar calendar = Calendar.getInstance();
+		int currentDay = calendar.get(Calendar.DAY_OF_YEAR);
+		int currentYear = calendar.get(Calendar.YEAR);
+
+		Date borrowDate = DateUtils.parse(borrowDateString, DEFAULT_FORMAT);
+		calendar.setTime(borrowDate);
+		int borrowYear = calendar.get(Calendar.YEAR);
+		int borrowDay = calendar.get(Calendar.DAY_OF_YEAR);
+
+		if (currentYear < borrowYear) {
+			if (isLeapYear(currentYear)) {
+				borrowDay += LEAP_YEAR_DAYS;
+			} else {
+				borrowDay += NO_LEAP_YEAR_DAYS;
+			}
+		}
+		else if (currentYear > borrowYear){
+			if (isLeapYear(borrowYear)) {
+				currentDay += LEAP_YEAR_DAYS;
+			} else {
+				currentDay += NO_LEAP_YEAR_DAYS;
+			}
+		}
+		return (currentDay - borrowDay);
+	}
+	
+	/**
 	 * 计算是否闰年
 	 * @param year
 	 * @return

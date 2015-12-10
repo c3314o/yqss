@@ -18,31 +18,47 @@ USE `yqss`;
 
 /*Table structure for table `adspublish` */
 
-DROP TABLE IF EXISTS `users`;
+DROP TABLE IF EXISTS `users_login`;
 
-CREATE TABLE `users` (
+CREATE TABLE `users_login` (
   `id` int(32) not null auto_increment,
-  `mobile` varchar(20) not null default '' comment '手机号',
+  `username` varchar(20) not null default '' comment '登录名',
   `password` varchar(50) not null default '' comment '密码',
-  `name` varchar(50) not null default '' comment '昵称',
-  `gender` int(2) not null default 1 comment '性别 0:不限 1:男 2:女',
-  `head_url` varchar(200) default '' comment '头像url',
-  `id_card` varchar(30) default '' comment '身份证',
-  `school_id` int(4) default 0 comment '学校ID',
-  `school_name` varchar(20) default '' comment '学校名称',
-  `address` varchar(500) default '' comment '详细地址',
-  
-  `status` int(2) default 1 comment '用户状态 1正常 2:禁用',
-  `create_date` datetime comment '创建时间',
   
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `users_info`;
+
+create table `users_info`(
+   `user_id` int(32) not null comment '用户ID',
+   `mobile` varchar(20) not null default '' comment '手机号',
+   `name` varchar(50) not null default '' comment '昵称',
+   `gender` int(2) not null default 1 comment '性别 0:不限 1:男 2:女',
+   `head_url` varchar(200) default '' comment '头像url',
+   `id_card` varchar(30) default '' comment '身份证',
+   `school_id` int(4) default 0 comment '学校ID',
+   `school_name` varchar(20) default '' comment '学校名称',
+   `address` varchar(500) default '' comment '详细地址',
+  
+  `status` int(2) default 1 comment '用户状态 1正常 2:禁用',
+  `create_date` datetime comment '创建时间',
+)
+
+create table `bank_type`(
+	`id` int(32) not null auto_increment,
+	`bank_name` varchar(30) not null comment '银行名称',
+    
+	`create_user` int(32) not null comment '操作用户',	
+	PRIMARY KEY (`id`)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `users_bank_card`;
 
 create table `users_bank_card` (
   `id` int(32) not null auto_increment,
   `user_id` int(32) not null comment '所属用户',
+  `bank_name` varchar(30) not null comment '银行名称',
   `card_no` varchar(30) not null comment '卡号',
   `is_default` int(2) default 1 comment '是否默认 1默认 2非默认',
   `create_date` datetime comment '创建时间',
@@ -59,10 +75,9 @@ create table `borrow_info`(
   `period` int(2) default 0 comment '期数',
   `type` int(32) default 0 comment '借款原因 ',
   
-  `repay_date` datetime comment '还款时间',
-  `repay_date_app` bigint comment '',
-  
+  `repay_date` bigint comment '还款时间',
   `create_date` datetime comment '创建时间',
+  `jk_date` bigint comment '借款时间',
   
    PRIMARY KEY (`id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -73,9 +88,7 @@ create table `repay_record`(
    `id` int(32) not null auto_increment,
    `borrow_info_id` int(32) not null comment '还款记录',
    `money` double(10,2) default 0 not null comment '还款额度',
-   `repay_date` bigint comment '还款时间',
-   
-   `create_date` datetime comment '创建时间',
+   `create_date` bigint comment '创建时间',
    PRIMARY KEY (`id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -87,13 +100,14 @@ create table `buy_borrow_info`(
    `product_id` int(32) not null comment '商品ID',
    
    `name` varchar(200) not null default '' comment '商品名称',
+   `image_url` varchar(200) default '' comment '商品图片',
    `price` double(10,2) not null default 0 comment '商品价格',
    `period` int(2) default 0 comment '期数',
    
    `residue_money` double comment '剩余钱数',
-   `next_date` datetime comment '下次还款时间',
+   `next_date` bigint comment '下次还款时间',
    
-   `next_date_app` bigint comment '下次还款时间',
+   `create_date` bigint comment '创建时间',
    PRIMARY KEY (`id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -142,6 +156,7 @@ create table `product` (
 	`name` varchar(200) not null default '' comment '商品名称',
 	`price` double(10,2) not null default 0 comment '商品价格',
 	`content` varchar(500) default '' comment '商品描述',
+	`product_type` int(32) not null comment '商品所属类型',
 	
 	`is_list`int(2) default 1 comment '是否上架 1:上架 2:下架',
 	`create_date` datetime comment '创建时间',

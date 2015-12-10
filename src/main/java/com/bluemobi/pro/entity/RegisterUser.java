@@ -5,7 +5,7 @@ package com.bluemobi.pro.entity;
  * @author yesong
  *
  */
-public class RegisterUser extends User{
+public class RegisterUser extends UserLogin{
 
 	private String code;
 
