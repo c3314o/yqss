@@ -90,10 +90,7 @@ public class YqssUtils {
 	 * @return
 	 */
 	public static String nextResidueDay(Date residueDate) {
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(residueDate);
-		calendar.add(Calendar.MONTH, 1);
-		return DateUtils.toString(calendar.getTime(), DEFAULT_FORMAT);
+		return firstResidueDay();
 	}
 	
 	/**
@@ -107,7 +104,6 @@ public class YqssUtils {
 		calendar.set(Calendar.HOUR_OF_DAY, 0);
 		calendar.set(Calendar.MINUTE, 0);
 		calendar.set(Calendar.SECOND, 0);
-		
 		return DateUtils.toString(calendar.getTime(), DEFAULT_FORMAT);
 	}
 

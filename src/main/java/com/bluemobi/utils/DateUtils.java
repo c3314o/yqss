@@ -200,6 +200,21 @@ public class DateUtils {
 	}
 	
 	/**
+	 * 
+     * @Title: stringToLong
+     * @Description: TODO(这里用一句话描述这个方法的作用)
+     * @param @param datetime
+     * @param @param dateFormat
+     * @param @return    参数
+     * @return long    返回类型
+     * @throws
+	 */
+	public static long stringToLong(String datetime,String dateFormat) {
+		Date date = parse(datetime, dateFormat);
+		return date.getTime();
+	}
+	
+	/**
 	 * 默认将日期转换为字符串，格式(yyyy-MM-dd)
 	 * 
 	 * @param date

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bluemobi.pro.entity.ProductBorrow">
+
+	<resultMap type="com.bluemobi.pro.entity.ProductBorrow" id="pbResultMap">
+		<id column="id" property="id" />
+		<result column="user_id" property="userId" />
+		<result column="product_id" property="productId" />
+		<result column="name" property="name" />
+		<result column="image_url" property="pic" />
+		<result column="price" property="amount" />
+		<result column="period" property="period" />
+		<result column="next_date" property="nextDate" />
+		<collection property="list" ofType="com.bluemobi.pro.entity.ProductBorrowRepayRecord" select="findRecordByPbId" 
+						column="pdId = id"/>
+	</resultMap>
+	
+	<resultMap type="com.bluemobi.pro.entity.ProductBorrowRepayRecord" id="pbrrResultMap">
+		<id column="id" property="id" />
+		<result column="money" property="amount"/>
+		<result column="create_date" property="createDate" />
+	</resultMap>
+	
+	<!-- 根据用户ID查询商品贷款信息 -->
+	<select id="findByUserId" parameterType="com.bluemobi.pro.entity.ProductBorrow" resultMap="pbResultMap">
+		SELECT
+			t.id,
+			t.user_id,
+			t.product_id,
+			t.name,
+			t.image_url,
+			t.price,
+			t.period,
+			t.next_date
+		FROM
+			buy_borrow_info t
+		WHERE
+			1 = 1
+		AND
+			t.user_id = #{userId}
+		<if test="id != null and id != ''">
+			AND
+				t.id = #{id}
+		</if>
+	</select>
+	
+	<!-- 根据贷款ID查询还款记录 -->
+	<select id="findRecordByPbId" parameterType="map" resultMap="pbrrResultMap">
+		SELECT
+			t.id,
+			t.money,
+			t.create_date
+		FROM
+			buy_repay_record t
+		WHERE
+			t.borrow_info_id = #{pdId}
+	</select>
+	
+	<!-- 新增商品贷款信息 -->
+	<insert id="insertProductBorrow" parameterType="com.bluemobi.pro.entity.ProductBorrow">
+		INSERT INTO
+			buy_borrow_info t
+		(
+			t.user_id,
+			t.product_id,
+			t.name,
+			t.image_url,
+			t.price,
+			t.period,
+			t.next_date
+		)
+		VALUES
+		(
+			#{userId},
+			#{productId},
+			#{name},
+			#{pic},
+			#{amount},
+			#{period},
+			#{nextDate}
+		)
+	</insert>
+	
+	<!-- 还款 -->
+	<update id="update" parameterType="com.bluemobi.pro.entity.ProductBorrow">
+		UPDATE
+			buy_borrow_info
+		<set>
+			<if test="nextDate != null and nextDate != '' ">
+				next_date = #{nextDate}
+			</if>
+		</set>
+		WHERE
+			id = #{id}
+	</update>
+	
+	<!-- 新增还款记录 -->
+	<insert id="insertRecord" parameterType="com.bluemobi.pro.entity.ProductBorrowRepayRecord">
+		INSERT INTO	
+			buy_repay_record
+		(
+			money,
+			create_date
+		)
+		VALUES
+		(
+			#{amount},
+			#{createDate}
+		)
+	</insert>
+	
+	<!-- 删除商品贷款信息 -->
+	<delete id="delete" parameterType="int">
+		DELETE FROM
+			buy_borrow_info
+		WHERE
+			id = #{_paramater}
+	</delete>
+	
+	<!-- 删除商品贷款信息还款记录 -->
+	<delete id="deleteRecord" parameterType="int">
+		DELETE FROM
+			buy_repay_record
+		WHERE
+			borrow_info_id = #{_paramater}
+	</delete>
+</mapper> 

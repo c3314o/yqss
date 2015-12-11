@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bluemobi.pro.entity.HrMessage">
+
+	<resultMap type="com.bluemobi.pro.entity.HrMessage" id="hrMessageResultMap">
+		<id column="id" property="id" />
+		<result column="title" property="title"/>
+		<result column="salary_min" property="salaryMin"/>
+		<result column="salary_max" property="salaryMax"/>
+		<result column="tel" property="phone"/>
+		<result column="address" property="address" />
+		<result column="company" property="company"/>
+		<result column="position" property="station"/>
+		<result column="counts" property="num"/>
+		<result column="create_date" property="createDate"/>
+	</resultMap>
+	
+	<!-- 查询人力资源消息 -->
+	<select id="findHrMessage" resultMap="hrMessageResultMap">
+		SELECT
+			t.id,
+			t.title,
+			t.salary_min,
+			t.salary_max,
+			t.tel,
+			t.address,
+			t.company,
+			t.position,
+			t.counts,
+			t.create_date
+		FROM	
+			hr_message
+	</select>
+</mapper> 

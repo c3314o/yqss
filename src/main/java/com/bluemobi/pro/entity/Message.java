@@ -8,7 +8,7 @@ package com.bluemobi.pro.entity;
  * @date 2015年12月10日
  *
  */
-public class Messsage extends BaseEntity {
+public class Message extends BaseEntity {
 
 	/**
 	 * 消息标题
@@ -20,11 +20,6 @@ public class Messsage extends BaseEntity {
 	 */
 	private String msgContent;
 	
-	/**
-	 * 消息创建时间
-	 */
-	private Long msgTime;
-
 	public String getMsgTitle() {
 		return msgTitle;
 	}
@@ -39,13 +34,5 @@ public class Messsage extends BaseEntity {
 
 	public void setMsgContent(String msgContent) {
 		this.msgContent = msgContent;
-	}
-
-	public Long getMsgTime() {
-		return msgTime;
-	}
-
-	public void setMsgTime(Long msgTime) {
-		this.msgTime = msgTime;
 	}
 }

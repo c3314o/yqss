@@ -53,7 +53,7 @@ public class HrMessage extends BaseEntity {
 	/**
 	 * 联系电话
 	 */
-	private String phome;
+	private String phone;
 
 	public String getAddress() {
 		return address;
@@ -119,11 +119,11 @@ public class HrMessage extends BaseEntity {
 		this.num = num;
 	}
 
-	public String getPhome() {
-		return phome;
+	public String getPhone() {
+		return phone;
 	}
 
-	public void setPhome(String phome) {
-		this.phome = phome;
+	public void setPhone(String phone) {
+		this.phone = phone;
 	}
 }

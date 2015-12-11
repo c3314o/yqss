@@ -4,7 +4,7 @@ public class BaseEntity {
 
 	private Integer id;
 	
-	private String createDate;
+	private Long createDate;
 
 	public Integer getId() {
 		return id;
@@ -14,11 +14,12 @@ public class BaseEntity {
 		this.id = id;
 	}
 
-	public String getCreateDate() {
+	public Long getCreateDate() {
 		return createDate;
 	}
 
-	public void setCreateDate(String createDate) {
+	public void setCreateDate(Long createDate) {
 		this.createDate = createDate;
 	}
+
 }

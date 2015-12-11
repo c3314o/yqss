@@ -1,6 +1,7 @@
 package com.bluemobi.pro.controller.api;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -16,10 +17,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.bluemobi.cache.CacheService;
 import com.bluemobi.constant.ErrorCode;
+import com.bluemobi.pro.entity.Bank;
 import com.bluemobi.pro.entity.FeedBack;
 import com.bluemobi.pro.entity.RegisterUser;
 import com.bluemobi.pro.entity.UserInfo;
 import com.bluemobi.pro.entity.UserLogin;
+import com.bluemobi.pro.service.impl.CommonService;
 import com.bluemobi.pro.service.impl.FeedBackService;
 import com.bluemobi.pro.service.impl.UserService;
 import com.bluemobi.utils.CommonUtils;
@@ -41,6 +44,10 @@ public class CommonsApp {
 	@Autowired
 	private FeedBackService fservice;
 
+	
+	@Autowired
+	private CommonService commonService;
+	
 	/**
 	 * 发送验证码
 	 * 
@@ -166,5 +173,26 @@ public class CommonsApp {
 		}
 
 		return Result.success();
+	}
+	
+	/**
+	 * 
+     * @Title: findAllBank
+     * @Description: 查询所有银行
+     * @param @return    参数
+     * @return Result    返回类型
+     * @throws
+	 */
+	@RequestMapping
+	@ResponseBody
+	public Result findAllBank() {
+		List<Bank> list = null;
+		try {
+			list = commonService.findAllBank();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Result.failure();
+		}
+		return Result.success(list);
 	}
 }

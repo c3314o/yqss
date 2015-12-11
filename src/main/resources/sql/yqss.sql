@@ -42,7 +42,7 @@ create table `users_info`(
    `address` varchar(500) default '' comment '详细地址',
   
   `status` int(2) default 1 comment '用户状态 1正常 2:禁用',
-  `create_date` datetime comment '创建时间',
+  `create_date` bigint comment '创建时间',
 )
 
 create table `bank_type`(
@@ -50,6 +50,7 @@ create table `bank_type`(
 	`bank_name` varchar(30) not null comment '银行名称',
     
 	`create_user` int(32) not null comment '操作用户',	
+	`create_date` bigint comment '创建时间'
 	PRIMARY KEY (`id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -61,7 +62,7 @@ create table `users_bank_card` (
   `bank_name` varchar(30) not null comment '银行名称',
   `card_no` varchar(30) not null comment '卡号',
   `is_default` int(2) default 1 comment '是否默认 1默认 2非默认',
-  `create_date` datetime comment '创建时间',
+  `create_date` bigint comment '创建时间',
    PRIMARY KEY (`id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -76,8 +77,7 @@ create table `borrow_info`(
   `type` int(32) default 0 comment '借款原因 ',
   
   `repay_date` bigint comment '还款时间',
-  `create_date` datetime comment '创建时间',
-  `jk_date` bigint comment '借款时间',
+  `create_date` bigint comment '借款时间',
   
    PRIMARY KEY (`id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -117,9 +117,7 @@ create table `buy_repay_record`(
    `id` int(32) not null auto_increment,
    `borrow_info_id` int(32) not null comment '还款记录',
    `money` double(10,2) default 0 not null comment '还款额度',
-   `repay_date` bigint comment '还款时间',
-   
-   `create_date` datetime comment '创建时间',
+   `create_date` bigint comment '创建时间/还款时间',
    PRIMARY KEY (`id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -131,9 +129,7 @@ create table `message` (
   `content` varchar(500) default '' comment '消息内容',
   `user_id` int(32) not null comment '所属用户',
   `is_list` int(2) default 1 comment '是否显示 1显示 2不显示',
-  `publish_date` bigint comment '发布时间',
-  
-  `create_date` datetime comment '创建时间',
+  `create_date` bigint comment '创建时间',
    PRIMARY KEY (`id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -143,7 +139,7 @@ create table `product_type`(
     `id` int(32) not null auto_increment,
     `name` varchar(20) default '' comment '商品类型',
     
-    `create_date` datetime comment '创建时间',
+    `create_date` bigint comment '创建时间',
     PRIMARY KEY (`id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -157,10 +153,9 @@ create table `product` (
 	`price` double(10,2) not null default 0 comment '商品价格',
 	`content` varchar(500) default '' comment '商品描述',
 	`product_type` int(32) not null comment '商品所属类型',
-	
 	`is_list`int(2) default 1 comment '是否上架 1:上架 2:下架',
-	`create_date` datetime comment '创建时间',
 	
+	`create_date` bigint comment '创建时间',
 	 PRIMARY KEY (`id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -174,7 +169,7 @@ create table `product_images`(
 	`width` double(10,2) default 0 comment '图片宽度',
 	`small_url` varchar(200) default '' comment '缩略图',
 	
-	`create_date` datetime comment '创建时间',
+	`create_date` bigint comment '创建时间',
 	 PRIMARY KEY (`id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -189,7 +184,7 @@ create table `product_comment`(
 	
 	`comment_date` bigint comment '评论事件',
 	
-	`create_date` datetime comment '创建时间',
+	`create_date` bigint comment '创建时间',
 	PRIMARY KEY (`id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -209,7 +204,7 @@ create table `orders`(
 	
 	`order_date` bigint comment '下单时间',
 	
-	`create_date` datetime comment '创建时间',
+	`create_date` bigint comment '创建时间',
 	PRIMARY KEY (`id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -226,12 +221,13 @@ create table `hr_message` (
 	`city_id` int(4) default 0 comment '城市ID',
 	`area_id` int(4) default 0 comment '区域ID',
 	`street_id` int(4) default 0 comment '街道ID',
+	`address` varchar(200) default '' comment '就职地点',
 	`company` varchar(50) default '' comment '公司名字',
 	`position` varchar(50) default '' comment '职位',
 	`counts` int(2) default 1 comment '招聘人数',
 	`is_list` int(2) default 1 comment '是否发布 1:发布 2:不发布',
 	
-	`create_date` datetime comment '创建时间',
+	`create_date` bigint comment '创建时间',
 	PRIMARY KEY (`id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -242,6 +238,7 @@ create table `collection` (
   `user_id` int(32) not null comment '用户ID',
   `product_id` int(32) not null comment '收藏商品ID',
   
+  `create_date` bigint comment '创建时间',
    PRIMARY KEY (`id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -255,6 +252,7 @@ create table `second_hand` (
 	`price` double(10,2) default 0 comment '商品价格',
 	`user_id` int(32) not null comment '所属用户ID',
 	
+	`create_date` bigint comment '创建时间',
 	PRIMARY KEY (`id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -267,6 +265,8 @@ create table `second_hand_images` (
 	`height` double(10,2) default 0 comment '图片高度',
 	`width` double(10,2) default 0 comment '图片宽度',
 	`small_url` varchar(200) default '' comment '缩略图',
+	
+	`create_date` bigint comment '创建时间',
 	PRIMARY KEY (`id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -280,6 +280,8 @@ create table `video` (
 	`content`varchar(500) default '' comment '视频介绍',
 	`url` varchar(200) default '' comment '视频URL',
 	`image_url` varchar(100) default '' comment '图片URL',
+	
+	`create_date` bigint comment '创建时间',
 	PRIMARY KEY (`id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -290,10 +292,9 @@ create table `helper` (
   `type_id` int(2) not null comment '问题类型ID',
   `question` varchar(100) default '' comment '问题',
   `answer` varchar(500) default '' comment '答案',
-  
   `sys_user_id` int(32) not null comment '',
-  `create_date` datetime comment '创建时间',
   
+  `create_date` bigint comment '创建时间',
    PRIMARY KEY (`id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

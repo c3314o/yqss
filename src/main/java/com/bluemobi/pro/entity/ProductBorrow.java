@@ -1,5 +1,6 @@
 package com.bluemobi.pro.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -63,6 +64,11 @@ public class ProductBorrow extends BaseEntity {
 	private Double amount;
 	
 	/**
+	 * 总期数
+	 */
+	private Integer period;
+	
+	/**
 	 * 剩余期数
 	 */
 	private Integer surplusStages;
@@ -70,8 +76,16 @@ public class ProductBorrow extends BaseEntity {
 	/**
 	 * 还款记录
 	 */
-	private List<ProductBorrowRepayRecord> list;
+	private List<ProductBorrowRepayRecord> list = new ArrayList<ProductBorrowRepayRecord>();
 	
+	public Integer getPeriod() {
+		return period;
+	}
+
+	public void setPeriod(Integer period) {
+		this.period = period;
+	}
+
 	public Integer getUserId() {
 		return userId;
 	}
