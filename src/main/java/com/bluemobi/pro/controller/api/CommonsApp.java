@@ -19,6 +19,7 @@ import com.bluemobi.cache.CacheService;
 import com.bluemobi.constant.ErrorCode;
 import com.bluemobi.pro.entity.Bank;
 import com.bluemobi.pro.entity.FeedBack;
+import com.bluemobi.pro.entity.Help;
 import com.bluemobi.pro.entity.RegisterUser;
 import com.bluemobi.pro.entity.UserInfo;
 import com.bluemobi.pro.entity.UserLogin;
@@ -194,5 +195,19 @@ public class CommonsApp {
 			return Result.failure();
 		}
 		return Result.success(list);
+	}
+	
+	@RequestMapping
+	@ResponseBody
+	public Result findAllHelper() {
+		
+		Help help = null;
+		try {
+			help = commonService.findAllHelper();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Result.failure();
+		}
+		return Result.success(help);
 	}
 }

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bluemobi.pro.entity.SecondHandProduct">
+
+	<resultMap type="com.bluemobi.pro.entity.SecondHandProduct"
+		id="secondHandProductResultMap">
+		<id column="id" property="id" />
+		<result column="user_id" property="userId" />
+		<result column="title" property="title" />
+		<result column="content" property="content" />
+		<result column="price" property="price" />
+		<collection property="picList" ofType="com.bluemobi.pro.entity.ProductImage" column="{spid = id}" select="findSPImage" />
+		<association property="user" select="findUser" column="user_id" />
+	</resultMap>
+
+	<resultMap type="com.bluemobi.pro.entity.ProductImage" id="imageResultMap">
+		<id column="id" property="id"/>
+		<result column="width" property="width"/>
+		<result column="height" property="height"/>
+		<result column="image_url" property="image"/>
+		<result column="small_url" property="smallUrl"/>
+	</resultMap>	
+
+	<resultMap type="com.bluemobi.pro.entity.UserInfo" id="userInfoResultMap">
+		<id column="id" property="id" />
+		<result column="user_id" property="userId" />
+		<result column="name" property="name" />
+		<result column="gender" property="gender" />
+		<result column="mobile" property="mobile" />
+		<result column="id_card" property="identity" />
+		<result column="school_name" property="school" />
+		<result column="address" property="address" />
+		<result column="head_url" property="headPic" />
+	</resultMap>
+
+	<!-- 查询二手商品 -->
+	<select id="findSecondProduct" parameterType="com.bluemobi.pro.entity.SecondHandProduct"
+		resultMap="secondHandProductResultMap">
+			
+		SELECT
+			t.id,
+			t.userId,
+			t.title,
+			t.content,
+			t.price
+		FROM
+			second_hand t
+		WHERE
+			1 = 1
+		<if test="userId != null and userId != ''">
+			AND
+				user_id = #{userId}
+		</if>
+	</select>
+	
+	<!-- 查询二手商品图片 -->
+	<select id="findSPImage" parameterType="map" resultMap="imageResultMap">
+		SELECT
+			t.id,
+			t.width,
+			t.height,
+			t.image_url,
+			t.small_url
+		FROM
+			second_hand_images t
+		WHERE
+			t.second_hand_id = #{spid}
+	</select>
+	
+	<!-- 根据用户ID查询用户信息 -->
+	<select id="findUser" parameterType="com.bluemobi.pro.entity.UserInfo" resultMap="userInfoResultMap">
+		SELECT
+			t.id,
+			t.user_id,
+			t.name,
+			t.mobile,
+			t.gender,
+			t.id_card,
+			t.school_name,
+			t.address,
+			t.head_url
+		FROM
+			users_info
+		WHERE
+	    	user_id = #{userId}
+	</select>
+	
+	<!-- 查询二手商品评价 -->
+	<select id="findProductComment" parameterType="com.bluemobi.pro.entity.ProductComment">
+		SELECT
+			t.id,
+			t.product_id,
+			t.user_id,
+			t.content
+		FROM
+			product_comment t
+		WHERE
+			t.product_id = #{productId}
+	</select>
+	
+	<!-- 新增二手商品评论 -->
+	<insert id="insertComment" parameterType="com.bluemobi.pro.entity.ProductComment">
+		INSERT INTO
+			product_comment
+		(
+			product_id,
+			user_id,
+			content
+		)
+		VALUES
+		(
+			#{productId},
+			#{userId},
+			#{content}
+		)
+	</insert>
+</mapper> 

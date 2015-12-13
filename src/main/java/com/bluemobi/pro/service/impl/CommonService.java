@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.bluemobi.pro.entity.Bank;
+import com.bluemobi.pro.entity.Help;
+import com.bluemobi.pro.entity.Qanda;
 import com.bluemobi.sys.service.BaseService;
 
 /**
@@ -19,6 +21,7 @@ import com.bluemobi.sys.service.BaseService;
 public class CommonService extends BaseService {
 
 	public static final String PRIFIX_BANK = Bank.class.getName();
+	public static final String PRIFIX_HELPER = Help.class.getName();
 	
 	/**
 	 * 查询所有银行
@@ -31,5 +34,16 @@ public class CommonService extends BaseService {
 	 */
 	public List<Bank> findAllBank() throws Exception {
 		return this.getBaseDao().getList(PRIFIX_BANK + ".findAll");
+	}
+	
+	
+	public Help findAllHelper() throws Exception {
+		
+		Help help = this.getBaseDao().getObject(PRIFIX_HELPER + ".findHelper",null);
+		List<Qanda> list = this.getBaseDao().getList(PRIFIX_HELPER + ".findInnerHelper");
+		if(help != null) {
+			help.setList(list);
+		}
+		return help;
 	}
 }

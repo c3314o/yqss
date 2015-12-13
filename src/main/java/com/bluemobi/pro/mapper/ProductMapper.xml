@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bluemobi.pro.entity.Product">
+
+	<resultMap type="com.bluemobi.pro.entity.Product"
+		id="productResultMap">
+		<id column="id" property="id" />
+		<result column="title" property="title" />
+		<result column="content" property="content" />
+		<result column="price" property="price" />
+		<collection property="picList" ofType="com.bluemobi.pro.entity.ProductImage" column="{spid = id}" select="findProductImage" />
+	</resultMap>
+
+	<resultMap type="com.bluemobi.pro.entity.ProductImage" id="imageResultMap">
+		<id column="id" property="id"/>
+		<result column="width" property="width"/>
+		<result column="height" property="height"/>
+		<result column="image_url" property="image"/>
+		<result column="small_url" property="smallUrl"/>
+	</resultMap>	
+	
+	<!-- 查询商品 -->
+	<select id="findSecondProduct" parameterType="com.bluemobi.pro.entity.Product"
+		resultMap="productResultMap">">
+			
+		SELECT
+			t.id,
+			t.userId,
+			t.title,
+			t.content,
+			t.price
+		FROM
+			second_hand t
+		WHERE
+			1 = 1
+		<if test="id != null and id != ''">
+			AND
+				id = #{id}
+		</if>
+	</select>
+	
+	<!-- 查询商品图片 -->
+	<select id="findProductImage" parameterType="map" resultMap="imageResultMap">
+		SELECT
+			t.id,
+			t.width,
+			t.height,
+			t.image_url,
+			t.small_url
+		FROM
+			second_hand_images t
+		WHERE
+			t.second_hand_id = #{spid}
+	</select>
+</mapper> 

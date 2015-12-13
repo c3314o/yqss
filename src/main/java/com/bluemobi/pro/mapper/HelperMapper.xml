@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bluemobi.pro.entity.Helper">
+	
+	<resultMap type="com.bluemobi.pro.entity.Qanda" id="qandaResultMap">
+		<id column="id" property="id"/>
+		<result column="question" property="question" />
+		<result column="answer" property="answer" />
+	</resultMap>
+	
+	<resultMap type="com.bluemobi.pro.entity.Help" id="helpResultMap">
+		<id column="id" property="id"/>
+		<result column="qq" property="qq"/>
+		<result column="phone" property="phone"/>
+	</resultMap>
+	
+	<!-- 查询qq，电话信息 type_id = 1 是为qq,phone查询信息-->
+	<select id="findHelper" resultMap="helpResultMap">
+		SELECT
+			t.id,
+			t.question qq,
+			t.answer phone
+		FROM
+			helper t
+		WHERE
+			t.type_id = 1 
+	</select>
+	
+	<!-- 查询帮助信息 -->
+	<select id="findInnerHelper" resultMap="qandaResultMap">
+		SELECT
+			t.id,
+			t.question,
+			t.answer
+		FROM	
+			helper t
+		WHERE
+			t.type_id &lt;&gt; 1
+	</select>
+</mapper> 
