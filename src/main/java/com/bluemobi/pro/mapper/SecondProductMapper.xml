@@ -100,6 +100,33 @@
 			t.product_id = #{productId}
 	</select>
 	
+	<!-- 删除二手商品发布信息 -->
+	<delete id="deleteSHProduct" parameterType="int">
+		DELETE FROM
+			second_hand
+		WHERE
+			id = #{_paramater}
+	</delete>
+	
+	<!-- 更新二手商品信息 -->
+	<update id="updateSHProduct" parameterType="com.bluemobi.pro.entity.SecondHandProduct">
+		UPDATE
+			second_hand
+		<set>
+			<if test="title != null and title != ''">
+				title = #{title},
+			</if>
+			<if test="content != null and content != ''">
+				content = #{content},
+			</if>
+			<if test="price != null and price != ''">
+				price = #{price}
+			</if>
+		</set>
+		WHERE
+			id = #{id}
+	</update>
+	
 	<!-- 新增二手商品评论 -->
 	<insert id="insertComment" parameterType="com.bluemobi.pro.entity.ProductComment">
 		INSERT INTO

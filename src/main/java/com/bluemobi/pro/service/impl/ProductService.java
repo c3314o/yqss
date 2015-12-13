@@ -64,6 +64,24 @@ public class ProductService extends BaseService{
 	}
 	
 	/**
+	 * 删除二手商品 
+	 * @param shp
+	 * @throws Exception
+	 */
+	public void deleteSHProduct(SecondHandProduct shp) throws Exception {
+		this.getBaseDao().delete(PRIFIX_SECOND_HAND + ".deleteSHProduct", shp.getId());
+	}
+	
+	/**
+	 * 更新二手商品信息
+	 * @param shp
+	 * @throws Exception
+	 */
+	public void updateSHProduct(SecondHandProduct shp) throws Exception {
+		this.getBaseDao().update(PRIFIX_SECOND_HAND + ".updateSHProduct", shp);
+	}
+	
+ 	/**
 	 * 查询二手商品评论
 	 * 翻页
 	 * @return
