@@ -46,13 +46,23 @@ public class BeanUtils {
 		Assert.IsNotNull(data);
 		Map<String,Object> map = new HashMap<String,Object>();
 		Field[] fields = data.getClass().getDeclaredFields();
+		Field[] superFields = data.getClass().getSuperclass().getDeclaredFields();
+		
+		List<Field> allField = new ArrayList<Field>();
+ 		for (Field field : fields) {
+ 			allField.add(field);
+		}
+ 		for (Field field : superFields) {
+ 			allField.add(field);
+		}
+		
 		try {
 			
 			PropertyDescriptor pd = null;
-			for (Field field : fields) {
+			for (Field field : allField) {
 				
 				ExcludeFile xf = field.getAnnotation(ExcludeFile.class);
-				if( xf == null ) continue;
+				if( xf != null ) continue;
 				String k = field.getName();
 				Object v = null;
 				pd = new PropertyDescriptor(k, data.getClass());

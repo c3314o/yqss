@@ -3,8 +3,10 @@ package com.bluemobi.utils;
 import java.io.File;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+
 
 public class YqssUtils {
 
@@ -153,6 +155,11 @@ public class YqssUtils {
 		if (year % 4 == 0)
 			return true;
 		return false;
+	}
+	
+	public static Double moneyResidue(List<String> nextResidue) {
+		
+		return 0.0;
 	}
 	
 	public static void main(String[] args) {

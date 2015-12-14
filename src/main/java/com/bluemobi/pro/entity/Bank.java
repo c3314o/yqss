@@ -1,5 +1,7 @@
 package com.bluemobi.pro.entity;
 
+import com.bluemobi.constant.ExcludeFile;
+
 /**
  * 
  * @ClassName: Bank
@@ -13,17 +15,19 @@ public class Bank extends BaseEntity {
 	/**
 	 * 银行名称
 	 */
-	private String bank;
+	private String bankName;
 	
 	/**
 	 * 创建用户
 	 */
+	@ExcludeFile
 	private Integer createUser;
-	public String getBank() {
-		return bank;
+	
+	public String getBankName() {
+		return bankName;
 	}
-	public void setBank(String bank) {
-		this.bank = bank;
+	public void setBankName(String bankName) {
+		this.bankName = bankName;
 	}
 	public Integer getCreateUser() {
 		return createUser;
@@ -31,6 +35,4 @@ public class Bank extends BaseEntity {
 	public void setCreateUser(Integer createUser) {
 		this.createUser = createUser;
 	}
-	
-	
 }

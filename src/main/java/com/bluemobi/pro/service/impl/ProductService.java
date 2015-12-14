@@ -2,9 +2,7 @@ package com.bluemobi.pro.service.impl;
 
 import java.util.HashMap;
 import java.util.Map;
-
 import org.springframework.stereotype.Service;
-
 import com.bluemobi.pro.entity.Product;
 import com.bluemobi.pro.entity.ProductComment;
 import com.bluemobi.pro.entity.SecondHandProduct;
@@ -16,6 +14,19 @@ public class ProductService extends BaseService{
 
 	public static final String PRIFIX_SECOND_HAND = SecondHandProduct.class.getName();
 	public static final String PRIFIX_PRODUCT = Product.class.getName();
+	
+	/**
+	 * 
+     * @Title: insertSHProduct
+     * @Description: 发布二手商品
+     * @param @param shp
+     * @param @throws Exception    参数
+     * @return void    返回类型
+     * @throws
+	 */
+	public void insertSHProduct(SecondHandProduct shp) throws Exception {
+		this.getBaseDao().save(PRIFIX_SECOND_HAND + ".insertSHProduct", shp);
+	}
 	
 	/**
 	 * 查询二手商品
@@ -63,6 +74,7 @@ public class ProductService extends BaseService{
 		return this.getBaseDao().get(PRIFIX_PRODUCT + ".PRIFIX_PRODUCT", product);
 	}
 	
+	
 	/**
 	 * 删除二手商品 
 	 * @param shp
@@ -98,6 +110,7 @@ public class ProductService extends BaseService{
 	 * @throws Exception
 	 */
 	public void commentProduct(ProductComment comment) throws Exception {
+		if(comment.getToUserId() == null) comment.setToUserId(0);
 		this.getBaseDao().save(PRIFIX_SECOND_HAND + ".insertComment", comment);
 	}
 }

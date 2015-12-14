@@ -33,7 +33,7 @@ public class CommonService extends BaseService {
      * @throws
 	 */
 	public List<Bank> findAllBank() throws Exception {
-		return this.getBaseDao().getList(PRIFIX_BANK + ".findAll");
+		return this.getBaseDao().getList(PRIFIX_BANK + ".findAll",null);
 	}
 	
 	

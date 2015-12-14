@@ -6,7 +6,6 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,11 +17,14 @@ import org.springframework.web.multipart.MultipartFile;
 import com.bluemobi.cache.CacheService;
 import com.bluemobi.constant.ErrorCode;
 import com.bluemobi.pro.entity.Bank;
+import com.bluemobi.pro.entity.BorrowInfo;
 import com.bluemobi.pro.entity.FeedBack;
 import com.bluemobi.pro.entity.Help;
+import com.bluemobi.pro.entity.Home;
 import com.bluemobi.pro.entity.RegisterUser;
 import com.bluemobi.pro.entity.UserInfo;
 import com.bluemobi.pro.entity.UserLogin;
+import com.bluemobi.pro.service.impl.BorrowService;
 import com.bluemobi.pro.service.impl.CommonService;
 import com.bluemobi.pro.service.impl.FeedBackService;
 import com.bluemobi.pro.service.impl.UserService;
@@ -48,6 +50,9 @@ public class CommonsApp {
 	
 	@Autowired
 	private CommonService commonService;
+	
+	@Autowired
+	private BorrowService borrowService;
 	
 	/**
 	 * 发送验证码
@@ -104,9 +109,9 @@ public class CommonsApp {
 			if (service.isExist(user)) {
 				return Result.failure(ErrorCode.ERROR_05);
 			}
-			 else if(StringUtils.isBlank(requestCode) || !requestCode.equals(code)) {
-				 return Result.failure(ErrorCode.ERROR_10);
-			 }
+//			 else if(StringUtils.isBlank(requestCode) || !requestCode.equals(code)) {
+//				 return Result.failure(ErrorCode.ERROR_10);
+//			 }
 			else {
 				service.addUser(user);
 				return Result.success();
@@ -125,7 +130,7 @@ public class CommonsApp {
 	 */
 	@RequestMapping(value = "login", method = RequestMethod.POST)
 	@ResponseBody
-	public Result checkLogin(UserLogin userLogin) {
+	public Result checkLogin(RegisterUser userLogin) {
 
 		UserInfo userInfo = null;
 		UserLogin _userLogin = null;
@@ -147,6 +152,36 @@ public class CommonsApp {
 		}
 	}
 
+	/**
+	 * 
+     * @Title: home
+     * @Description: 首页信息
+     * @param @param userInfo
+     * @param @return    参数
+     * @return Result    返回类型
+     * @throws
+	 */
+	public Result home(UserInfo userInfo) {
+		Home home = new Home();
+		
+		BorrowInfo info = new BorrowInfo();
+		info.setUserId(userInfo.getUserId());
+		List<BorrowInfo> list = null;
+		
+		try {
+			list = borrowService.findBorrowByUserId(info);
+			home.setAvailable(5000);
+			home.setBorrowday(30);
+			
+			list.get(0).getBorrow();
+			home.setSurplusday(list.get(0).getResidueDays());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return Result.success(home);
+	}
+	
 	@RequestMapping(value = "feedback", method = RequestMethod.POST)
 	@ResponseBody
 	public Result feedback(FeedBack feedBack) {
@@ -184,7 +219,7 @@ public class CommonsApp {
      * @return Result    返回类型
      * @throws
 	 */
-	@RequestMapping
+	@RequestMapping(value = "banklist", method = RequestMethod.POST)
 	@ResponseBody
 	public Result findAllBank() {
 		List<Bank> list = null;
@@ -197,7 +232,7 @@ public class CommonsApp {
 		return Result.success(list);
 	}
 	
-	@RequestMapping
+	@RequestMapping(value = "help", method = RequestMethod.POST)
 	@ResponseBody
 	public Result findAllHelper() {
 		

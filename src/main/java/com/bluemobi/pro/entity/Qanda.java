@@ -2,17 +2,17 @@ package com.bluemobi.pro.entity;
 
 public class Qanda extends BaseEntity{
 
-	private Integer helpTitle;
+	private String helpTitle;
 	
 	private String question;
 	
 	private String answer;
 
-	public Integer getHelpTitle() {
+	public String getHelpTitle() {
 		return helpTitle;
 	}
 
-	public void setHelpTitle(Integer helpTitle) {
+	public void setHelpTitle(String helpTitle) {
 		this.helpTitle = helpTitle;
 	}
 

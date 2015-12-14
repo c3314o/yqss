@@ -1,7 +1,9 @@
 package com.bluemobi.pro.controller.api;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -18,9 +20,10 @@ import com.bluemobi.utils.Result;
  *
  */
 @Controller
-@RequestMapping
+@RequestMapping("/app/product/")
 public class ProductApp {
 
+	@Autowired
 	private ProductService service;
 	
 	/**
@@ -31,6 +34,8 @@ public class ProductApp {
 	 * @param pageSize
 	 * @return
 	 */
+	@RequestMapping(value = "list", method = RequestMethod.POST)
+	@ResponseBody
 	public Result findProduct(Product product,@RequestParam(value = "pageNum",required = false) Integer pageNum,
 										@RequestParam(value = "pageSize", required = false) Integer pageSize) {
 		pageNum =( pageNum == null ? 0 : pageNum - 1);
@@ -51,7 +56,7 @@ public class ProductApp {
 	 * @param product
 	 * @return
 	 */
-	@RequestMapping
+	@RequestMapping(value = "detail", method = RequestMethod.POST)
 	@ResponseBody
 	public Result findProductDetail(final Product product) {
 		
@@ -60,8 +65,31 @@ public class ProductApp {
 			_product = service.findProductDetail(product);
 		} catch (Exception e) {
 			e.printStackTrace();
+			return Result.failure();
 		}
 		return Result.success(_product);
+	}
+	
+	/**
+	 * 
+     * @Title: publishSHProduct
+     * @Description: 发布二手商品
+     * @param @param shp
+     * @param @return    参数
+     * @return Result    返回类型
+     * @throws
+	 */
+	@RequestMapping(value = "second/publish", method = RequestMethod.POST)
+	@ResponseBody
+	public Result publishSHProduct(SecondHandProduct shp) {
+		
+		try {
+			service.insertSHProduct(shp);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Result.failure();
+		}
+		return Result.success();
 	}
 	
 	/**
@@ -72,7 +100,7 @@ public class ProductApp {
 	 * @param pageSize
 	 * @return
 	 */
-	@RequestMapping
+	@RequestMapping(value = "second/list", method = RequestMethod.POST)
 	@ResponseBody
 	public Result findSHProduct(SecondHandProduct shp,@RequestParam(value = "pageNum",required = false) Integer pageNum,
 			@RequestParam(value = "pageSize", required = false) Integer pageSize) {
@@ -95,7 +123,7 @@ public class ProductApp {
 	 * @param shp
 	 * @return
 	 */
-	@RequestMapping
+	@RequestMapping(value = "second/detail", method = RequestMethod.POST)
 	@ResponseBody
 	public Result findSHProductDetail(final SecondHandProduct shp) {
 		
@@ -110,11 +138,33 @@ public class ProductApp {
 	}
 	
 	/**
+	 * 
+     * @Title: deleteSHProduct
+     * @Description: 删除我的发布
+     * @param @param shp
+     * @param @return    参数
+     * @return Result    返回类型
+     * @throws
+	 */
+	@RequestMapping(value = "second/delete", method = RequestMethod.POST)
+	@ResponseBody
+	public Result deleteSHProduct(SecondHandProduct shp) {
+		
+		try {
+			service.deleteSHProduct(shp);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Result.failure();
+		}
+		return Result.success();
+	}
+	
+	/**
 	 * 评论二手商品
 	 * @param comment
 	 * @return
 	 */
-	@RequestMapping
+	@RequestMapping(value = "second/comment", method = RequestMethod.POST)
 	@ResponseBody
 	public Result commentProduct(ProductComment comment) {
 		
@@ -134,6 +184,8 @@ public class ProductApp {
 	 * @param pageSize
 	 * @return
 	 */
+	@RequestMapping(value = "second/comment/list", method = RequestMethod.POST)
+	@ResponseBody
 	public Result findSHProductComment(ProductComment comment,@RequestParam(value = "pageNum",required = false) Integer pageNum,
 			@RequestParam(value = "pageSize", required = false) Integer pageSize) {
 	

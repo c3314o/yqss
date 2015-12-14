@@ -6,11 +6,11 @@
 
 	<resultMap type="com.bluemobi.pro.entity.Bank" id="bankResultMap">
 		<id column="id" property="id" />
-		<result column="bank_name" property="bank" />
+		<result column="bank_name" property="bankName" />
 	</resultMap>
 	
 	<!-- 查询所有银行 -->
-	<select id="findAll" resultMap="bankResultMap">
+	<select id="findAll" parameterType="com.bluemobi.pro.entity.Bank" resultMap="bankResultMap">
 		SELECT
 			t.id,
 			t.bank_name

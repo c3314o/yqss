@@ -11,8 +11,8 @@
 		<result column="url" property="url" />
 		<result column="image_url" property="image" />
 	</resultMap>
-	
-	<select id="findVideo" resultMap="videoResultMap">
+	 
+	<select id="findVideo" parameterType="com.bluemobi.pro.entity.Video" resultMap="videoResultMap">
 		SELECT
 			t.id,
 			t.title,
@@ -21,5 +21,17 @@
 			t.image_url
 		FROM
 			video t
+		WHERE
+			1 = 1
+		<if test="status == 1">
+			AND
+				(t.url IS NULL OR t.url = '') 
+		</if>
+		<if test="status == 2">
+			AND
+				t.url IS NOT NULL 
+			AND
+				t.url != ''
+		</if>
 	</select>
 </mapper> 

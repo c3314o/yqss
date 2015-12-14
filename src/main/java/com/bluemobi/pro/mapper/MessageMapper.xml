@@ -12,7 +12,7 @@
 	</resultMap>
 	
 	<!-- 查询用户消息 -->
-	<select id="findMessageByUserId" parameterType="com.bluemobi.pro.entity.Message" resultMap=""messageResultMap"">
+	<select id="findMessageByUserId" parameterType="com.bluemobi.pro.entity.Message" resultMap="messageResultMap">
 		SELECT
 			t.id,
 			t.title,

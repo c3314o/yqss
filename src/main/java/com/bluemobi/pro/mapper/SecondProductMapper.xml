@@ -11,8 +11,8 @@
 		<result column="title" property="title" />
 		<result column="content" property="content" />
 		<result column="price" property="price" />
+		<association property="user" select="findUser" column="{userId = user_id" />
 		<collection property="picList" ofType="com.bluemobi.pro.entity.ProductImage" column="{spid = id}" select="findSPImage" />
-		<association property="user" select="findUser" column="user_id" />
 	</resultMap>
 
 	<resultMap type="com.bluemobi.pro.entity.ProductImage" id="imageResultMap">
@@ -35,13 +35,45 @@
 		<result column="head_url" property="headPic" />
 	</resultMap>
 
+	<resultMap type="com.bluemobi.pro.entity.ProductComment" id="commentResultMap">
+		<id column="id" property="id"/>
+		<result column="product_id" property="productId"/>
+		<result column="from_user_id" property="fromUserId"/>
+		<result column="to_user_id" property="toUserId"/> 
+		<result column="content" property="content"/>
+		<result column="create_date" property="createDate"/>
+		<association property="fromUser" column="{userId = from_user_id}" select="findUser"/>
+		<association property="toUser" column="{userId = to_user_id}" select="findUser" />
+	</resultMap>
+
+	<!-- 发布二手商品 -->
+	<insert id="insertSHProduct" parameterType="com.bluemobi.pro.entity.SecondHandProduct">
+		INSERT INTO
+			second_hand
+		(
+			title,
+			content,
+			price,
+			user_id,
+			create_date
+		)
+		VALUES
+		(
+			#{title},
+			#{content},
+			#{price},
+			#{userId},
+			NOW()
+		)
+	</insert>
+
 	<!-- 查询二手商品 -->
 	<select id="findSecondProduct" parameterType="com.bluemobi.pro.entity.SecondHandProduct"
 		resultMap="secondHandProductResultMap">
 			
 		SELECT
 			t.id,
-			t.userId,
+			t.user_id,
 			t.title,
 			t.content,
 			t.price
@@ -49,9 +81,9 @@
 			second_hand t
 		WHERE
 			1 = 1
-		<if test="userId != null and userId != ''">
+		<if test="id != null and id != ''">
 			AND
-				user_id = #{userId}
+				id = #{id}
 		</if>
 	</select>
 	
@@ -82,50 +114,35 @@
 			t.address,
 			t.head_url
 		FROM
-			users_info
+			users_info t
 		WHERE
 	    	user_id = #{userId}
 	</select>
 	
+	<!-- 删除我发布的二手商品 -->
+	<delete id="deleteSHProduct" parameterType="com.bluemobi.pro.entity.SecondHandProduct">
+		DELETE FROM
+			second_hand
+		WHERE
+			id = #{id}
+		AND
+			user_id = #{userId}
+	</delete>
+	
 	<!-- 查询二手商品评价 -->
-	<select id="findProductComment" parameterType="com.bluemobi.pro.entity.ProductComment">
+	<select id="findProductComment" parameterType="com.bluemobi.pro.entity.ProductComment" resultMap="commentResultMap">
 		SELECT
 			t.id,
 			t.product_id,
-			t.user_id,
-			t.content
+			t.from_user_id,
+			t.to_user_id,
+			t.content,
+			t.create_date
 		FROM
 			product_comment t
 		WHERE
 			t.product_id = #{productId}
 	</select>
-	
-	<!-- 删除二手商品发布信息 -->
-	<delete id="deleteSHProduct" parameterType="int">
-		DELETE FROM
-			second_hand
-		WHERE
-			id = #{_paramater}
-	</delete>
-	
-	<!-- 更新二手商品信息 -->
-	<update id="updateSHProduct" parameterType="com.bluemobi.pro.entity.SecondHandProduct">
-		UPDATE
-			second_hand
-		<set>
-			<if test="title != null and title != ''">
-				title = #{title},
-			</if>
-			<if test="content != null and content != ''">
-				content = #{content},
-			</if>
-			<if test="price != null and price != ''">
-				price = #{price}
-			</if>
-		</set>
-		WHERE
-			id = #{id}
-	</update>
 	
 	<!-- 新增二手商品评论 -->
 	<insert id="insertComment" parameterType="com.bluemobi.pro.entity.ProductComment">
@@ -133,14 +150,18 @@
 			product_comment
 		(
 			product_id,
-			user_id,
-			content
+			from_user_id,
+			to_user_id,
+			content,
+			create_date
 		)
 		VALUES
 		(
 			#{productId},
-			#{userId},
-			#{content}
+			#{fromUserId},
+			#{toUserId},
+			#{content},
+			NOW()
 		)
 	</insert>
 </mapper> 

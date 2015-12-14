@@ -3,7 +3,9 @@ package com.bluemobi.pro.controller.api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bluemobi.pro.entity.HrMessage;
 import com.bluemobi.pro.service.impl.HrMessageServer;
@@ -18,7 +20,7 @@ import com.bluemobi.utils.Result;
  * @date 2015年12月11日
  *
  */
-@RequestMapping
+@RequestMapping("/app/hr/")
 @Controller
 public class HrMessageApp {
 		
@@ -33,6 +35,8 @@ public class HrMessageApp {
      * @return Result    返回类型
      * @throws
 	 */
+	@RequestMapping(value = "list", method = RequestMethod.POST)
+	@ResponseBody
 	public Result findHrMessage(@RequestParam(value = "pageNum",required = false) Integer pageNum,
 											  @RequestParam(value = "pageSize", required = false) Integer pageSize) {
 		pageNum = (pageNum == null ? 0 : pageNum -1);

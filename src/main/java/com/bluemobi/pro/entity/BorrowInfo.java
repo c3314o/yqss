@@ -44,6 +44,11 @@ public class BorrowInfo extends BaseEntity {
 	private Integer totalDays;
 	
 	/**
+	 * 还款时间
+	 */
+	private String nextResidueDate;
+	
+	/**
 	 * 还款状态  0 已结清  1  还款中  2  催款中
 	 */
 	private Integer state;
@@ -56,6 +61,14 @@ public class BorrowInfo extends BaseEntity {
 
 	public void setUserId(Integer userId) {
 		this.userId = userId;
+	}
+
+	public String getNextResidueDate() {
+		return nextResidueDate;
+	}
+
+	public void setNextResidueDate(String nextResidueDate) {
+		this.nextResidueDate = nextResidueDate;
 	}
 
 	/**

@@ -28,9 +28,11 @@ CREATE TABLE `users_login` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+
 DROP TABLE IF EXISTS `users_info`;
 
 create table `users_info`(
+    `id` int(32) not null auto_increment,
    `user_id` int(32) not null comment '用户ID',
    `mobile` varchar(20) not null default '' comment '手机号',
    `name` varchar(50) not null default '' comment '昵称',
@@ -43,7 +45,9 @@ create table `users_info`(
   
   `status` int(2) default 1 comment '用户状态 1正常 2:禁用',
   `create_date` bigint comment '创建时间',
-)
+  
+   PRIMARY KEY (`id`)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 create table `bank_type`(
 	`id` int(32) not null auto_increment,
@@ -51,16 +55,20 @@ create table `bank_type`(
     
 	`create_user` int(32) not null comment '操作用户',	
 	`create_date` bigint comment '创建时间'
-	PRIMARY KEY (`id`)
+	PRIMARY KEY (`id`),
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+insert into bank_type (bank_name,create_date) values ('中国银行',NOW()),('中国工商银行',NOW()),('中国建设银行',NOW()),('中国农业银行',NOW()),('招商银行',NOW());
 
 DROP TABLE IF EXISTS `users_bank_card`;
 
 create table `users_bank_card` (
   `id` int(32) not null auto_increment,
   `user_id` int(32) not null comment '所属用户',
-  `bank_name` varchar(30) not null comment '银行名称',
+  `bank_type` int(32) default 0 comment '银行卡类型',
+  `bank_name` varchar(30) default '' comment '银行名称',
   `card_no` varchar(30) not null comment '卡号',
+  `mobile` varchar(20) default '' comment '手机',
   `is_default` int(2) default 1 comment '是否默认 1默认 2非默认',
   `create_date` bigint comment '创建时间',
    PRIMARY KEY (`id`)
@@ -75,6 +83,17 @@ create table `borrow_info`(
   `max_day` int(2) default 0 comment '最大期限',
   `period` int(2) default 0 comment '期数',
   `type` int(32) default 0 comment '借款原因 ',
+	
+  `next_residue_date` bingint comment '下次还款时间',
+  
+  `username` varchar(50) default '' comment '姓名',
+  `id_cartd`varchar(30) default '' comment '身份证',
+  `phone` varchar(15) default '' comment '手机',
+  `school_name` varchar(50) default '' comment '学校',
+  `address` varchar(500) default '' comment '收货地址',
+  `product_id` int(32) default 0 comment '商品ID',
+  `stage_id` int(32) default 0 comment '分期ID',
+  `stage` int(32) default 0 comment '分期',
   
   `repay_date` bigint comment '还款时间',
   `create_date` bigint comment '借款时间',
@@ -159,6 +178,8 @@ create table `product` (
 	 PRIMARY KEY (`id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+insert into product (name,price,content,product_type,is_list) values ('苹果','6088','介绍',1,1),('三星','6088','介绍222',1,1),('thinkpad','6088','介绍222',2,1),('冰箱','6088','介绍222',3,1),('音响','6088','介绍222',4,1);
+
 DROP TABLE IF EXISTS `product_images`;
 
 create table `product_images`(
@@ -178,12 +199,10 @@ DROP TABLE IF EXISTS `product_comment`;
 create table `product_comment`(
 	`id` int(32) not null auto_increment,
 	`product_id` int(32) not null comment '商品ID',
-	`user_id` int(32) not null comment '评论用户ID',
+	`from_user_id` int(32) not null comment '评论用户ID',
+	`to_user_id` int(32) default 0 comment '被评论用户ID',
 	`content` varchar(500) default '' comment '评论内容',
 	`score` int(2) default 5 comment '评论等级 1-5',
-	
-	`comment_date` bigint comment '评论事件',
-	
 	`create_date` bigint comment '创建时间',
 	PRIMARY KEY (`id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -231,6 +250,12 @@ create table `hr_message` (
 	PRIMARY KEY (`id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+insert into `hr_message` (title,content,salary_min,salary_max,mobile,address,company,position,counts,is_list)
+values ('标题1','内容1',2000,5000,'13476107756','创业基地','6mai','java程序员',3,1),
+('标题2','内容2',2000,5000,'13476107756','创业基地111','6mai11','java程序员111',3,1),
+('标题3','内容3',2000,5000,'13476107756','创业基地111','6mai11','java程序员111',3,1),
+('标题3','内容3',2000,5000,'13476107756','创业基地111','6mai11','java程序员111',3,1);
+
 DROP TABLE IF EXISTS `collection`;
 
 create table `collection` (
@@ -270,8 +295,6 @@ create table `second_hand_images` (
 	PRIMARY KEY (`id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-
-
 DROP TABLE IF EXISTS `video`;
 
 create table `video` (
@@ -285,11 +308,28 @@ create table `video` (
 	PRIMARY KEY (`id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+insert into video (title,content,url,image_url) values ('默认','默认视频','',''),('视频1','视频1','http://www.baidu.com',''),('视频2','视频2','http://www.baidu.com',''),('视频3','视频3','http://www.baidu.com','');
+
+DROP TABLE IF EXISTS `ads`;
+
+create table `ads` (
+	`id` int(32) not null auto_increment,
+	`title` varchar(50) default '' comment '广告标题',
+	`content` varchar(500) default '' comment '广告内容',
+	`product_id` int(32) default 0 comment '商品ID',
+	`image_url` varchar(500) default '' comment '图片url',
+	`link_url` varchar(100) default '' comment '链接地址',
+	`type` int(2) default 1 comment '广告类型 1:首页 2:商城 3:二手商品'
+	 PRIMARY KEY (`id`)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+insert into `ads` (title,content,product_id,image_url,link_url) values ('广告1','广告1',1,'','',1),('广告2','广告2',2,'','',2),('广告3','广告3',3,'','',3),('广告4','广告4',4,'','',1)
+
 DROP TABLE IF EXISTS `helper`;
 
 create table `helper` (
   `id` int(32) not null auto_increment,
-  `type_id` int(2) not null comment '问题类型ID',
+  `type` varchar(20) default '' comment '问题类型',
   `question` varchar(100) default '' comment '问题',
   `answer` varchar(500) default '' comment '答案',
   `sys_user_id` int(32) not null comment '',
@@ -298,4 +338,4 @@ create table `helper` (
    PRIMARY KEY (`id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-
+insert into helper (`type`,`question`,`answer`) values ('','305751572','123456789'),('申请条件','问题1','答案'),('账单还款','问题1','答案'),('办理流程','问题1','答案'),('售后服务','问题1','答案')

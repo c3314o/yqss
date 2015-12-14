@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bluemobi.pro.entity.Message;
@@ -19,7 +20,7 @@ import com.bluemobi.utils.Result;
  * @date 2015年12月11日
  *
  */
-@RequestMapping
+@RequestMapping("/app/msg/")
 @Controller
 public class MessageApp {
 	
@@ -35,7 +36,7 @@ public class MessageApp {
      * @return Result    返回类型
      * @throws
 	 */
-	@RequestMapping
+	@RequestMapping(value = "list", method = RequestMethod.POST)
 	@ResponseBody
 	public Result findMessageByUserId(Message message) {
 		

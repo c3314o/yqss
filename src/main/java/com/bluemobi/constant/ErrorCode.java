@@ -30,4 +30,8 @@ public class ErrorCode {
     public final static String ERROR_12="error_12"; // 昵称重复
     
     public final static String ERROR_14="error_14"; // 用户已下线
+    
+    public final static String ERROR_15="error_15"; // 原密码错误
+    
+    public final static String ERROR_16="error_16"; // 已绑定该银行卡
 }

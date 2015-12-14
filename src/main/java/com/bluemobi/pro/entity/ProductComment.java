@@ -7,7 +7,13 @@ public class ProductComment extends BaseEntity{
 
 	private String content;
 	
-	private UserInfo user;
+	// 评论人ID
+	private Integer fromUserId;
+	private UserInfo fromUser;
+	
+	// 被评论人ID
+	private Integer toUserId;
+	private UserInfo toUser;
 
 	private Integer productId;
 	
@@ -27,11 +33,35 @@ public class ProductComment extends BaseEntity{
 		this.content = content;
 	}
 
-	public UserInfo getUser() {
-		return user;
+	public Integer getFromUserId() {
+		return fromUserId;
 	}
 
-	public void setUser(UserInfo user) {
-		this.user = user;
+	public void setFromUserId(Integer fromUserId) {
+		this.fromUserId = fromUserId;
+	}
+
+	public UserInfo getFromUser() {
+		return fromUser;
+	}
+
+	public void setFromUser(UserInfo fromUser) {
+		this.fromUser = fromUser;
+	}
+
+	public Integer getToUserId() {
+		return toUserId;
+	}
+
+	public void setToUserId(Integer toUserId) {
+		this.toUserId = toUserId;
+	}
+
+	public UserInfo getToUser() {
+		return toUser;
+	}
+
+	public void setToUser(UserInfo toUser) {
+		this.toUser = toUser;
 	}
 }

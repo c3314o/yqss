@@ -16,6 +16,15 @@
 		<result column="head_url" property="headPic" />
 	</resultMap>
 	
+	<resultMap type="com.bluemobi.pro.entity.UserBank" id="userBankResultMap">
+		<id column="id" property="id"/>
+		<result column="user_id" property="userId"/>
+		<result column="bank_type" property="bankType" />
+		<result column="bank_name" property="bankName"/>
+		<result column="card_no" property="cardNo"/>
+		<result column="mobile" property="mobile" />
+	</resultMap>
+	
 	<!-- 新增用户 -->
 	<insert id="insert" parameterType="com.bluemobi.pro.entity.UserInfo">
 		INSERT INTO
@@ -135,12 +144,12 @@
 			t.address,
 			t.head_url
 		FROM
-			users_info
+			users_info t
 		WHERE
 			 1 = 1
 	    <if test="userId != null and userId != ''">
 	    	AND
-	    		user_id = #{userId}
+	    		t.user_id = #{userId}
 	    </if>
 	</select>
 	
@@ -181,4 +190,56 @@
 	    		school_name LIKE CONCAT('%', #{school} ,'%')
 	    </if>
 	</select>
+	
+	<!-- 绑定银行卡 -->
+	<insert id="bingBankCard" parameterType="com.bluemobi.pro.entity.UserBank">
+		INSERT INTO
+			users_bank_card
+		(
+			user_id,
+			bank_type,
+			card_no,
+			mobile,
+			create_date
+		)
+		VALUES
+		(
+			#{userId},
+			#{bankType},
+			#{cardNo},
+			#{mobile},
+			NOW()
+		)
+	</insert>
+	
+	<!-- 查询用户绑定的银行卡 -->
+	<select id="findUserBankByUserId" parameterType="com.bluemobi.pro.entity.UserBank" resultMap="userBankResultMap">
+		SELECT
+			t.id,
+			t.user_id,
+			t.bank_type,
+			(SELECT bank_name FROM bank_type WHERE id = t.bank_type) bank_name,
+			t.card_no,
+			t.mobile
+		FROM
+			users_bank_card t
+		WHERE
+			1 = 1
+		<if test="cardNo != null and cardNo != ''">
+			AND
+				t.card_no = #{cardNo}
+		</if>
+		<if test="userId != null and userId != ''">
+			AND
+				t.user_id = #{userId}
+		</if>
+	</select>
+	
+	<!-- 解除银行卡绑定 -->
+	<delete id="deleteUserBank" parameterType="com.bluemobi.pro.entity.UserBank">
+		DELETE FROM
+			users_bank_card
+		WHERE
+			id = #{id}
+	</delete>
 </mapper> 

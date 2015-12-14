@@ -31,6 +31,6 @@
 			t.counts,
 			t.create_date
 		FROM	
-			hr_message
+			hr_message t
 	</select>
 </mapper> 

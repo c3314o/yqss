@@ -1,8 +1,12 @@
 package com.bluemobi.pro.service.impl;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.bluemobi.pro.entity.RegisterUser;
+import com.bluemobi.pro.entity.UserBank;
 import com.bluemobi.pro.entity.UserInfo;
 import com.bluemobi.pro.entity.UserLogin;
 import com.bluemobi.sys.service.BaseService;
@@ -20,7 +24,7 @@ public class UserService extends BaseService{
 	 * @throws Exception
 	 */
 	@Transactional
-	public int addUser(UserLogin user) throws Exception {
+	public int addUser(RegisterUser user) throws Exception {
 		
 		// 新增用户登录信息
 		this.getBaseDao().save(PRIFIX_USER_LOGIN + ".insert", user);
@@ -28,7 +32,8 @@ public class UserService extends BaseService{
 		// 新增用户基本信息
 		UserInfo userInfo = new UserInfo();
 		userInfo.setUserId(user.getId());
-		return this.getBaseDao().save(PRIFIX_USER_INFO + ".insert", user);
+		userInfo.setMobile(user.getMobile());
+		return this.getBaseDao().save(PRIFIX_USER_INFO + ".insert", userInfo);
 	}
 	
 	/**
@@ -42,7 +47,7 @@ public class UserService extends BaseService{
      * @throws
 	 */
 	public UserInfo findUserInfoById(UserInfo userInfo) throws Exception {
-		return this.getBaseDao().get(PRIFIX_USER_INFO + "findOne", userInfo);
+		return this.getBaseDao().get(PRIFIX_USER_INFO + ".findOne", userInfo);
 	}
 	
 	/**
@@ -92,6 +97,51 @@ public class UserService extends BaseService{
 	 * @throws
 	 */
 	public void modifyUserLoginPassword(UserLogin user) throws Exception {
-		this.getBaseDao().update(PRIFIX_USER_LOGIN + "update", user);
+		this.getBaseDao().update(PRIFIX_USER_LOGIN + ".update", user);
+	}
+	
+	/**
+	 * 
+     * @Title: bingBank
+     * @Description: 绑定银行卡
+     * @param @param userBank
+     * @param @throws Exception    参数
+     * @return void    返回类型
+     * @throws
+	 */
+	public int bingBank(final UserBank userBank) throws Exception {
+		UserBank _userBank = this.getBaseDao().getObject(PRIFIX_USER_INFO + ".findUserBankByUserId", userBank);
+		if( _userBank != null) {
+			return -1; // 返回-1表示已绑定过改银行卡
+		}
+		return this.getBaseDao().save(PRIFIX_USER_INFO + ".bingBankCard", userBank);
+	}
+	
+	/**
+	 * 
+     * @Title: findUserBank
+     * @Description: 查询用户银行卡
+     * @param @param userBank
+     * @param @return
+     * @param @throws Exception    参数
+     * @return List<UserBank>    返回类型
+     * @throws
+	 */
+	public List<UserBank> findUserBank(UserBank userBank) throws Exception {
+		return this.getBaseDao().getList(PRIFIX_USER_INFO + ".findUserBankByUserId", userBank);
+	}
+	
+	/**
+	 * 
+     * @Title: deleteUserBank
+     * @Description: 解除绑定银行卡
+     * @param @param userBank
+     * @param @return
+     * @param @throws Exception    参数
+     * @return int    返回类型
+     * @throws
+	 */
+	public int deleteUserBank(UserBank userBank) throws Exception {
+		return this.getBaseDao().delete(PRIFIX_USER_INFO + ".deleteUserBank", userBank);
 	}
 }

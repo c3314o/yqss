@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 
 import com.bluemobi.pro.entity.BorrowInfo;
 import com.bluemobi.pro.entity.BorrowRepayRecord;
-import com.bluemobi.pro.entity.UserInfo;
 import com.bluemobi.sys.service.BaseService;
 
 /**
@@ -32,8 +31,8 @@ public class BorrowService extends BaseService {
      * @return List<BorrowInfo>    返回类型
      * @throws
 	 */
-	public List<BorrowInfo> findBorrowByUserId(UserInfo userInfo) throws Exception{
-		return this.getBaseDao().getList(PRIFIX + ".findBorrowListByUserId", userInfo.getUserId());
+	public List<BorrowInfo> findBorrowByUserId(BorrowInfo bi) throws Exception{
+		return this.getBaseDao().getList(PRIFIX + ".findBorrowListByUserId",bi.getUserId());
 	}
 	
 	/**
@@ -46,5 +45,18 @@ public class BorrowService extends BaseService {
 	 */
 	public void repay(BorrowRepayRecord brr) throws Exception {
 		this.getBaseDao().save(PRIFIX + "insertBorrowRR", brr);
+	}
+	
+	/**
+	 * 
+     * @Title: residueMoney
+     * @Description: 计算本月应还款金额
+     * @param @param list
+     * @param @return    参数
+     * @return int    返回类型
+     * @throws
+	 */
+	public int residueMoney(List<BorrowInfo> list) {
+		return 0;
 	}
 }

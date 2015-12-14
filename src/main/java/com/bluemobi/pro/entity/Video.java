@@ -1,5 +1,7 @@
 package com.bluemobi.pro.entity;
 
+import com.bluemobi.constant.ExcludeFile;
+
 /**
  * 
  * @ClassName: Video
@@ -30,6 +32,17 @@ public class Video extends BaseEntity {
 	 */
 	private String url;
 	
+	@ExcludeFile
+	private int status;
+	
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
+	}
+
 	public String getUrl() {
 		return url;
 	}
