@@ -61,7 +61,8 @@ public class ProductService extends BaseService{
 	public Page<Product> findProduct(Product product,Integer currentPage,Integer pageSize) throws Exception{
 		Map<String,Object> paramMap = new HashMap<String,Object>();
 		paramMap.put("title", product.getTitle());
-		return this.getBaseDao().page(PRIFIX_PRODUCT + ".PRIFIX_PRODUCT", paramMap, currentPage, pageSize);
+		paramMap.put("productType", product.getProductType());
+		return this.getBaseDao().page(PRIFIX_PRODUCT + ".findProduct", paramMap, currentPage, pageSize);
 	}
 	
 	/**
@@ -71,7 +72,7 @@ public class ProductService extends BaseService{
 	 * @throws Exception
 	 */
 	public Product findProductDetail(Product product) throws Exception {
-		return this.getBaseDao().get(PRIFIX_PRODUCT + ".PRIFIX_PRODUCT", product);
+		return this.getBaseDao().get(PRIFIX_PRODUCT + ".findProduct", product);
 	}
 	
 	

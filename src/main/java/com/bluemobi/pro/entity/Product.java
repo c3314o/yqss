@@ -28,10 +28,39 @@ public class Product extends BaseEntity {
 	private Double price;
 	
 	/**
+	 * 商品类型
+	 * 
+	 */
+	private Integer productType;
+	
+	private Integer isCollect;
+	
+	
+	/**
 	 * 图片列表
 	 */
 	private List<ProductImage> imageList;
 	
+	private List<Stage> stageList;
+	
+	public Integer getIsCollect() {
+		return isCollect;
+	}
+	public void setIsCollect(Integer isCollect) {
+		this.isCollect = isCollect;
+	}
+	public List<Stage> getStageList() {
+		return stageList;
+	}
+	public void setStageList(List<Stage> stageList) {
+		this.stageList = stageList;
+	}
+	public Integer getProductType() {
+		return productType;
+	}
+	public void setProductType(Integer productType) {
+		this.productType = productType;
+	}
 	public String getContent() {
 		return content;
 	}

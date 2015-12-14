@@ -7,10 +7,11 @@
 	<resultMap type="com.bluemobi.pro.entity.Product"
 		id="productResultMap">
 		<id column="id" property="id" />
-		<result column="title" property="title" />
+		<result column="name" property="title" />
 		<result column="content" property="content" />
 		<result column="price" property="price" />
-		<collection property="picList" ofType="com.bluemobi.pro.entity.ProductImage" column="{spid = id}" select="findProductImage" />
+		<collection property="imageList" ofType="com.bluemobi.pro.entity.ProductImage" column="{spid = id}" select="findProductImage" />
+		<collection property="stageList" ofType="com.bluemobi.pro.entity.Stage" column="{productId = id}" select="findStage"/>
 	</resultMap>
 
 	<resultMap type="com.bluemobi.pro.entity.ProductImage" id="imageResultMap">
@@ -21,23 +22,28 @@
 		<result column="small_url" property="smallUrl"/>
 	</resultMap>	
 	
+	<resultMap type="com.bluemobi.pro.entity.Stage" id="stageResultMap">
+		<result column="stage" property="stage"/>
+	</resultMap>
+	
 	<!-- 查询商品 -->
-	<select id="findSecondProduct" parameterType="com.bluemobi.pro.entity.Product"
-		resultMap="productResultMap">">
-			
+	<select id="findProduct" parameterType="com.bluemobi.pro.entity.Product" resultMap="productResultMap">
 		SELECT
 			t.id,
-			t.userId,
-			t.title,
+			t.name,
 			t.content,
 			t.price
 		FROM
-			second_hand t
+			product t
 		WHERE
 			1 = 1
 		<if test="id != null and id != ''">
 			AND
 				id = #{id}
+		</if>
+		<if test="productType != null and productType != ''">
+			AND
+				product_type = #{productType}
 		</if>
 	</select>
 	
@@ -50,8 +56,19 @@
 			t.image_url,
 			t.small_url
 		FROM
-			second_hand_images t
+			product_images t
 		WHERE
-			t.second_hand_id = #{spid}
+			t.product_id = #{spid}
+	</select>
+	
+	<!-- 查询商品分期列表 -->
+	<select id="findStage" parameterType="map" resultMap="stageResultMap">
+		SELECT
+			t.id,
+			t.stage
+		FROM
+			product_stage t
+		WHERE
+			t.product_id = #{productId}
 	</select>
 </mapper> 

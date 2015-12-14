@@ -226,6 +226,29 @@ CREATE TABLE `product` (
 
 insert  into `product`(`id`,`name`,`price`,`content`,`product_type`,`is_list`,`create_date`) values (1,'苹果',6088.00,'介绍',1,1,NULL),(2,'三星',6088.00,'介绍222',1,1,NULL),(3,'thinkpad',6088.00,'介绍222',2,1,NULL),(4,'冰箱',6088.00,'介绍222',3,1,NULL),(5,'音响',6088.00,'介绍222',4,1,NULL);
 
+DROP TABLE IF EXISTS `stage`;
+
+create table `stage` (
+	`id` int(32) NOT NULL AUTO_INCREMENT,
+	`stage_num` int(2) not null comment '期数',
+	PRIMARY KEY (`id`)
+)ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+
+insert into `stage` (stage_num) values (2),(4),(8),(15);
+
+create table `product_stage` (
+	`id` int(32) NOT NULL AUTO_INCREMENT,
+	`product_id` int(32) not null comment '商品ID',
+	`stage_id` int(32) not null comment '期数ID',
+	PRIMARY KEY (`id`)
+)ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+
+insert into `product_stage` (product_id,stage_id) value (1,6), (1,7),(1,8),(1,9);
+
+create table `product_collect`(
+	
+)
+
 /*Table structure for table `product_comment` */
 
 DROP TABLE IF EXISTS `product_comment`;
