@@ -3,6 +3,8 @@ package com.bluemobi.pro.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.bluemobi.utils.YqssUtils;
+
 /**
  * 
  * @ClassName: ProductBorrow
@@ -26,7 +28,7 @@ public class ProductBorrow extends BaseEntity {
 	/**
 	 * 下次还款时间
 	 */
-	private Long nextDate;
+	private String nextDate;
 	
 	/**
 	 * 商品名字
@@ -37,6 +39,8 @@ public class ProductBorrow extends BaseEntity {
 	 * 商品图片
 	 */
 	private String pic;
+	
+	private Double price;
 	
 	/**
 	 * 利率
@@ -59,12 +63,7 @@ public class ProductBorrow extends BaseEntity {
 	private Double surplus;
 	
 	/**
-	 * 金额总数
-	 */
-	private Double amount;
-	
-	/**
-	 * 总期数
+	 * 剩余期数
 	 */
 	private Integer period;
 	
@@ -72,6 +71,8 @@ public class ProductBorrow extends BaseEntity {
 	 * 剩余期数
 	 */
 	private Integer surplusStages;
+	
+	private Integer state;// 还款状态  0 已结清  1  还款中  2  催款中”
 	
 	// =======================================================
 	private String name;
@@ -88,6 +89,40 @@ public class ProductBorrow extends BaseEntity {
 	 */
 	private List<ProductBorrowRepayRecord> list = new ArrayList<ProductBorrowRepayRecord>();
 	
+	public Integer getState() {
+		int allReypayMoney = 0;
+		for (ProductBorrowRepayRecord pbrr : list) {
+			allReypayMoney += pbrr.getAmount();
+		}
+		int residueDays = YqssUtils.residueDay(nextDate);
+		if( residueDays <= 0) {
+			state = 2;
+		}
+		else if( price <=  allReypayMoney){
+			state = 0;
+		}
+		else if(price > allReypayMoney) {
+			state = 1;
+		}
+		return state;
+	}
+	
+	public Double getPrice() {
+		return price;
+	}
+
+
+
+	public void setPrice(Double price) {
+		this.price = price;
+	}
+
+
+
+	public void setState(Integer state) {
+		this.state = state;
+	}
+
 	public String getProductName() {
 		return productName;
 	}
@@ -176,11 +211,11 @@ public class ProductBorrow extends BaseEntity {
 		this.productId = productId;
 	}
 
-	public Long getNextDate() {
+	public String getNextDate() {
 		return nextDate;
 	}
 
-	public void setNextDate(Long nextDate) {
+	public void setNextDate(String nextDate) {
 		this.nextDate = nextDate;
 	}
 
@@ -225,6 +260,7 @@ public class ProductBorrow extends BaseEntity {
 	}
 
 	public Double getOnce() {
+		
 		return once;
 	}
 
@@ -233,6 +269,11 @@ public class ProductBorrow extends BaseEntity {
 	}
 
 	public Double getSurplus() {
+		Double rrMoney = 0.0;
+		for (ProductBorrowRepayRecord pbrr : list) {
+			rrMoney += pbrr.getAmount();
+		}
+		surplus = price - rrMoney;
 		return surplus;
 	}
 
@@ -240,15 +281,8 @@ public class ProductBorrow extends BaseEntity {
 		this.surplus = surplus;
 	}
 
-	public Double getAmount() {
-		return amount;
-	}
-
-	public void setAmount(Double amount) {
-		this.amount = amount;
-	}
-
 	public Integer getSurplusStages() {
+		surplusStages = period;
 		return surplusStages;
 	}
 

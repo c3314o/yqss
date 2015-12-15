@@ -3,15 +3,13 @@ package com.bluemobi.pro.controller.api;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.bluemobi.pro.entity.BorrowInfo;
 import com.bluemobi.pro.entity.BorrowRepayRecord;
 import com.bluemobi.pro.entity.ProductBorrow;
 import com.bluemobi.pro.service.impl.BorrowService;
+import com.bluemobi.pro.service.impl.ProductBorrowService;
 import com.bluemobi.utils.Result;
-
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -29,6 +27,9 @@ public class BorrowApp {
 	
 	@Autowired
 	private BorrowService service;
+	
+	@Autowired
+	private ProductBorrowService pbService;
 	
 	/**
 	 * 
@@ -59,11 +60,8 @@ public class BorrowApp {
 				pb.setAddress(borrowInfo.getAddress());
 				pb.setProductId(borrowInfo.getProductId());
 				pb.setStage(borrowInfo.getStage());
-				
-				
+				pbService.borrowProduct(pb);
 			}
-			
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 			return Result.failure();

@@ -26,9 +26,15 @@
 	<!-- 创建借款记录信息 -->
 	<insert id="insertBrrow" parameterType="com.bluemobi.pro.entity.ProductBorrow" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO
-			borrow_info
+			buy_borrow_info
 		(
 			user_id,
+			product_id,
+			name,
+			image_url,
+			stage,
+			next_date,
+			
 			username,
 			id_cartd,
 			phone,
@@ -39,6 +45,12 @@
 		VALUES
 		(
 			#{userId},
+			#{productId},
+			#{productName},
+			#{pic},
+			#{stage},
+			#{nextDate},
+			
 			#{name},
 			#{identity},
 			#{mobile},
@@ -58,7 +70,6 @@
 			t.name,
 			t.image_url,
 			t.price,
-			t.period,
 			t.next_date
 		FROM
 			buy_borrow_info t
@@ -127,11 +138,13 @@
 		INSERT INTO	
 			buy_repay_record
 		(
+			borrow_info_id,
 			money,
 			create_date
 		)
 		VALUES
 		(
+		    #{pdId},
 			#{amount},
 			#{createDate}
 		)

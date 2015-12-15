@@ -89,7 +89,7 @@ CREATE TABLE `buy_borrow_info` (
   `name` varchar(200) NOT NULL DEFAULT '' COMMENT '商品名称',
   `image_url` varchar(200) DEFAULT '' COMMENT '商品图片',
   `price` double(10,2) NOT NULL DEFAULT '0.00' COMMENT '商品价格',
-  `period` int(2) DEFAULT '0' COMMENT '期数',
+  `period` int(2) DEFAULT '0' COMMENT '剩余期数',
   `residue_money` double DEFAULT NULL COMMENT '剩余钱数',
   
   `username` varchar(50) DEFAULT '' COMMENT '姓名',
@@ -98,7 +98,7 @@ CREATE TABLE `buy_borrow_info` (
   `school_name` varchar(50) DEFAULT '' COMMENT '学校',
   `address` varchar(500) DEFAULT '' COMMENT '收货地址',
   `stage` int(32) DEFAULT '0' COMMENT '分期ID',
-  `next_date` bigint(20) DEFAULT NULL COMMENT '下次还款时间',
+  `next_date` varchar(30) DEFAULT '' COMMENT '下次还款时间',
   `create_date` bigint(20) DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
