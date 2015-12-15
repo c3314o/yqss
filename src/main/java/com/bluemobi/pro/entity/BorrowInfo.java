@@ -54,12 +54,17 @@ public class BorrowInfo extends BaseEntity {
 	 */
 	private String nextResidueDate;
 	
+	/**
+	 * 剩余应还金额
+	 */
 	private Double residueMoney;
 	
 	/**
 	 * 还款状态  0 已结清  1  还款中  2  催款中
 	 */
 	private Integer state;
+	
+	private double repay;
 	
 	// =====================================
 	
@@ -74,6 +79,21 @@ public class BorrowInfo extends BaseEntity {
 	private Integer type;
 	
 	private List<BorrowRepayRecord> list = new ArrayList<BorrowRepayRecord>();
+	
+	public double getRepay() {
+		Double rrMoney = 0.0;
+		for (BorrowRepayRecord borrowRepayRecord : list) {
+			rrMoney += borrowRepayRecord.getAmount();
+		}
+		repay = rrMoney;
+		return repay;
+	}
+
+
+	public void setRepay(double repay) {
+		this.repay = repay;
+	}
+
 
 	public Double getResidueMoney() {
 		Double rrMoney = 0.0;

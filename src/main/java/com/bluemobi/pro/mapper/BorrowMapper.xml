@@ -8,10 +8,8 @@
 		<id column="id" property="id" />
 		<result column="user_id" property="userId" />
 		<result column="limit_money" property="money"/>
-		<result column="jk_date" property="jkTime"/>
+		<result column="create_date" property="jkTime"/>
 		<result column="repay_date" property="lastRepayDate"/>
-		<collection property="list" ofType="com.bluemobi.pro.entity.BorrowRepayRecord" 
-						column="{borrow_info_id2 = id}" select="findBorrowRRListByBid"/>
 	</resultMap>
 	
 	<resultMap type="com.bluemobi.pro.entity.BorrowRepayRecord" id="borrowrrResultMap">
@@ -70,7 +68,7 @@
 	</update>
 	
 	<!-- 根据用户ID查询借款信息 -->
-	<select id="findBorrowListByUserId" resultMap="borrowResultMap" parameterType="java.lang.Integer">
+	<select id="findBorrowListByUserId" resultMap="borrowResultMap" parameterType="com.bluemobi.pro.entity.BorrowInfo">
 		SELECT
 			t.id,
 			t.user_id,
@@ -80,7 +78,15 @@
 		FROM
 			borrow_info t
 		WHERE
-			t.user_id = #{userId}
+			1 = 1
+		<if test="userId != null and userId != ''">
+			AND
+				t.user_id = #{userId}
+		</if>
+		<if test="id != null and id != ''">
+			AND
+				id = #{id}
+		</if>
 	</select>
 	
 	<!-- 根据借款ID查询还款记录 -->
@@ -93,7 +99,7 @@
 		FROM
 			repay_record t
 		WHERE
-			t.borrow_info_id = #{borrow_info_id2}
+			t.borrow_info_id = #{id}
 	</select>
 	
 	<!-- 删除还款信息 -->

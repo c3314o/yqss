@@ -1,6 +1,8 @@
 package com.bluemobi.pro.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
@@ -71,7 +73,29 @@ public class BorrowService extends BaseService {
      * @throws
 	 */
 	public List<BorrowInfo> findBorrowByUserId(BorrowInfo bi) throws Exception{
-		return this.getBaseDao().getList(PRIFIX + ".findBorrowListByUserId",bi.getUserId());
+		return this.getBaseDao().getList(PRIFIX + ".findBorrowListByUserId",bi);
+	}
+	
+	/**
+	 * 查询借款详情
+	 * @param bi
+	 * @return
+	 * @throws Exception
+	 */
+	public BorrowInfo findBorrowById(BorrowInfo bi) throws Exception {
+		return this.getBaseDao().getObject(PRIFIX + ".findBorrowListByUserId",bi);
+	}
+	
+	/**
+	 * 查询还款记录
+	 * @param bi
+	 * @return
+	 * @throws Exception
+	 */
+	public List<BorrowRepayRecord> findBRR(BorrowInfo bi) throws Exception {
+		Map<String,Object> paramMap = new HashMap<String,Object>();
+		paramMap.put("id", bi.getId());
+		return this.getBaseDao().getList(PRIFIX + ".findBorrowRRListByBid", paramMap);
 	}
 	
 	/**
@@ -83,7 +107,7 @@ public class BorrowService extends BaseService {
      * @throws
 	 */
 	public void repay(BorrowRepayRecord brr) throws Exception {
-		this.getBaseDao().save(PRIFIX + "insertBorrowRR", brr);
+		this.getBaseDao().save(PRIFIX + ".insertBorrowRR", brr);
 	}
 	
 	/**

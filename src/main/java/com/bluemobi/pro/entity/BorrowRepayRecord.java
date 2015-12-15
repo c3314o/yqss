@@ -1,5 +1,7 @@
 package com.bluemobi.pro.entity;
 
+import com.bluemobi.constant.ExcludeFile;
+
 /**
  * 
  * @ClassName: BorrowRepayRecord
@@ -10,6 +12,7 @@ package com.bluemobi.pro.entity;
  */
 public class BorrowRepayRecord extends BaseEntity {
 
+	@ExcludeFile
 	private Integer borrowId;
 	
 	/**

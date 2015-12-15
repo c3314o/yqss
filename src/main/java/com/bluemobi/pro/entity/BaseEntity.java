@@ -4,7 +4,7 @@ public class BaseEntity {
 
 	private Integer id;
 	
-	private Long createDate;
+	private Long createDate = System.currentTimeMillis();
 
 	public Integer getId() {
 		return id;

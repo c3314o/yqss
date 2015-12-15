@@ -97,6 +97,32 @@ public class BorrowApp {
 	}
 	
 	/**
+	 * 借款记录详情
+	 * 还款记录列表
+	 * @param bi
+	 * @return
+	 */
+	@RequestMapping(value = "detail", method = RequestMethod.POST)
+	@ResponseBody
+	public Result findBorrowDetail(BorrowInfo bi) {
+		
+		BorrowInfo _borrow = null;
+		try {
+			_borrow = service.findBorrowById(bi);
+			if(_borrow == null) {
+				_borrow = new BorrowInfo();
+			}
+			List<BorrowRepayRecord> list = service.findBRR(bi);
+			_borrow.setList(list);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Result.failure();
+		}
+		return Result.success(_borrow);
+	}
+	
+	/**
 	 * 
      * @Title: repay
      * @Description: 还款
