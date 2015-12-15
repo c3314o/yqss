@@ -7,8 +7,9 @@
 	<resultMap type="com.bluemobi.pro.entity.BorrowInfo" id="borrowResultMap">
 		<id column="id" property="id" />
 		<result column="user_id" property="userId" />
-		<result column="limit_money" property="borrow"/>
+		<result column="limit_money" property="money"/>
 		<result column="jk_date" property="jkTime"/>
+		<result column="repay_date" property="lastRepayDate"/>
 		<collection property="list" ofType="com.bluemobi.pro.entity.BorrowRepayRecord" 
 						column="{borrow_info_id2 = id}" select="findBorrowRRListByBid"/>
 	</resultMap>
@@ -17,20 +18,69 @@
 		<id column="id" property="id" />
 		<result column="borrow_info_id" property="borrowId" />
 		<result column="money" property="amount" />
-		<result column="repay_date" property="repayTime"/>
+		<result column="create_date" property="repayTime"/>
 	</resultMap>	
 	
+	<!-- 创建借款记录信息 -->
+	<insert id="insertBrrow" parameterType="com.bluemobi.pro.entity.BorrowInfo" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO
+			borrow_info
+		(
+			user_id,
+			username,
+			id_cartd,
+			phone,
+			school_name,
+			address,
+			create_date
+		)
+		VALUES
+		(
+			#{userId},
+			#{name},
+			#{identity},
+			#{mobile},
+			#{school},
+			#{address},
+			
+			#{createDate}
+		)
+	</insert>
+	
+	<!-- 完善借款信息 -->
+	<update id="updateBorrow" parameterType="com.bluemobi.pro.entity.BorrowInfo">
+		UPDATE 
+			borrow_info
+		<set>
+			<if test="money != null and money != ''">
+				limit_money = #{money},
+			</if>
+			<if test="timeLimite != null and timeLimite != ''">
+				max_day = #{timeLimite},
+			</if>
+			<if test="type != null and type != ''">
+				type = #{type},
+			</if>
+			<if test="lastRepayDate != null and lastRepayDate != ''">
+				repay_date = #{lastRepayDate},
+			</if>
+		</set>
+		WHERE
+			id = #{id}
+	</update>
+	
 	<!-- 根据用户ID查询借款信息 -->
-	<select id="findBorrowListByUserId" resultMap="borrowResultMap" parameterType="int">
+	<select id="findBorrowListByUserId" resultMap="borrowResultMap" parameterType="java.lang.Integer">
 		SELECT
 			t.id,
 			t.user_id,
 			t.limit_money,
-			t.jk_date
+			t.repay_date,
+			t.create_date
 		FROM
 			borrow_info t
 		WHERE
-			t.user_id = {_paramater}
+			t.user_id = #{userId}
 	</select>
 	
 	<!-- 根据借款ID查询还款记录 -->
@@ -39,7 +89,7 @@
 			t.id,
 			t.borrow_info_id,
 			t.money,
-			t.repay_date
+			t.create_date
 		FROM
 			repay_record t
 		WHERE

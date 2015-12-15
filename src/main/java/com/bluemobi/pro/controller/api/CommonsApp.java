@@ -161,6 +161,8 @@ public class CommonsApp {
      * @return Result    返回类型
      * @throws
 	 */
+	@RequestMapping(value = "home", method = RequestMethod.POST)
+	@ResponseBody
 	public Result home(UserInfo userInfo) {
 		Home home = new Home();
 		
@@ -170,15 +172,24 @@ public class CommonsApp {
 		
 		try {
 			list = borrowService.findBorrowByUserId(info);
-			home.setAvailable(5000);
-			home.setBorrowday(30);
-			
-			list.get(0).getBorrow();
-			home.setSurplusday(list.get(0).getResidueDays());
+			if(list == null ) {
+				home.setAvailable(5000);
+				home.setBorrowday(30);
+				
+				home.setAmount(0.0);
+				home.setSurplusday(0);
+			}
+			else {
+				home.setAvailable(5000);
+				home.setBorrowday(30);
+				
+				home.setAmount(list.get(list.size() - 1).getResidueMoney());
+				home.setSurplusday(list.get(list.size() - 1).getResidueDays());
+			}
+		
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
 		return Result.success(home);
 	}
 	

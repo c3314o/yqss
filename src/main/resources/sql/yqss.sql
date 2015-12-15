@@ -67,9 +67,7 @@ CREATE TABLE `borrow_info` (
   `phone` varchar(15) DEFAULT '' COMMENT '手机',
   `school_name` varchar(50) DEFAULT '' COMMENT '学校',
   `address` varchar(500) DEFAULT '' COMMENT '收货地址',
-  `product_id` int(32) DEFAULT '0' COMMENT '商品ID',
-  `stage_id` int(32) DEFAULT '0' COMMENT '分期ID',
-  `repay_date` bigint(20) DEFAULT NULL COMMENT '还款时间',
+  `repay_date` varchar(50) DEFAULT NULL COMMENT '还款时间',
   `create_date` bigint(20) DEFAULT NULL COMMENT '借款时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -184,6 +182,14 @@ CREATE TABLE `message` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+insert into message (title,content,user_id,is_list,create_date) values 
+('消息1','消息内容1',5,1,now()),
+('消息1','消息内容1',5,1,now()),
+('消息1','消息内容1',5,1,now()),
+('消息1','消息内容1',5,1,now()),
+('消息1','消息内容1',5,1,now());
+
+
 /*Data for the table `message` */
 
 /*Table structure for table `orders` */
@@ -239,15 +245,12 @@ insert into `stage` (stage_num) values (2),(4),(8),(15);
 create table `product_stage` (
 	`id` int(32) NOT NULL AUTO_INCREMENT,
 	`product_id` int(32) not null comment '商品ID',
-	`stage_id` int(32) not null comment '期数ID',
+	`stage` int(32) not null comment '期数ID',
 	PRIMARY KEY (`id`)
 )ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 insert into `product_stage` (product_id,stage_id) value (1,6), (1,7),(1,8),(1,9);
 
-create table `product_collect`(
-	
-)
 
 /*Table structure for table `product_comment` */
 

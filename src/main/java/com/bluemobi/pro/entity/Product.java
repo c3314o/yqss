@@ -2,6 +2,8 @@ package com.bluemobi.pro.entity;
 
 import java.util.List;
 
+import com.bluemobi.constant.ExcludeFile;
+
 /**
  * 
  * @ClassName: Product
@@ -35,6 +37,8 @@ public class Product extends BaseEntity {
 	
 	private Integer isCollect;
 	
+	@ExcludeFile
+	private Integer userId;
 	
 	/**
 	 * 图片列表
@@ -43,6 +47,12 @@ public class Product extends BaseEntity {
 	
 	private List<Stage> stageList;
 	
+	public Integer getUserId() {
+		return userId;
+	}
+	public void setUserId(Integer userId) {
+		this.userId = userId;
+	}
 	public Integer getIsCollect() {
 		return isCollect;
 	}

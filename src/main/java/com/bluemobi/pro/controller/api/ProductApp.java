@@ -1,5 +1,7 @@
 package com.bluemobi.pro.controller.api;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -7,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.bluemobi.constant.ErrorCode;
+import com.bluemobi.pro.entity.Collection;
 import com.bluemobi.pro.entity.Product;
 import com.bluemobi.pro.entity.ProductComment;
 import com.bluemobi.pro.entity.SecondHandProduct;
@@ -71,6 +75,76 @@ public class ProductApp {
 	}
 	
 	/**
+	 * 
+     * @Title: collect
+     * @Description: 收藏商品
+     * @param @param collect
+     * @param @return    参数
+     * @return Result    返回类型
+     * @throws
+	 */
+	@RequestMapping(value = "collect", method = RequestMethod.POST)
+	@ResponseBody
+	public Result collect(Collection collect) {
+		
+		try {
+			int flag = service.collectProduct(collect);
+			if(flag == -1) {
+				return Result.failure(ErrorCode.ERROR_17);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Result.failure();
+		}
+		return Result.success();
+	}
+	
+	/**
+	 * 
+     * @Title: unCollect
+     * @Description: 取消商品收藏
+     * @param @param collection
+     * @param @return    参数
+     * @return Result    返回类型
+     * @throws
+	 */
+	@RequestMapping(value = "uncollect", method = RequestMethod.POST)
+	@ResponseBody
+	public Result unCollect(Collection collection) {
+		
+		try {
+			service.unCollectProduct(collection);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Result.failure();
+		}
+		return Result.success();
+	}
+	
+	/**
+	 * 
+     * @Title: findUserCollect
+     * @Description: 我的收藏
+     * @param @param collection
+     * @param @return    参数
+     * @return Result    返回类型
+     * @throws
+	 */
+	@RequestMapping(value = "collect/list", method = RequestMethod.POST)
+	@ResponseBody
+	public Result findUserCollect(Collection collection) {
+		
+		List<Collection> list = null;
+		try {
+			list = service.findUserCollect(collection);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Result.failure();
+		}
+		return Result.success(list);
+	}
+	
+	/********************************************************************************************************
 	 * 
      * @Title: publishSHProduct
      * @Description: 发布二手商品

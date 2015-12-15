@@ -26,13 +26,21 @@
 		<result column="stage" property="stage"/>
 	</resultMap>
 	
+	<resultMap type="com.bluemobi.pro.entity.Collection" id="collectResultMap">
+		<id column="id" property="id"/>
+		<result column="user_id" property="userId"/>
+		<result column="product_id" property="productId"/>
+		<association property="product" column="{id = product_id}" select="findProduct"/>
+	</resultMap>
+	
 	<!-- 查询商品 -->
 	<select id="findProduct" parameterType="com.bluemobi.pro.entity.Product" resultMap="productResultMap">
 		SELECT
 			t.id,
 			t.name,
 			t.content,
-			t.price
+			t.price,
+			(SELECT COUNT(*) FROM collection c WHERE c.product_id = t.id AND c.user_id = #{userId}) isCollect
 		FROM
 			product t
 		WHERE
@@ -70,5 +78,47 @@
 			product_stage t
 		WHERE
 			t.product_id = #{productId}
+	</select>
+	
+	<!-- 添加收藏 -->
+	<insert id="insertCollect" parameterType="com.bluemobi.pro.entity.Collection">
+		INSERT INTO
+			collection
+		(
+			user_id,
+			product_id,
+			create_date
+		)
+		VALUES
+		(
+			#{userId},
+			#{productId},
+			NOW()
+		)
+	</insert>
+	
+	<!-- 取消收藏 -->
+	<delete id="deleteCollect" parameterType="com.bluemobi.pro.entity.Collection">
+		DELETE FROM
+			collection
+		WHERE
+			user_id = #{userId}
+		AND
+			product_id = #{productId}
+	</delete>
+	
+	<!-- 查询用户收藏 -->
+	<select id="findProductCollect" parameterType="com.bluemobi.pro.entity.Collection" resultMap="collectResultMap">
+		SELECT
+			t.user_id,
+			t.product_id
+		FROM
+			collection t
+		WHERE
+			t.user_id = #{userId}
+		<if test="productId != null and productId != ''">
+			AND
+				t.product_id = #{productId}
+		</if>
 	</select>
 </mapper> 

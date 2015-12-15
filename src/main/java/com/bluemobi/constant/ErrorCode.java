@@ -34,4 +34,6 @@ public class ErrorCode {
     public final static String ERROR_15="error_15"; // 原密码错误
     
     public final static String ERROR_16="error_16"; // 已绑定该银行卡
+    
+    public final static String ERROR_17="error_17"; // 已收藏该商品
 }

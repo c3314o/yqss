@@ -147,6 +147,23 @@ public class YqssUtils {
 	}
 	
 	/**
+	 * 
+     * @Title: borrowResidueDate
+     * @Description: 计算借款还款时间
+     * @param @return    参数
+     * @return String    返回类型
+     * @throws
+	 */
+	public static String borrowResidueDate(int days) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.add(Calendar.DAY_OF_YEAR, (days + 1));
+		calendar.set(Calendar.HOUR_OF_DAY, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		return DateUtils.toString(calendar.getTime(), DEFAULT_FORMAT);
+	}
+	
+	/**
 	 * 计算是否闰年
 	 * @param year
 	 * @return
@@ -157,14 +174,10 @@ public class YqssUtils {
 		return false;
 	}
 	
-	public static Double moneyResidue(List<String> nextResidue) {
-		
-		return 0.0;
-	}
-	
 	public static void main(String[] args) {
 //		System.out.println(residueDay("2014-10-15 00:00:00"));
 //		System.out.println(nextResidueDay("2016-01-15 00:00:00"));
 //		System.out.println(firstResidueDay());
+		System.out.println(borrowResidueDate(16));
 	}
 }

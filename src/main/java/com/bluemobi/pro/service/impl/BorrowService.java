@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.bluemobi.pro.entity.BorrowInfo;
 import com.bluemobi.pro.entity.BorrowRepayRecord;
 import com.bluemobi.sys.service.BaseService;
+import com.bluemobi.utils.YqssUtils;
 
 /**
  * 
@@ -20,6 +21,44 @@ import com.bluemobi.sys.service.BaseService;
 public class BorrowService extends BaseService {
 
 	public static final String PRIFIX = BorrowInfo.class.getName();
+	
+	/**
+	 * 
+     * @Title: borrow
+     * @Description:  借款-填写
+     * @param @return
+     * @param @throws Exception    参数
+     * @return int    返回类型
+     * @throws
+	 */
+	public int borrowInsertUserInfo(BorrowInfo borrowInfo) throws Exception {
+		// 判断是否有未还完的借款
+		List<BorrowInfo> list = findBorrowByUserId(borrowInfo);
+		if(list != null && list.size() >0 ) {
+			BorrowInfo _info = list.get(list.size() - 1);
+			if(_info.getState() != 0) {
+				return -1;
+			}
+		}
+		return this.getBaseDao().save(PRIFIX + ".insertBrrow", borrowInfo);
+	}
+	
+	/**
+	 * 
+	     * @Title: borrowInsertBorrowInfo
+	     * @Description: TODO(这里用一句话描述这个方法的作用)
+	     * @param @param borrowInfo
+	     * @param @return
+	     * @param @throws Exception    参数
+	     * @return int    返回类型
+	     * @throws
+	 */
+	public int borrowInsertBorrowInfo(BorrowInfo borrowInfo) throws Exception {
+		if(borrowInfo.getTimeLimite() != null ) {
+			borrowInfo.setLastRepayDate(YqssUtils.borrowResidueDate(borrowInfo.getTimeLimite()));
+		}
+		return this.getBaseDao().update(PRIFIX + ".updateBorrow", borrowInfo);
+	}
 	
 	/**
 	 * 

@@ -1,8 +1,11 @@
 package com.bluemobi.pro.service.impl;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.springframework.stereotype.Service;
+
+import com.bluemobi.pro.entity.Collection;
 import com.bluemobi.pro.entity.Product;
 import com.bluemobi.pro.entity.ProductComment;
 import com.bluemobi.pro.entity.SecondHandProduct;
@@ -52,31 +55,6 @@ public class ProductService extends BaseService{
 	}
 	
 	/**
-	 * 查询商品
-	 * @param shp
-	 * @param currentPage
-	 * @param pageSize
-	 * @return
-	 */
-	public Page<Product> findProduct(Product product,Integer currentPage,Integer pageSize) throws Exception{
-		Map<String,Object> paramMap = new HashMap<String,Object>();
-		paramMap.put("title", product.getTitle());
-		paramMap.put("productType", product.getProductType());
-		return this.getBaseDao().page(PRIFIX_PRODUCT + ".findProduct", paramMap, currentPage, pageSize);
-	}
-	
-	/**
-	 * 查询商品详细信息
-	 * @param shp
-	 * @return
-	 * @throws Exception
-	 */
-	public Product findProductDetail(Product product) throws Exception {
-		return this.getBaseDao().get(PRIFIX_PRODUCT + ".findProduct", product);
-	}
-	
-	
-	/**
 	 * 删除二手商品 
 	 * @param shp
 	 * @throws Exception
@@ -103,6 +81,7 @@ public class ProductService extends BaseService{
 	public Page<ProductComment> findProductComment(ProductComment comment,Integer currentPage,Integer pageSize) throws Exception {
 		Map<String,Object> paramMap = new HashMap<String,Object>();
 		paramMap.put("productId", comment.getProductId());
+		paramMap.put("userId", comment.getFromUserId());
 		return this.getBaseDao().page(PRIFIX_SECOND_HAND + ".findProductComment", paramMap, currentPage, pageSize);
 	}
 	
@@ -113,5 +92,76 @@ public class ProductService extends BaseService{
 	public void commentProduct(ProductComment comment) throws Exception {
 		if(comment.getToUserId() == null) comment.setToUserId(0);
 		this.getBaseDao().save(PRIFIX_SECOND_HAND + ".insertComment", comment);
+	}
+	
+
+	/**
+	 * 查询商品
+	 * @param shp
+	 * @param currentPage
+	 * @param pageSize
+	 * @return
+	 */
+	public Page<Product> findProduct(Product product,Integer currentPage,Integer pageSize) throws Exception{
+		Map<String,Object> paramMap = new HashMap<String,Object>();
+		paramMap.put("title", product.getTitle());
+		paramMap.put("productType", product.getProductType());
+		return this.getBaseDao().page(PRIFIX_PRODUCT + ".findProduct", paramMap, currentPage, pageSize);
+	}
+	
+	/**
+	 * 查询商品详细信息
+	 * @param shp
+	 * @return
+	 * @throws Exception
+	 */
+	public Product findProductDetail(Product product) throws Exception {
+		return this.getBaseDao().get(PRIFIX_PRODUCT + ".findProduct", product);
+	}
+	
+	/**
+	 * 
+     * @Title: collectProduct
+     * @Description: 收藏商品
+     * @param @param collection
+     * @param @return
+     * @param @throws Exception    参数
+     * @return int    返回类型
+     * @throws
+	 */
+	public int collectProduct(Collection collection) throws Exception {
+		Collection _collect = this.getBaseDao().getObject(PRIFIX_PRODUCT + ".findProductCollect", collection);
+		if(_collect != null && _collect.getId() != null) {
+			return -1;
+		}
+		return this.getBaseDao().save(PRIFIX_PRODUCT + ".insertCollect", collection);
+	}
+	
+	/**
+	 * 
+     * @Title: unCollectProduct
+     * @Description: 取消商品收藏
+     * @param @param collection
+     * @param @return
+     * @param @throws Exception    参数
+     * @return int    返回类型
+     * @throws
+	 */
+	public int unCollectProduct(Collection collection) throws Exception {
+		return this.getBaseDao().save(PRIFIX_PRODUCT + ".deleteCollect", collection);
+	}
+	
+	/**
+	 * 
+     * @Title: findUserCollect
+     * @Description: 查询用户收藏记录
+     * @param @param collection
+     * @param @return
+     * @param @throws Exception    参数
+     * @return List<Collection>    返回类型
+     * @throws
+	 */
+	public List<Collection> findUserCollect(Collection collection) throws Exception {
+		return this.getBaseDao().getList(PRIFIX_PRODUCT + ".findProductCollect", collection);
 	}
 }

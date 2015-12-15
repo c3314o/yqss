@@ -21,12 +21,18 @@ public class BorrowInfo extends BaseEntity {
 	/**
 	 * 借款金额
 	 */
-	private Double borrow;
+	private Double money;
 	
 	/**
 	 * 借款时间
 	 */
 	private Long jkTime;
+	
+	/**
+	 * 借款组大天数
+	 */
+	private Integer timeLimite;
+	
 	
 	/**
 	 * 最后还款时间
@@ -48,13 +54,120 @@ public class BorrowInfo extends BaseEntity {
 	 */
 	private String nextResidueDate;
 	
+	private Double residueMoney;
+	
 	/**
 	 * 还款状态  0 已结清  1  还款中  2  催款中
 	 */
 	private Integer state;
 	
-	private List<BorrowRepayRecord> list = new ArrayList<BorrowRepayRecord>();
+	// =====================================
 	
+	private String name;
+	private String identity;
+	private String mobile;
+	private String school;
+	private String address;
+	private Integer flag ;
+	private Integer productId ;
+	private Integer stage;
+	private Integer type;
+	
+	private List<BorrowRepayRecord> list = new ArrayList<BorrowRepayRecord>();
+
+	public Double getResidueMoney() {
+		Double rrMoney = 0.0;
+		for (BorrowRepayRecord borrowRepayRecord : list) {
+			rrMoney += borrowRepayRecord.getAmount();
+		}
+		residueMoney = money - rrMoney;
+		return residueMoney;
+	}
+
+	public void setResidueMoney(Double residueMoney) {
+		this.residueMoney = residueMoney;
+	}
+
+	public Integer getType() {
+		return type;
+	}
+
+	public void setType(Integer type) {
+		this.type = type;
+	}
+
+	public Integer getTimeLimite() {
+		return timeLimite;
+	}
+
+	public void setTimeLimite(Integer timeLimite) {
+		this.timeLimite = timeLimite;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getIdentity() {
+		return identity;
+	}
+
+	public void setIdentity(String identity) {
+		this.identity = identity;
+	}
+
+	public String getMobile() {
+		return mobile;
+	}
+
+	public void setMobile(String mobile) {
+		this.mobile = mobile;
+	}
+
+	public String getSchool() {
+		return school;
+	}
+
+	public void setSchool(String school) {
+		this.school = school;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public Integer getFlag() {
+		return flag;
+	}
+
+	public void setFlag(Integer flag) {
+		this.flag = flag;
+	}
+
+	public Integer getProductId() {
+		return productId;
+	}
+
+	public void setProductId(Integer productId) {
+		this.productId = productId;
+	}
+
+	public Integer getStage() {
+		return stage;
+	}
+
+	public void setStage(Integer stage) {
+		this.stage = stage;
+	}
+
 	public Integer getUserId() {
 		return userId;
 	}
@@ -120,12 +233,12 @@ public class BorrowInfo extends BaseEntity {
 		this.list = list;
 	}
 
-	public Double getBorrow() {
-		return borrow;
+	public Double getMoney() {
+		return money;
 	}
 
-	public void setBorrow(Double borrow) {
-		this.borrow = borrow;
+	public void setMoney(Double money) {
+		this.money = money;
 	}
 
 	public Long getJkTime() {
@@ -154,10 +267,10 @@ public class BorrowInfo extends BaseEntity {
 		if( residueDays <= 0) {
 			state = 2;
 		}
-		else if( borrow <=  allReypayMoney){
+		else if( money <=  allReypayMoney){
 			state = 0;
 		}
-		else if(borrow > allReypayMoney) {
+		else if(money > allReypayMoney) {
 			state = 1;
 		}
 		return state;

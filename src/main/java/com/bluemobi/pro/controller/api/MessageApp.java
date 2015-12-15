@@ -59,7 +59,7 @@ public class MessageApp {
      * @return Result    返回类型
 	 * @throws
 	 */
-	@RequestMapping
+	@RequestMapping(value = "delete", method = RequestMethod.POST)
 	@ResponseBody
 	public Result deleteMessage(Message message) {
 		

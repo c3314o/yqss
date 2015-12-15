@@ -16,11 +16,6 @@ public class HrMessage extends BaseEntity {
 	private String address;
 	
 	/**
-	 * 发布时间
-	 */
-	private Long time;
-	
-	/**
 	 * 工资（下限）
 	 */
 	private Double salaryMin;
@@ -61,14 +56,6 @@ public class HrMessage extends BaseEntity {
 
 	public void setAddress(String address) {
 		this.address = address;
-	}
-
-	public Long getTime() {
-		return time;
-	}
-
-	public void setTime(Long time) {
-		this.time = time;
 	}
 	
 	public Double getSalaryMin() {

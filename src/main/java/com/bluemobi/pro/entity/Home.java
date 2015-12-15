@@ -14,7 +14,7 @@ public class Home {
 	
 	private int borrowday;
 	
-	private Double amount;
+	private double amount;
 	
 	private int surplusday;
 

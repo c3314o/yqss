@@ -29,8 +29,48 @@ public class BorrowApp {
 	@Autowired
 	private BorrowService service;
 	
-	public Result borrow() {
-		return null;
+	/**
+	 * 
+     * @Title: insertBorrow
+     * @Description: TODO(这里用一句话描述这个方法的作用)
+     * @param @param borrowInfo
+     * @param @return    参数
+     * @return Result    返回类型
+     * @throws
+	 */
+	@RequestMapping(value = "userinfo", method = RequestMethod.POST)
+	@ResponseBody
+	public Result insertBorrow(BorrowInfo borrowInfo) {
+		
+		try {
+			service.borrowInsertUserInfo(borrowInfo);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Result.failure();
+		}
+		return Result.success();
+	}
+	
+	/**
+	 * 
+     * @Title: updateBorrow
+     * @Description: 完善借款信息
+     * @param @param borrowInfo
+     * @param @return    参数
+     * @return Result    返回类型
+     * @throws
+	 */
+	@RequestMapping(value = "borrowinfo", method = RequestMethod.POST)
+	@ResponseBody
+	public Result updateBorrow(BorrowInfo borrowInfo) {
+		
+		try {
+			service.borrowInsertBorrowInfo(borrowInfo);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Result.failure();
+		}
+		return Result.success();
 	}
 	
 	/**

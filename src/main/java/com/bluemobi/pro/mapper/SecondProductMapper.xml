@@ -42,6 +42,7 @@
 		<result column="to_user_id" property="toUserId"/> 
 		<result column="content" property="content"/>
 		<result column="create_date" property="createDate"/>
+		<result column="pic" property="pic" typeHandler="com.bluemobi.mybatis.StringIfNull" />
 		<association property="fromUser" column="{userId = from_user_id}" select="findUser"/>
 		<association property="toUser" column="{userId = to_user_id}" select="findUser" />
 	</resultMap>
@@ -85,7 +86,15 @@
 			AND
 				id = #{id}
 		</if>
+		<if test="userId != null and userId != ''">
+			AND
+				user_id = #{userId}
+		</if>
+		ORDER BY 
+			t.id 
+		DESC
 	</select>
+	
 	
 	<!-- 查询二手商品图片 -->
 	<select id="findSPImage" parameterType="map" resultMap="imageResultMap">
@@ -137,11 +146,16 @@
 			t.from_user_id,
 			t.to_user_id,
 			t.content,
+			(SELECT i.image_url FROM second_hand_images i WHERE i.second_hand_id = t.product_id LIMIT 1) pic,
 			t.create_date
 		FROM
 			product_comment t
 		WHERE
 			t.product_id = #{productId}
+		<if test="userId != null and userId != ''">
+			AND 
+				t.to_user_id = #{userId}
+		</if>
 	</select>
 	
 	<!-- 新增二手商品评论 -->

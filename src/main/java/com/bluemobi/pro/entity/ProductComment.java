@@ -17,6 +17,26 @@ public class ProductComment extends BaseEntity{
 
 	private Integer productId;
 	
+	private Product product;
+	
+	private String pic;
+	
+	public String getPic() {
+		return pic;
+	}
+
+	public void setPic(String pic) {
+		this.pic = pic;
+	}
+
+	public Product getProduct() {
+		return product;
+	}
+
+	public void setProduct(Product product) {
+		this.product = product;
+	}
+
 	public Integer getProductId() {
 		return productId;
 	}
