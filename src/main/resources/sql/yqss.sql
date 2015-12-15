@@ -67,12 +67,16 @@ CREATE TABLE `borrow_info` (
   `phone` varchar(15) DEFAULT '' COMMENT '手机',
   `school_name` varchar(50) DEFAULT '' COMMENT '学校',
   `address` varchar(500) DEFAULT '' COMMENT '收货地址',
-  `repay_date` varchar(50) DEFAULT NULL COMMENT '还款时间',
+  `product_id` int(32) DEFAULT '0' COMMENT '商品ID',
+  `stage_id` int(32) DEFAULT '0' COMMENT '分期ID',
+  `repay_date` varchar(20) DEFAULT '' COMMENT '还款时间',
   `create_date` bigint(20) DEFAULT NULL COMMENT '借款时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 /*Data for the table `borrow_info` */
+
+insert  into `borrow_info`(`id`,`user_id`,`limit_money`,`max_day`,`period`,`type`,`username`,`id_cartd`,`phone`,`school_name`,`address`,`product_id`,`stage_id`,`repay_date`,`create_date`) values (1,1,3000,15,0,1,'名称','14646464646','123456789','学校','地址',0,0,'2015-12-31 00:00:00',NULL);
 
 /*Table structure for table `buy_borrow_info` */
 
@@ -118,7 +122,7 @@ CREATE TABLE `collection` (
   `product_id` int(32) NOT NULL COMMENT '收藏商品ID',
   `create_date` bigint(20) DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 /*Data for the table `collection` */
 
@@ -180,17 +184,11 @@ CREATE TABLE `message` (
   `is_list` int(2) DEFAULT '1' COMMENT '是否显示 1显示 2不显示',
   `create_date` bigint(20) DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-insert into message (title,content,user_id,is_list,create_date) values 
-('消息1','消息内容1',5,1,now()),
-('消息1','消息内容1',5,1,now()),
-('消息1','消息内容1',5,1,now()),
-('消息1','消息内容1',5,1,now()),
-('消息1','消息内容1',5,1,now());
-
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 /*Data for the table `message` */
+
+insert  into `message`(`id`,`title`,`content`,`user_id`,`is_list`,`create_date`) values (2,'消息1','消息内容1',5,1,20151215115530),(3,'消息1','消息内容1',5,1,20151215115530),(4,'消息1','消息内容1',5,1,20151215115530),(5,'消息1','消息内容1',5,1,20151215115530);
 
 /*Table structure for table `orders` */
 
@@ -232,26 +230,6 @@ CREATE TABLE `product` (
 
 insert  into `product`(`id`,`name`,`price`,`content`,`product_type`,`is_list`,`create_date`) values (1,'苹果',6088.00,'介绍',1,1,NULL),(2,'三星',6088.00,'介绍222',1,1,NULL),(3,'thinkpad',6088.00,'介绍222',2,1,NULL),(4,'冰箱',6088.00,'介绍222',3,1,NULL),(5,'音响',6088.00,'介绍222',4,1,NULL);
 
-DROP TABLE IF EXISTS `stage`;
-
-create table `stage` (
-	`id` int(32) NOT NULL AUTO_INCREMENT,
-	`stage_num` int(2) not null comment '期数',
-	PRIMARY KEY (`id`)
-)ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
-
-insert into `stage` (stage_num) values (2),(4),(8),(15);
-
-create table `product_stage` (
-	`id` int(32) NOT NULL AUTO_INCREMENT,
-	`product_id` int(32) not null comment '商品ID',
-	`stage` int(32) not null comment '期数ID',
-	PRIMARY KEY (`id`)
-)ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
-
-insert into `product_stage` (product_id,stage_id) value (1,6), (1,7),(1,8),(1,9);
-
-
 /*Table structure for table `product_comment` */
 
 DROP TABLE IF EXISTS `product_comment`;
@@ -287,6 +265,21 @@ CREATE TABLE `product_images` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Data for the table `product_images` */
+
+/*Table structure for table `product_stage` */
+
+DROP TABLE IF EXISTS `product_stage`;
+
+CREATE TABLE `product_stage` (
+  `id` int(32) NOT NULL AUTO_INCREMENT,
+  `product_id` int(32) NOT NULL COMMENT '商品ID',
+  `stage` int(32) NOT NULL COMMENT '期数ID',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+
+/*Data for the table `product_stage` */
+
+insert  into `product_stage`(`id`,`product_id`,`stage`) values (6,1,6),(7,1,7),(8,1,8),(9,1,9);
 
 /*Table structure for table `product_type` */
 
@@ -329,11 +322,11 @@ CREATE TABLE `second_hand` (
   `user_id` int(32) NOT NULL COMMENT '所属用户ID',
   `create_date` bigint(20) DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
 
 /*Data for the table `second_hand` */
 
-insert  into `second_hand`(`id`,`title`,`content`,`price`,`user_id`,`create_date`) values (1,'二手商品','水水水水',100.00,5,NULL),(2,'二手商品11','fsadfsadf',1000.00,5,NULL),(3,'二手商品222','fsadfsadf',1000.00,5,NULL),(4,'二手商品222','fsadfsadfasdf',1000.00,5,NULL),(5,'二手商品222','fsadfsadfasdf',1000.00,5,NULL),(6,'二手商品222','fsadfsadfasdf',1000.00,5,NULL),(7,'二手商品222','fsadfsadfasdf',1000.00,5,NULL),(8,'二手商品222','fsadfsadfasdf',1000.00,5,NULL),(9,'二手商品222','fsadfsadfasdf',1000.00,5,NULL),(10,'二手商品222','fsadfsadfasdf',1000.00,5,NULL);
+insert  into `second_hand`(`id`,`title`,`content`,`price`,`user_id`,`create_date`) values (1,'二手商品','水水水水',100.00,5,NULL),(2,'二手商品11','fsadfsadf',1000.00,5,NULL),(3,'二手商品222','fsadfsadf',1000.00,5,NULL),(4,'二手商品222','fsadfsadfasdf',1000.00,5,NULL),(5,'二手商品222','fsadfsadfasdf',1000.00,5,NULL),(6,'二手商品222','fsadfsadfasdf',1000.00,5,NULL),(7,'二手商品222','fsadfsadfasdf',1000.00,5,NULL),(8,'二手商品222','fsadfsadfasdf',1000.00,5,NULL),(9,'二手商品222','fsadfsadfasdf',1000.00,5,NULL),(10,'二手商品222','fsadfsadfasdf',1000.00,5,NULL),(11,'你','哈',12.00,6,20151215165144),(12,'哈哈','哈彼此彼此',6464.00,6,20151215165435);
 
 /*Table structure for table `second_hand_images` */
 
@@ -390,11 +383,11 @@ CREATE TABLE `users_info` (
   `status` int(2) DEFAULT '1' COMMENT '用户状态 1正常 2:禁用',
   `create_date` bigint(20) DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 /*Data for the table `users_info` */
 
-insert  into `users_info`(`id`,`user_id`,`mobile`,`name`,`gender`,`head_url`,`id_card`,`school_id`,`school_name`,`address`,`status`,`create_date`) values (1,5,'13429806156','测试',1,'','4208888888888',0,'测试学校','武汉',1,20151214121638);
+insert  into `users_info`(`id`,`user_id`,`mobile`,`name`,`gender`,`head_url`,`id_card`,`school_id`,`school_name`,`address`,`status`,`create_date`) values (1,5,'13429806156','测试',1,'','4208888888888',0,'测试学校','武汉',1,20151214121638),(2,6,'13247176223','巴德123456',1,'','',0,'','',1,20151215143102);
 
 /*Table structure for table `users_login` */
 
@@ -405,11 +398,11 @@ CREATE TABLE `users_login` (
   `username` varchar(20) NOT NULL DEFAULT '' COMMENT '登录名',
   `password` varchar(50) NOT NULL DEFAULT '' COMMENT '密码',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
 /*Data for the table `users_login` */
 
-insert  into `users_login`(`id`,`username`,`password`) values (5,'13429806156','654321');
+insert  into `users_login`(`id`,`username`,`password`) values (5,'13429806156','654321'),(6,'13247176223','123456');
 
 /*Table structure for table `video` */
 
