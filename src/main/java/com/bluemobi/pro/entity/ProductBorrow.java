@@ -31,7 +31,7 @@ public class ProductBorrow extends BaseEntity {
 	/**
 	 * 商品名字
 	 */
-	private String name;
+	private String productName;
 	
 	/**
 	 * 商品图片
@@ -73,11 +73,85 @@ public class ProductBorrow extends BaseEntity {
 	 */
 	private Integer surplusStages;
 	
+	// =======================================================
+	private String name;
+	private String identity;
+	private String mobile;
+	private String school;
+	private String address;
+	private Integer flag ;
+	private Integer stage;
+	private Integer type;
+	
 	/**
 	 * 还款记录
 	 */
 	private List<ProductBorrowRepayRecord> list = new ArrayList<ProductBorrowRepayRecord>();
 	
+	public String getProductName() {
+		return productName;
+	}
+
+	public void setProductName(String productName) {
+		this.productName = productName;
+	}
+
+	public String getIdentity() {
+		return identity;
+	}
+
+	public void setIdentity(String identity) {
+		this.identity = identity;
+	}
+
+	public String getMobile() {
+		return mobile;
+	}
+
+	public void setMobile(String mobile) {
+		this.mobile = mobile;
+	}
+
+	public String getSchool() {
+		return school;
+	}
+
+	public void setSchool(String school) {
+		this.school = school;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public Integer getFlag() {
+		return flag;
+	}
+
+	public void setFlag(Integer flag) {
+		this.flag = flag;
+	}
+
+	public Integer getStage() {
+		return stage;
+	}
+
+	public void setStage(Integer stage) {
+		this.stage = stage;
+	}
+
+	public Integer getType() {
+		return type;
+	}
+
+	public void setType(Integer type) {
+		this.type = type;
+	}
+
 	public Integer getPeriod() {
 		return period;
 	}

@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bluemobi.pro.entity.BorrowInfo;
 import com.bluemobi.pro.entity.BorrowRepayRecord;
+import com.bluemobi.pro.entity.ProductBorrow;
 import com.bluemobi.pro.service.impl.BorrowService;
 import com.bluemobi.utils.Result;
 
@@ -43,7 +44,26 @@ public class BorrowApp {
 	public Result insertBorrow(BorrowInfo borrowInfo) {
 		
 		try {
-			service.borrowInsertUserInfo(borrowInfo);
+			int flag = borrowInfo.getFlag();
+			if(flag == 0) {
+				// 借款
+				service.borrowInsertUserInfo(borrowInfo);
+			}
+			else if(flag == 1) {
+				ProductBorrow pb = new ProductBorrow();
+				pb.setUserId(borrowInfo.getUserId());
+				pb.setName(borrowInfo.getName());
+				pb.setIdentity(borrowInfo.getIdentity());
+				pb.setMobile(borrowInfo.getMobile());
+				pb.setSchool(borrowInfo.getSchool());
+				pb.setAddress(borrowInfo.getAddress());
+				pb.setProductId(borrowInfo.getProductId());
+				pb.setStage(borrowInfo.getStage());
+				
+				
+			}
+			
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			return Result.failure();

@@ -23,6 +23,32 @@
 		<result column="create_date" property="createDate" />
 	</resultMap>
 	
+	<!-- 创建借款记录信息 -->
+	<insert id="insertBrrow" parameterType="com.bluemobi.pro.entity.ProductBorrow" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO
+			borrow_info
+		(
+			user_id,
+			username,
+			id_cartd,
+			phone,
+			school_name,
+			address,
+			create_date
+		)
+		VALUES
+		(
+			#{userId},
+			#{name},
+			#{identity},
+			#{mobile},
+			#{school},
+			#{address},
+			
+			#{createDate}
+		)
+	</insert>
+	
 	<!-- 根据用户ID查询商品贷款信息 -->
 	<select id="findByUserId" parameterType="com.bluemobi.pro.entity.ProductBorrow" resultMap="pbResultMap">
 		SELECT
