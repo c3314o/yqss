@@ -9,7 +9,7 @@
 		<id column="id" property="id" />
 		<result column="name" property="title" />
 		<result column="content" property="content" />
-		<result column="price" property="price" />
+		<result column="price" property="price" javaType="java.lang.Double"/>
 		<collection property="imageList" ofType="com.bluemobi.pro.entity.ProductImage" column="{spid = id}" select="findProductImage" />
 		<collection property="stageList" ofType="com.bluemobi.pro.entity.Stage" column="{productId = id}" select="findStage"/>
 	</resultMap>

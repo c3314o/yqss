@@ -1,6 +1,8 @@
 package com.bluemobi.pro.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,7 +47,8 @@ public class ProductBorrowService extends BaseService {
 		Product _product = service.findProductDetail(product);
 		String image = (_product.getImageList() != null && _product.getImageList().size() > 0 ? product.getImageList().get(0).getImage() :"");
 		
-		pb.setPrice(product.getPrice());
+		pb.setPrice(_product.getPrice());
+		pb.setPeriod(pb.getStage());
 		pb.setProductName(_product.getTitle());
 		pb.setPic(image);
 		pb.setNextDate(YqssUtils.firstResidueDay());
@@ -64,9 +67,42 @@ public class ProductBorrowService extends BaseService {
      * @throws
 	 */
 	public List<ProductBorrow> findBorrowByUserId(ProductBorrow pb) throws Exception{
+		return this.getBaseDao().getList(PRIFIX + ".findByUserId", pb);
+	}
+	
+	/**
+	 * 
+     * @Title: findBorrowById
+     * @Description: 购物借款详情
+     * @param @param pb
+     * @param @return
+     * @param @throws Exception    参数
+     * @return ProductBorrow    返回类型
+     * @throws
+	 */
+	public ProductBorrow findBorrowById(ProductBorrow pb) throws Exception {
+		ProductBorrow productBorrow = this.getBaseDao().get(PRIFIX + ".findByUserId", pb);
 		
-		
-		return this.getBaseDao().getList(PRIFIX + ".findByUserId", pb.getUserId());
+		if(productBorrow != null) {
+			Map<String,Object> paramMap = new HashMap<String,Object>();
+			paramMap.put("pdId", productBorrow.getId());
+			List<ProductBorrowRepayRecord> pbrrList = this.getBaseDao().getList(PRIFIX + ".findRecordByPbId", paramMap);
+			productBorrow.setList(pbrrList);
+		}
+		return productBorrow;
+	}
+	
+	/**
+	 * 
+     * @Title: findIsBorrow
+     * @Description: 查询用户本月是否还过款
+     * @param @return
+     * @param @throws Exception    参数
+     * @return int    返回类型
+     * @throws
+	 */
+	public int findIsBorrow() throws Exception {
+		return this.getBaseDao().getObject(PRIFIX + ".findIsBorrow", null);
 	}
 	
 	/**
@@ -82,6 +118,9 @@ public class ProductBorrowService extends BaseService {
 		ProductBorrow pb = new ProductBorrow();
 		pb.setId(pbrr.getPdId());
 		pb.setNextDate(YqssUtils.nextResidueDay(DateUtils.getCurrentTime()));
+		if(findIsBorrow() <= 0) {
+			pb.setPeriod(-1);
+		}
 		
 		this.getBaseDao().update(PRIFIX + ".update", pb);
 		this.getBaseDao().save(PRIFIX + ".insertRecord", pbrr);

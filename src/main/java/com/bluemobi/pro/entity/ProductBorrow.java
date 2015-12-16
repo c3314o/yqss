@@ -40,17 +40,17 @@ public class ProductBorrow extends BaseEntity {
 	 */
 	private String pic;
 	
-	private Double price;
+	private double price;
 	
 	/**
 	 * 利率
 	 */
-	private Double rate;
+	private double rate = 20;
 	
 	/**
 	 * 利息
 	 */
-	private Double all;
+	private double all;
 	
 	/**
 	 * 每期还的金额
@@ -243,7 +243,7 @@ public class ProductBorrow extends BaseEntity {
 		this.pic = pic;
 	}
 
-	public Double getRate() {
+	public double getRate() {
 		return rate;
 	}
 
@@ -251,7 +251,8 @@ public class ProductBorrow extends BaseEntity {
 		this.rate = rate;
 	}
 
-	public Double getAll() {
+	public double getAll() {
+		all = getSurplus() % (rate / 100);
 		return all;
 	}
 
@@ -259,8 +260,8 @@ public class ProductBorrow extends BaseEntity {
 		this.all = all;
 	}
 
-	public Double getOnce() {
-		
+	public double getOnce() {
+		once = getSurplus() / getSurplusStages();
 		return once;
 	}
 

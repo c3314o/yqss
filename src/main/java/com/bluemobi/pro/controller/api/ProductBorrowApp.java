@@ -53,6 +53,28 @@ public class ProductBorrowApp {
 	
 	/**
 	 * 
+     * @Title: findById
+     * @Description: 购物贷款详情
+     * @param @param pb
+     * @param @return    参数
+     * @return Result    返回类型
+     * @throws
+	 */
+	@RequestMapping(value = "detail", method = RequestMethod.POST)
+	@ResponseBody
+	public Result findById(ProductBorrow pb) {
+		
+		ProductBorrow borrow = null;
+		try {
+			borrow = service.findBorrowById(pb);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Result.failure();
+		}
+		return Result.success(borrow);
+	}
+	/**
+	 * 
      * @Title: repay
      * @Description: 还款
      * @param @param pbrr

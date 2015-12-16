@@ -10,11 +10,10 @@
 		<result column="product_id" property="productId" />
 		<result column="name" property="name" />
 		<result column="image_url" property="pic" />
-		<result column="price" property="amount" />
+		<result column="price" property="price" />
 		<result column="period" property="period" />
+		<result column="stage" property="stage"/>
 		<result column="next_date" property="nextDate" />
-		<collection property="list" ofType="com.bluemobi.pro.entity.ProductBorrowRepayRecord" select="findRecordByPbId" 
-						column="pdId = id"/>
 	</resultMap>
 	
 	<resultMap type="com.bluemobi.pro.entity.ProductBorrowRepayRecord" id="pbrrResultMap">
@@ -22,6 +21,22 @@
 		<result column="money" property="amount"/>
 		<result column="create_date" property="createDate" />
 	</resultMap>
+	
+	<!-- 查询本月是否已还过款 -->
+	<select id="findIsBorrow" parameterType="com.bluemobi.pro.entity.ProductBorrow" resultType="int">
+		SELECT 
+			COUNT(*) 
+		FROM 
+			buy_repay_record t 
+		JOIN 
+			buy_borrow_info b 
+		ON 
+			t.`borrow_info_id` = b.`id` 
+		WHERE 
+			FROM_UNIXTIME(t.`create_date` / 1000) &lt;= b.`next_date`
+		AND 
+			FROM_UNIXTIME(t.`create_date` / 1000) &gt;= DATE_SUB(FROM_UNIXTIME(t.`create_date` / 1000), INTERVAL 30 DAY);
+	</select>
 	
 	<!-- 创建借款记录信息 -->
 	<insert id="insertBrrow" parameterType="com.bluemobi.pro.entity.ProductBorrow" useGeneratedKeys="true" keyProperty="id">
@@ -31,6 +46,7 @@
 			user_id,
 			product_id,
 			name,
+			price,
 			image_url,
 			stage,
 			next_date,
@@ -47,6 +63,7 @@
 			#{userId},
 			#{productId},
 			#{productName},
+			#{price,javaType = java.lang.Double},
 			#{pic},
 			#{stage},
 			#{nextDate},
@@ -70,13 +87,17 @@
 			t.name,
 			t.image_url,
 			t.price,
+			t.period,
+			t.stage,
 			t.next_date
 		FROM
 			buy_borrow_info t
 		WHERE
 			1 = 1
-		AND
-			t.user_id = #{userId}
+		<if test="userId != null and userId != ''">
+			AND
+				t.user_id = #{userId}
+		</if>
 		<if test="id != null and id != ''">
 			AND
 				t.id = #{id}
@@ -92,6 +113,8 @@
 		FROM
 			buy_repay_record t
 		WHERE
+		   1 = 1
+		AND
 			t.borrow_info_id = #{pdId}
 	</select>
 	
@@ -126,7 +149,10 @@
 			buy_borrow_info
 		<set>
 			<if test="nextDate != null and nextDate != '' ">
-				next_date = #{nextDate}
+				next_date = #{nextDate},
+			</if>
+			<if test="period != null and period != ''">
+				period = (period - 1)
 			</if>
 		</set>
 		WHERE
