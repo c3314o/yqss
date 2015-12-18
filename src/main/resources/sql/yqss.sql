@@ -72,11 +72,11 @@ CREATE TABLE `borrow_info` (
   `repay_date` varchar(20) DEFAULT '' COMMENT '还款时间',
   `create_date` bigint(20) DEFAULT NULL COMMENT '借款时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
 
 /*Data for the table `borrow_info` */
 
-insert  into `borrow_info`(`id`,`user_id`,`limit_money`,`max_day`,`period`,`type`,`username`,`id_cartd`,`phone`,`school_name`,`address`,`product_id`,`stage_id`,`repay_date`,`create_date`) values (1,1,3000,15,0,1,'名称','14646464646','123456789','学校','地址',0,0,'2015-12-31 00:00:00',NULL);
+insert  into `borrow_info`(`id`,`user_id`,`limit_money`,`max_day`,`period`,`type`,`username`,`id_cartd`,`phone`,`school_name`,`address`,`product_id`,`stage_id`,`repay_date`,`create_date`) values (1,1,3000,15,0,1,'名称','14646464646','123456789','学校','地址',0,0,'2015-12-31 00:00:00',NULL),(14,6,888,15,0,1,'梅西','166444454544464646','13644949494','西班牙皇家学院','巴塞罗那足球场',0,0,'2016-01-03 00:00:00',1450410391612);
 
 /*Table structure for table `buy_borrow_info` */
 
@@ -91,7 +91,6 @@ CREATE TABLE `buy_borrow_info` (
   `price` double(10,2) NOT NULL DEFAULT '0.00' COMMENT '商品价格',
   `period` int(2) DEFAULT '0' COMMENT '剩余期数',
   `residue_money` double DEFAULT NULL COMMENT '剩余钱数',
-  
   `username` varchar(50) DEFAULT '' COMMENT '姓名',
   `id_cartd` varchar(30) DEFAULT '' COMMENT '身份证',
   `phone` varchar(15) DEFAULT '' COMMENT '手机',
@@ -101,9 +100,11 @@ CREATE TABLE `buy_borrow_info` (
   `next_date` varchar(30) DEFAULT '' COMMENT '下次还款时间',
   `create_date` bigint(20) DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 /*Data for the table `buy_borrow_info` */
+
+insert  into `buy_borrow_info`(`id`,`user_id`,`product_id`,`name`,`image_url`,`price`,`period`,`residue_money`,`username`,`id_cartd`,`phone`,`school_name`,`address`,`stage`,`next_date`,`create_date`) values (3,1,1,'苹果','',6088.00,7,NULL,'sfss','654646','13476107753','学校22','地址11111',8,'2016-01-15 00:00:00',1450233933482);
 
 /*Table structure for table `buy_repay_record` */
 
@@ -115,9 +116,11 @@ CREATE TABLE `buy_repay_record` (
   `money` double(10,2) NOT NULL DEFAULT '0.00' COMMENT '还款额度',
   `create_date` bigint(20) DEFAULT NULL COMMENT '创建时间/还款时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 /*Data for the table `buy_repay_record` */
+
+insert  into `buy_repay_record`(`id`,`borrow_info_id`,`money`,`create_date`) values (4,3,500.00,1450243248932);
 
 /*Table structure for table `collection` */
 
@@ -129,9 +132,11 @@ CREATE TABLE `collection` (
   `product_id` int(32) NOT NULL COMMENT '收藏商品ID',
   `create_date` bigint(20) DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8;
 
 /*Data for the table `collection` */
+
+insert  into `collection`(`id`,`user_id`,`product_id`,`create_date`) values (6,6,5,20151217145555),(7,6,5,20151217145610),(37,6,1,1450406333803),(38,6,3,1450424759238);
 
 /*Table structure for table `helper` */
 
@@ -228,7 +233,7 @@ CREATE TABLE `product` (
   `price` double(10,2) NOT NULL DEFAULT '0.00' COMMENT '商品价格',
   `content` varchar(500) DEFAULT '' COMMENT '商品描述',
   `product_type` int(32) NOT NULL COMMENT '商品所属类型',
-  `url`varchar(500) default '' comment '商品链接',
+  `url` varchar(500) DEFAULT '' COMMENT '商品链接',
   `is_list` int(2) DEFAULT '1' COMMENT '是否上架 1:上架 2:下架',
   `create_date` bigint(20) DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
@@ -236,7 +241,7 @@ CREATE TABLE `product` (
 
 /*Data for the table `product` */
 
-insert  into `product`(`id`,`name`,`price`,`content`,`product_type`,`is_list`,`create_date`) values (1,'苹果',6088.00,'介绍',1,1,NULL),(2,'三星',6088.00,'介绍222',1,1,NULL),(3,'thinkpad',6088.00,'介绍222',2,1,NULL),(4,'冰箱',6088.00,'介绍222',3,1,NULL),(5,'音响',6088.00,'介绍222',4,1,NULL);
+insert  into `product`(`id`,`name`,`price`,`content`,`product_type`,`url`,`is_list`,`create_date`) values (1,'苹果',6088.00,'介绍',1,'',1,NULL),(2,'三星',6088.00,'介绍222',1,'',1,NULL),(3,'thinkpad',6088.00,'介绍222',2,'',1,NULL),(4,'冰箱',6088.00,'介绍222',3,'',1,NULL),(5,'音响',6088.00,'介绍222',4,'',1,NULL);
 
 /*Table structure for table `product_comment` */
 
@@ -251,11 +256,11 @@ CREATE TABLE `product_comment` (
   `score` int(2) DEFAULT '5' COMMENT '评论等级 1-5',
   `create_date` bigint(20) DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8;
 
 /*Data for the table `product_comment` */
 
-insert  into `product_comment`(`id`,`product_id`,`from_user_id`,`to_user_id`,`content`,`score`,`create_date`) values (1,1,5,1,'评论1111',5,NULL),(2,1,5,0,'评论222',5,NULL),(3,1,5,0,'评论333',5,NULL);
+insert  into `product_comment`(`id`,`product_id`,`from_user_id`,`to_user_id`,`content`,`score`,`create_date`) values (1,1,5,1,'评论1111',5,NULL),(2,1,5,0,'评论222',5,NULL),(3,1,5,0,'评论333',5,NULL),(4,13,6,0,'哦',5,20151216160432),(5,13,6,0,'哈哈',5,20151216162044),(6,13,6,0,'个',5,20151216165043),(7,13,6,0,'。',5,20151216165234),(8,13,6,0,'，',5,20151216165238),(9,13,6,0,'？',5,20151216165243),(10,13,6,0,'你好',5,20151216165417),(11,12,6,0,'你好',5,20151216165626),(12,12,6,0,'哈哈',5,20151216165634),(13,10,6,0,'你好',5,20151216170055),(14,14,6,0,'迷你',5,20151216173237),(15,14,6,0,'你好',5,20151216173256),(16,17,6,0,'你好',5,20151217135320),(17,17,6,6,'哎呦',5,20151217135705),(18,17,6,6,'。。。',5,20151217140020),(19,17,6,6,'以后',5,20151217140436),(20,16,6,6,'你好',5,1450406544632),(21,16,6,6,'哎呦',5,1450406549518),(22,16,6,6,'哈',5,1450406553466),(23,16,6,6,'啦',5,1450406557541),(24,16,6,6,'哪里',5,1450406562231),(25,16,6,6,'路',5,1450406566024),(26,16,6,6,'啊',5,1450406571033),(27,16,6,6,'兔',5,1450406576466),(28,16,6,6,'哈喽',5,1450406581283),(29,16,6,6,'里',5,1450406584902),(30,16,6,6,'比赛',5,1450406601456),(31,17,6,6,'哎呦',5,1450418429331);
 
 /*Table structure for table `product_images` */
 
@@ -270,7 +275,7 @@ CREATE TABLE `product_images` (
   `small_url` varchar(200) DEFAULT '' COMMENT '缩略图',
   `create_date` bigint(20) DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
 /*Data for the table `product_images` */
 
@@ -314,9 +319,11 @@ CREATE TABLE `repay_record` (
   `money` double(10,2) NOT NULL DEFAULT '0.00' COMMENT '还款额度',
   `create_date` bigint(20) DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 /*Data for the table `repay_record` */
+
+insert  into `repay_record`(`id`,`borrow_info_id`,`money`,`create_date`) values (1,14,1.00,1450423224445),(2,14,2.00,1450423580443),(3,14,1.00,1450423868422),(4,14,2.00,1450424282201),(5,14,2.00,1450424892042);
 
 /*Table structure for table `second_hand` */
 
@@ -330,11 +337,11 @@ CREATE TABLE `second_hand` (
   `user_id` int(32) NOT NULL COMMENT '所属用户ID',
   `create_date` bigint(20) DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8;
 
 /*Data for the table `second_hand` */
 
-insert  into `second_hand`(`id`,`title`,`content`,`price`,`user_id`,`create_date`) values (1,'二手商品','水水水水',100.00,5,NULL),(2,'二手商品11','fsadfsadf',1000.00,5,NULL),(3,'二手商品222','fsadfsadf',1000.00,5,NULL),(4,'二手商品222','fsadfsadfasdf',1000.00,5,NULL),(5,'二手商品222','fsadfsadfasdf',1000.00,5,NULL),(6,'二手商品222','fsadfsadfasdf',1000.00,5,NULL),(7,'二手商品222','fsadfsadfasdf',1000.00,5,NULL),(8,'二手商品222','fsadfsadfasdf',1000.00,5,NULL),(9,'二手商品222','fsadfsadfasdf',1000.00,5,NULL),(10,'二手商品222','fsadfsadfasdf',1000.00,5,NULL),(11,'你','哈',12.00,6,20151215165144),(12,'哈哈','哈彼此彼此',6464.00,6,20151215165435);
+insert  into `second_hand`(`id`,`title`,`content`,`price`,`user_id`,`create_date`) values (1,'二手商品','水水水水',100.00,5,NULL),(2,'二手商品11','fsadfsadf',1000.00,5,NULL),(3,'二手商品222','fsadfsadf',1000.00,5,NULL),(4,'二手商品222','fsadfsadfasdf',1000.00,5,NULL),(5,'二手商品222','fsadfsadfasdf',1000.00,5,NULL),(6,'二手商品222','fsadfsadfasdf',1000.00,5,NULL),(7,'二手商品222','fsadfsadfasdf',1000.00,5,NULL),(8,'二手商品222','fsadfsadfasdf',1000.00,5,NULL),(9,'二手商品222','fsadfsadfasdf',1000.00,5,NULL),(10,'二手商品222','fsadfsadfasdf',1000.00,5,NULL),(15,'哦哦','恩根',333.00,6,20151216175203),(16,'哦哦','恩根',333.00,6,20151216175224),(17,'哦哦1111','恩根',333.00,6,20151216181128),(21,'司法考试大家啊','司法考试大家啊司法考试大家啊司法考试大家啊',1000.00,5,1450428924088),(22,'司法考试大家啊','司法考试大家啊司法考试大家啊司法考试大家啊',1000.00,5,1450429199831),(24,'司法考试大家啊','司法考试大家啊司法考试大家啊司法考试大家啊',1000.00,5,1450429417868),(25,'司法考试大家啊','司法考试大家啊司法考试大家啊司法考试大家啊',1000.00,5,1450429568619),(27,'司法考试大家啊','司法考试大家啊司法考试大家啊司法考试大家啊',1000.00,5,1450429776539),(28,'司法考试大家啊','司法考试大家啊司法考试大家啊司法考试大家啊',1000.00,5,1450429858838),(29,'司法考试大家啊','司法考试大家啊司法考试大家啊司法考试大家啊',1000.00,5,1450429897903),(30,'司法考试大家啊','司法考试大家啊司法考试大家啊司法考试大家啊',1000.00,5,1450430015609),(31,'司法考试大家啊','司法考试大家啊司法考试大家啊司法考试大家啊',1000.00,5,1450430141432);
 
 /*Table structure for table `second_hand_images` */
 
@@ -349,9 +356,11 @@ CREATE TABLE `second_hand_images` (
   `small_url` varchar(200) DEFAULT '' COMMENT '缩略图',
   `create_date` bigint(20) DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
 
 /*Data for the table `second_hand_images` */
+
+insert  into `second_hand_images`(`id`,`second_hand_id`,`image_url`,`height`,`width`,`small_url`,`create_date`) values (1,24,NULL,0.00,0.00,'',1450429418007),(2,24,NULL,0.00,0.00,'',1450429418009),(3,24,NULL,0.00,0.00,'',1450429418010),(4,25,NULL,0.00,0.00,'',1450429568637),(5,25,NULL,0.00,0.00,'',1450429568638),(6,25,NULL,0.00,0.00,'',1450429568640),(7,27,NULL,0.00,0.00,'',1450429792231),(8,27,NULL,0.00,0.00,'',1450429792536),(9,27,NULL,0.00,0.00,'',1450429793279),(12,31,'http://localhost:8081/upload/temp/1450430151926_128704.jpg',850.00,570.00,'',1450430152220);
 
 /*Table structure for table `users_bank_card` */
 
@@ -367,7 +376,7 @@ CREATE TABLE `users_bank_card` (
   `is_default` int(2) DEFAULT '1' COMMENT '是否默认 1默认 2非默认',
   `create_date` bigint(20) DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 /*Data for the table `users_bank_card` */
 
@@ -395,7 +404,7 @@ CREATE TABLE `users_info` (
 
 /*Data for the table `users_info` */
 
-insert  into `users_info`(`id`,`user_id`,`mobile`,`name`,`gender`,`head_url`,`id_card`,`school_id`,`school_name`,`address`,`status`,`create_date`) values (1,5,'13429806156','测试',1,'','4208888888888',0,'测试学校','武汉',1,20151214121638),(2,6,'13247176223','巴德123456',1,'','',0,'','',1,20151215143102);
+insert  into `users_info`(`id`,`user_id`,`mobile`,`name`,`gender`,`head_url`,`id_card`,`school_id`,`school_name`,`address`,`status`,`create_date`) values (1,5,'13247176223','测试',1,'','4208888888888',0,'测试学校','武汉',1,20151214121638),(2,6,'13247176223','1111111',1,'','411326198401069935',0,'家里蹲大学','火星',1,20151215143102);
 
 /*Table structure for table `users_login` */
 
