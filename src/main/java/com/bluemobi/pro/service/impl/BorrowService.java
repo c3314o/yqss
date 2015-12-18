@@ -38,7 +38,7 @@ public class BorrowService extends BaseService {
 		List<BorrowInfo> list = findBorrowByUserId(borrowInfo);
 		if(list != null && list.size() >0 ) {
 			BorrowInfo _info = list.get(list.size() - 1);
-			if(_info.getState() != 0) {
+			if(_info != null &&_info.getState() != 0) {
 				return -1;
 			}
 		}

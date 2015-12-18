@@ -14,6 +14,7 @@
 		<result column="period" property="period" />
 		<result column="stage" property="stage"/>
 		<result column="next_date" property="nextDate" />
+		<result column="create_date" property="createDate"/>
 	</resultMap>
 	
 	<resultMap type="com.bluemobi.pro.entity.ProductBorrowRepayRecord" id="pbrrResultMap">
@@ -89,7 +90,8 @@
 			t.price,
 			t.period,
 			t.stage,
-			t.next_date
+			t.next_date,
+			t.create_date
 		FROM
 			buy_borrow_info t
 		WHERE

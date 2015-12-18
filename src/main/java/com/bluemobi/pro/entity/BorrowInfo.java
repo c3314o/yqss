@@ -3,6 +3,8 @@ package com.bluemobi.pro.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.bluemobi.utils.DateUtils;
 import com.bluemobi.utils.YqssUtils;
 
@@ -21,7 +23,7 @@ public class BorrowInfo extends BaseEntity {
 	/**
 	 * 借款金额
 	 */
-	private Double money;
+	private double money;
 	
 	/**
 	 * 借款时间
@@ -213,6 +215,7 @@ public class BorrowInfo extends BaseEntity {
     * @throws
 	 */
 	public Integer getTotalDays() {
+		if(jkTime == null) return -1;
 		totalDays = YqssUtils.totalDays(DateUtils.parse(jkTime, YqssUtils.DEFAULT_FORMAT));
 		return totalDays;
 	}
@@ -229,6 +232,7 @@ public class BorrowInfo extends BaseEntity {
      * @throws
 	 */
 	public Integer getResidueDays() {
+		if(StringUtils.isBlank(lastRepayDate)) return -1;
 		residueDays = YqssUtils.residueDay(lastRepayDate);
 		return residueDays;
 	}

@@ -34,8 +34,7 @@ public class FileUploadUtils {
             File image = new File(FileUploadUtils.class
                     .getResource("/")
                     .getPath()
-                    .substring(0,
-                    		FileUploadUtils.class.getResource("/").getPath().indexOf("WEB-INF"))
+                    .substring(0, FileUploadUtils.class.getResource("/").getPath().indexOf("WEB-INF"))
                     + path);
             File dir = image.getParentFile();
             if (!dir.exists()) {

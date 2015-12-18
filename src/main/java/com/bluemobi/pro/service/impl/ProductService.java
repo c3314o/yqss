@@ -1,16 +1,23 @@
 package com.bluemobi.pro.service.impl;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.bluemobi.pro.entity.Collection;
+import com.bluemobi.pro.entity.Image;
 import com.bluemobi.pro.entity.Product;
 import com.bluemobi.pro.entity.ProductComment;
+import com.bluemobi.pro.entity.ProductImage;
 import com.bluemobi.pro.entity.SecondHandProduct;
 import com.bluemobi.sys.page.Page;
 import com.bluemobi.sys.service.BaseService;
+import com.bluemobi.utils.ImageUtils;
 
 @Service
 public class ProductService extends BaseService{
@@ -27,8 +34,52 @@ public class ProductService extends BaseService{
      * @return void    返回类型
      * @throws
 	 */
-	public void insertSHProduct(SecondHandProduct shp) throws Exception {
+	@Transactional
+	public void insertSHProduct(SecondHandProduct shp,MultipartHttpServletRequest fileRequest) throws Exception {
+		
 		this.getBaseDao().save(PRIFIX_SECOND_HAND + ".insertSHProduct", shp);
+		
+		Iterator<String> fileNames =  fileRequest.getFileNames();
+		while(fileNames.hasNext()) {
+			String fileName = fileNames.next();
+			MultipartFile imageFile = (MultipartFile) fileRequest.getFile(fileName);
+			Image image = ImageUtils.saveImage(imageFile, false);
+			ProductImage pImage = new ProductImage();
+			pImage.setImage(image.getImage());
+			pImage.setWidth(image.getWidth());
+			pImage.setHeight(image.getHeight());
+			pImage.setProductId(shp.getId());
+			
+			insertProductImage(pImage);
+		}
+	}
+	
+	public int insertProductImage(ProductImage image) throws Exception {
+		return this.getBaseDao().save(PRIFIX_SECOND_HAND + ".insertImage", image);
+	}
+	
+	/**
+	 * 
+     * @Title: batchDeleteProductImage
+     * @Description: 批量删除图片
+     * @param @param imagesIds
+     * @param @return
+     * @param @throws Exception    参数
+     * @return int    返回类型
+     * @throws
+	 */
+	public int batchDeleteProductImage(String imagesIds) throws Exception {
+		int offest = 0;
+		String[] ids = imagesIds.split(",");
+		for (String id : ids) {
+			deleteProductImage(id);
+			++offest;
+		}
+		return offest;
+	}
+	
+	public int deleteProductImage(String imageId ) throws Exception {
+		return this.getBaseDao().delete(PRIFIX_SECOND_HAND + ".deleteImage", imageId);
 	}
 	
 	/**
@@ -60,7 +111,7 @@ public class ProductService extends BaseService{
 	 * @throws Exception
 	 */
 	public void deleteSHProduct(SecondHandProduct shp) throws Exception {
-		this.getBaseDao().delete(PRIFIX_SECOND_HAND + ".deleteSHProduct", shp.getId());
+		this.getBaseDao().delete(PRIFIX_SECOND_HAND + ".deleteSHProduct", shp);
 	}
 	
 	/**
@@ -68,8 +119,18 @@ public class ProductService extends BaseService{
 	 * @param shp
 	 * @throws Exception
 	 */
-	public void updateSHProduct(SecondHandProduct shp) throws Exception {
+	public void updateSHProduct(SecondHandProduct shp,MultipartHttpServletRequest fileRequest) throws Exception {
+		shp.setCreateDate(System.currentTimeMillis());
 		this.getBaseDao().update(PRIFIX_SECOND_HAND + ".updateSHProduct", shp);
+		
+		Iterator<String> fileNames =  fileRequest.getFileNames();
+		while(fileNames.hasNext()) {
+			String fileName = fileNames.next();
+			MultipartFile imageFile = (MultipartFile) fileRequest.getAttribute(fileName);
+			ProductImage image = (ProductImage) ImageUtils.saveImage(imageFile, false);
+			image.setProductId(shp.getId());
+			insertProductImage(image);
+		}
 	}
 	
  	/**
@@ -106,6 +167,7 @@ public class ProductService extends BaseService{
 		Map<String,Object> paramMap = new HashMap<String,Object>();
 		paramMap.put("title", product.getTitle());
 		paramMap.put("productType", product.getProductType());
+		paramMap.put("userId", product.getUserId());
 		return this.getBaseDao().page(PRIFIX_PRODUCT + ".findProduct", paramMap, currentPage, pageSize);
 	}
 	
@@ -131,9 +193,10 @@ public class ProductService extends BaseService{
 	 */
 	public int collectProduct(Collection collection) throws Exception {
 		Collection _collect = this.getBaseDao().getObject(PRIFIX_PRODUCT + ".findProductCollect", collection);
-		if(_collect != null && _collect.getId() != null) {
+		if(_collect != null && _collect.getUserId() != null) {
 			return -1;
 		}
+		collection.setCreateDate(System.currentTimeMillis());
 		return this.getBaseDao().save(PRIFIX_PRODUCT + ".insertCollect", collection);
 	}
 	

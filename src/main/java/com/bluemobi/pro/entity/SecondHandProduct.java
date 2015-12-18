@@ -7,6 +7,8 @@ public class SecondHandProduct extends BaseEntity {
 
 	private Double price;
 
+	private Integer productId;
+	
 	private String title;
 
 	private String content;
@@ -17,6 +19,14 @@ public class SecondHandProduct extends BaseEntity {
 	
 	private List<ProductImage> picList = new ArrayList<ProductImage>();
 	
+	public Integer getProductId() {
+		return productId;
+	}
+
+	public void setProductId(Integer productId) {
+		this.productId = productId;
+	}
+
 	public Integer getUserId() {
 		return userId;
 	}

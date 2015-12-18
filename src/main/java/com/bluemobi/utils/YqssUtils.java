@@ -3,7 +3,6 @@ package com.bluemobi.utils;
 import java.io.File;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -32,6 +31,7 @@ public class YqssUtils {
 	 * @return
 	 */
 	public static int residueDay(String residueDate) {
+		if(StringUtils.isBlank(residueDate)) return -1;
 		return residueDay(DateUtils.parse(residueDate, "yyyy-MM-dd HH:mm:ss"));
 	}
 

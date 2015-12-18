@@ -39,7 +39,7 @@ public class HrMessageApp {
 	@ResponseBody
 	public Result findHrMessage(@RequestParam(value = "pageNum",required = false) Integer pageNum,
 											  @RequestParam(value = "pageSize", required = false) Integer pageSize) {
-		pageNum = (pageNum == null ? 0 : pageNum -1);
+		pageNum = (pageNum == null ? 1 : pageNum );
 		pageSize = (pageSize == null ? 10 : pageSize);
 		
 		Page<HrMessage> page = null;

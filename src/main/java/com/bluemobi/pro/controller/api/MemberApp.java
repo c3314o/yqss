@@ -12,9 +12,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.bluemobi.cache.CacheService;
 import com.bluemobi.constant.ErrorCode;
+import com.bluemobi.pro.entity.MsgCount;
 import com.bluemobi.pro.entity.RegisterUser;
 import com.bluemobi.pro.entity.UserBank;
 import com.bluemobi.pro.entity.UserInfo;
@@ -51,10 +53,10 @@ public class MemberApp {
 	 */
 	@RequestMapping(value = "modify", method = RequestMethod.POST)
 	@ResponseBody
-	public Result modifyMemberInfo(UserInfo userInfo) {
+	public Result modifyMemberInfo(UserInfo userInfo,@RequestParam(value = "headPic",required = false) MultipartFile file) {
 
 		try {
-			service.modifyUser(userInfo);
+			service.modifyUser(userInfo,file);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return Result.failure();
@@ -96,7 +98,7 @@ public class MemberApp {
 				
 				UserInfo userInfo = new UserInfo();
 				userInfo.setMobile(rUser.getMobile());
-				service.modifyUser(userInfo);
+				service.modifyUser(userInfo,null);
 			} catch (Exception e) {
 				e.printStackTrace();
 				return Result.failure();
@@ -213,5 +215,30 @@ public class MemberApp {
 			return Result.failure();
 		}
 		return Result.success();
+	}
+
+	/**
+	 * 
+     * @Title: counMsg
+     * @Description: 计算消息数
+     * @param @param userInfo
+     * @param @return    参数
+     * @return Result    返回类型
+     * @throws
+	 */
+	@RequestMapping(value = "msgcount", method = RequestMethod.POST)
+	@ResponseBody
+	public Result counMsg(UserInfo userInfo) {
+		
+		MsgCount m = null;
+		try {
+			int count = service.countMgsNum(userInfo);
+			m = new MsgCount();
+			m.setNum(count);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Result.failure();
+		}
+		return Result.success(m);
 	}
 }

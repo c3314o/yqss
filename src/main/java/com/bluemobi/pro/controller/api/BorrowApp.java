@@ -46,9 +46,12 @@ public class BorrowApp {
 		
 		try {
 			int flag = borrowInfo.getFlag();
+			BorrowInfo _info = new BorrowInfo();
 			if(flag == 0) {
 				// 借款
 				service.borrowInsertUserInfo(borrowInfo);
+				_info.setId(borrowInfo.getId());
+				return Result.success(_info);
 			}
 			else if(flag == 1) {
 				ProductBorrow pb = new ProductBorrow();
@@ -61,12 +64,16 @@ public class BorrowApp {
 				pb.setProductId(borrowInfo.getProductId());
 				pb.setStage(borrowInfo.getStage());
 				pbService.borrowProduct(pb);
+				
+				ProductBorrow _pb = new ProductBorrow();
+				_pb.setId(pb.getId());
+				return Result.success(_pb);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			return Result.failure();
 		}
-		return Result.success();
+		return null;
 	}
 	
 	/**
@@ -107,6 +114,10 @@ public class BorrowApp {
 		List<BorrowInfo> iblist = null;
 		try {
 			iblist = service.findBorrowByUserId(bi);
+			for (BorrowInfo borrowInfo : iblist) {
+				List<BorrowRepayRecord> list = service.findBRR(borrowInfo);
+				borrowInfo.setList(list);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			return Result.failure();

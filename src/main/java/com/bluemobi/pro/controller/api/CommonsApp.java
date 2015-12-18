@@ -183,6 +183,7 @@ public class CommonsApp {
 				home.setAvailable(5000);
 				home.setBorrowday(30);
 				
+				home.setId(list.get(list.size() - 1).getId());
 				home.setAmount(list.get(list.size() - 1).getResidueMoney());
 				home.setSurplusday(list.get(list.size() - 1).getResidueDays());
 			}
@@ -206,15 +207,25 @@ public class CommonsApp {
 		return Result.success();
 	}
 
+	/**
+	 * 
+     * @Title: uploadHead
+     * @Description: TODO(这里用一句话描述这个方法的作用)
+     * @param @param userInfo
+     * @param @param file
+     * @param @return    参数
+     * @return Result    返回类型
+     * @throws
+	 */
 	@RequestMapping(value = "uploadHead", method = RequestMethod.POST)
 	@ResponseBody
 	public Result uploadHead(UserInfo userInfo, @RequestParam("head") MultipartFile file) {
 
 		String headPic = null;
 		try {
-			headPic = ImageUtils.saveImage(file, false)[0];
+//			headPic = ImageUtils.saveImage(file, false)[0];
 			userInfo.setHeadPic(headPic);
-			service.modifyUser(userInfo);
+			service.modifyUser(userInfo,null);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

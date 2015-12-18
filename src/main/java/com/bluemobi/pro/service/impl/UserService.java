@@ -4,12 +4,16 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.bluemobi.pro.entity.Image;
 import com.bluemobi.pro.entity.RegisterUser;
 import com.bluemobi.pro.entity.UserBank;
 import com.bluemobi.pro.entity.UserInfo;
 import com.bluemobi.pro.entity.UserLogin;
 import com.bluemobi.sys.service.BaseService;
+import com.bluemobi.utils.ImageUtils;
 
 @Service
 public class UserService extends BaseService{
@@ -81,7 +85,9 @@ public class UserService extends BaseService{
 	 * @param user
 	 * @throws Exception
 	 */
-	public void modifyUser(UserInfo userInfo) throws Exception {
+	public void modifyUser(UserInfo userInfo,MultipartFile file) throws Exception {
+		Image image = ImageUtils.saveImage(file, false);
+		userInfo.setHeadPic(image.getImage());
 		this.getBaseDao().update(PRIFIX_USER_INFO + ".update", userInfo);
 	}
 	
@@ -143,5 +149,19 @@ public class UserService extends BaseService{
 	 */
 	public int deleteUserBank(UserBank userBank) throws Exception {
 		return this.getBaseDao().delete(PRIFIX_USER_INFO + ".deleteUserBank", userBank);
+	}
+	
+	/**
+	 * 
+     * @Title: countMgsNum
+     * @Description: 计算评论消息数
+     * @param @param userInfo
+     * @param @return
+     * @param @throws Exception    参数
+     * @return int    返回类型
+     * @throws
+	 */
+	public int countMgsNum(UserInfo userInfo)  throws Exception {
+		return this.getBaseDao().get(PRIFIX_USER_INFO + ".countMgsNum", userInfo);
 	}
 }

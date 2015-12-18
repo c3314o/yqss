@@ -48,7 +48,7 @@
 	</resultMap>
 
 	<!-- 发布二手商品 -->
-	<insert id="insertSHProduct" parameterType="com.bluemobi.pro.entity.SecondHandProduct">
+	<insert id="insertSHProduct" parameterType="com.bluemobi.pro.entity.SecondHandProduct" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO
 			second_hand
 		(
@@ -64,9 +64,60 @@
 			#{content},
 			#{price},
 			#{userId},
-			NOW()
+			#{createDate}
 		)
 	</insert>
+
+	<!-- 保存二手商品图片 -->
+	<insert id="insertImage" parameterType="com.bluemobi.pro.entity.ProductImage">
+		INSERT INTO
+			second_hand_images
+		(
+			second_hand_id,
+			image_url,
+			height,
+			width,
+			small_url,
+			create_date
+		)
+		VALUES
+		(
+			#{productId},
+			#{image},
+			#{height},
+			#{width},
+			#{smallUrl},
+			#{createDate}
+		)
+	</insert>
+
+	<!-- 删除图片 -->
+	<delete id="deleteImage" parameterType="java.lang.String">
+		DELETE FROM
+			second_hand_images 
+		WHERE
+			id = #{imageId}
+	</delete>
+
+	<!-- 更新二手商品信息 -->
+	<update id="updateSHProduct" parameterType="com.bluemobi.pro.entity.SecondHandProduct">
+		UPDATE
+			second_hand
+		<set>
+			<if test="title != null and title != ''">
+				title = #{title},
+			</if>
+			<if test="content != null and content != ''">
+				content = #{content},
+			</if>
+			<if test="price != null and price != ''">
+				price = #{price},
+			</if>
+			<if test="createDate != null and createDate != ''">
+				create_date = #{createDate}
+			</if>
+		</set>
+	</update>
 
 	<!-- 查询二手商品 -->
 	<select id="findSecondProduct" parameterType="com.bluemobi.pro.entity.SecondHandProduct"
@@ -151,7 +202,11 @@
 		FROM
 			product_comment t
 		WHERE
-			t.product_id = #{productId}
+			1 = 1
+		<if test="productId != null and productId != ''">
+			AND
+				t.product_id = #{productId}
+		</if>
 		<if test="userId != null and userId != ''">
 			AND 
 				t.to_user_id = #{userId}
@@ -175,7 +230,8 @@
 			#{fromUserId},
 			#{toUserId},
 			#{content},
-			NOW()
+			#{createDate}
 		)
 	</insert>
+	
 </mapper> 

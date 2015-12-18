@@ -35,6 +35,11 @@ public class Product extends BaseEntity {
 	 */
 	private Integer productType;
 	
+	/**
+	 * 商品链接
+	 */
+	private String url;
+	
 	private Integer isCollect;
 	
 	@ExcludeFile
@@ -47,6 +52,12 @@ public class Product extends BaseEntity {
 	
 	private List<Stage> stageList;
 	
+	public String getUrl() {
+		return url;
+	}
+	public void setUrl(String url) {
+		this.url = url;
+	}
 	public Integer getUserId() {
 		return userId;
 	}

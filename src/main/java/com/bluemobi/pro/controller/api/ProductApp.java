@@ -2,12 +2,14 @@ package com.bluemobi.pro.controller.api;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.bluemobi.constant.ErrorCode;
 import com.bluemobi.pro.entity.Collection;
@@ -42,7 +44,7 @@ public class ProductApp {
 	@ResponseBody
 	public Result findProduct(Product product,@RequestParam(value = "pageNum",required = false) Integer pageNum,
 										@RequestParam(value = "pageSize", required = false) Integer pageSize) {
-		pageNum =( pageNum == null ? 0 : pageNum - 1);
+		pageNum =( pageNum == null ? 1 : pageNum);
 		pageSize = ( pageSize == null ? 10 : pageSize );
 		
 		Page<Product> page = null;
@@ -155,13 +157,45 @@ public class ProductApp {
 	 */
 	@RequestMapping(value = "second/publish", method = RequestMethod.POST)
 	@ResponseBody
-	public Result publishSHProduct(SecondHandProduct shp) {
+	public Result publishSHProduct(SecondHandProduct shp,MultipartHttpServletRequest fileRequest) {
 		
 		try {
-			service.insertSHProduct(shp);
+			if(shp.getProductId() != null) {
+				service.updateSHProduct(shp,fileRequest);
+			}
+			else {
+				service.insertSHProduct(shp,fileRequest);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			return Result.failure();
+		}
+		return Result.success();
+	}
+	
+	/**
+	 * 
+     * @Title: deleteProductImage
+     * @Description: 批量删除图片
+     * @param @param imageIds
+     * @param @return    参数
+     * @return Result    返回类型
+     * @throws
+	 */
+	@RequestMapping(value = "second/deleteImage", method = RequestMethod.POST)
+	@ResponseBody
+	public Result deleteProductImage(@RequestParam("imageIds") String imageIds) {
+		
+		if(StringUtils.isNotBlank(imageIds)) {
+			try {
+				service.batchDeleteProductImage(imageIds);
+			} catch (Exception e) {
+				e.printStackTrace();
+				return Result.failure();
+			}
+		}
+		else {
+			return Result.failure(ErrorCode.ERROR_02);
 		}
 		return Result.success();
 	}
@@ -179,7 +213,7 @@ public class ProductApp {
 	public Result findSHProduct(SecondHandProduct shp,@RequestParam(value = "pageNum",required = false) Integer pageNum,
 			@RequestParam(value = "pageSize", required = false) Integer pageSize) {
 		
-		pageNum =( pageNum == null ? 0 : pageNum - 1);
+		pageNum =( pageNum == null ? 1 : pageNum);
 		pageSize = ( pageSize == null ? 10 : pageSize );
 		
 		Page<SecondHandProduct>  page = null;
@@ -263,7 +297,7 @@ public class ProductApp {
 	public Result findSHProductComment(ProductComment comment,@RequestParam(value = "pageNum",required = false) Integer pageNum,
 			@RequestParam(value = "pageSize", required = false) Integer pageSize) {
 	
-		pageNum =( pageNum == null ? 0 : pageNum - 1);
+		pageNum =( pageNum == null ? 1 : pageNum );
 		pageSize = ( pageSize == null ? 10 : pageSize );
 		
 		Page<ProductComment> page = null;

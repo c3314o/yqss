@@ -228,6 +228,7 @@ CREATE TABLE `product` (
   `price` double(10,2) NOT NULL DEFAULT '0.00' COMMENT '商品价格',
   `content` varchar(500) DEFAULT '' COMMENT '商品描述',
   `product_type` int(32) NOT NULL COMMENT '商品所属类型',
+  `url`varchar(500) default '' comment '商品链接',
   `is_list` int(2) DEFAULT '1' COMMENT '是否上架 1:上架 2:下架',
   `create_date` bigint(20) DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)

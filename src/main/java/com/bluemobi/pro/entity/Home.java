@@ -6,20 +6,30 @@ package com.bluemobi.pro.entity;
  * @Description: 首页信息
  * @author yesong
  * @date 2015年12月14日
-     *
+ *
  */
 public class Home {
 
+	private int id;
+
 	private int available;
-	
+
 	private int borrowday;
-	
+
 	private double amount;
-	
+
 	private int surplusday;
 
 	public int getAvailable() {
 		return available;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public void setAvailable(int available) {
