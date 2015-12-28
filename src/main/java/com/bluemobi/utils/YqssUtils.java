@@ -1,6 +1,6 @@
 package com.bluemobi.utils;
 
-import java.io.File;
+import java.text.DecimalFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -17,13 +17,42 @@ public class YqssUtils {
 	public static int RESIDUE_DAY = 15; // 默认还款日期
 
 	static {
-		String rd = PropertiesUtils.getPropertiesValues("repayment_date_day",
-				YqssUtils.class.getResource("/").getPath() + "resource" + File.separator + "phyy.properties");
+		String rd = PropertiesUtils.getPropertiesValues("repayment_date_day","phyy.properties");
 		if (StringUtils.isNotBlank(rd)) {
 			RESIDUE_DAY = Integer.parseInt(rd);
 		}
 	}
 
+	/**
+	 * 
+     * @Title: numberFormat
+     * @Description: 保留价格两位小数
+     * @param @param number
+     * @param @return    参数
+     * @return double    返回类型
+     * @throws
+	 */
+	public static double numberFormat(double number) {
+		return Double.parseDouble(new DecimalFormat("#.00").format(number));
+	}
+	
+	/**
+	 * 
+     * @Title: countRate
+     * @Description: 计算月供
+     * @param @param rate
+     * @param @param stage
+     * @param @return    参数
+     * @return double    返回类型
+     * @throws
+	 */
+	public static double countRate(double rate,int stage,double money) {
+		double interest = ((money * rate * Math.pow((1 + rate), stage))) / (Math.pow((1 + rate), stage) -1); 
+		return interest;
+	}
+	
+	
+	
 	/**
 	 * 计算剩余还款天数
 	 * 
@@ -178,6 +207,8 @@ public class YqssUtils {
 //		System.out.println(residueDay("2014-10-15 00:00:00"));
 //		System.out.println(nextResidueDay("2016-01-15 00:00:00"));
 //		System.out.println(firstResidueDay());
-		System.out.println(borrowResidueDate(16));
+//		System.out.println(borrowResidueDate(16));
+//		System.out.println(countRate(0.02, 15, 3000));
+		System.out.println(numberFormat(100000.123456798));
 	}
 }

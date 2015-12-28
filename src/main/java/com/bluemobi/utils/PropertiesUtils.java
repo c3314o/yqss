@@ -67,6 +67,7 @@ public class PropertiesUtils {
 		if(StringUtils.isBlank(key) || StringUtils.isBlank(path)){
 			throw new IllegalAccessError();
 		}
+		path = PropertiesUtils.class.getResource("/").getPath() + "resource" + File.separator + path;
 		Properties prop = new Properties();
 		InputStream in = null;
 		try {

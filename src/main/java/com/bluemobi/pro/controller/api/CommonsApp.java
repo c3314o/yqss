@@ -210,7 +210,7 @@ public class CommonsApp {
 	/**
 	 * 
      * @Title: uploadHead
-     * @Description: TODO(这里用一句话描述这个方法的作用)
+     * @Description: 上传头像
      * @param @param userInfo
      * @param @param file
      * @param @return    参数
@@ -221,16 +221,13 @@ public class CommonsApp {
 	@ResponseBody
 	public Result uploadHead(UserInfo userInfo, @RequestParam("head") MultipartFile file) {
 
-		String headPic = null;
+		UserInfo info = null;
 		try {
-//			headPic = ImageUtils.saveImage(file, false)[0];
-			userInfo.setHeadPic(headPic);
-			service.modifyUser(userInfo,null);
+			info = service.modifyUser(userInfo,file);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
-		return Result.success();
+		return Result.success(info);
 	}
 	
 	/**

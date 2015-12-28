@@ -1,5 +1,6 @@
 package com.bluemobi.pro.controller.api;
 
+import java.io.File;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -11,14 +12,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.bluemobi.constant.Constant;
 import com.bluemobi.constant.ErrorCode;
 import com.bluemobi.pro.entity.Collection;
 import com.bluemobi.pro.entity.Product;
 import com.bluemobi.pro.entity.ProductComment;
 import com.bluemobi.pro.entity.SecondHandProduct;
+import com.bluemobi.pro.entity.Stage;
 import com.bluemobi.pro.service.impl.ProductService;
 import com.bluemobi.sys.page.Page;
+import com.bluemobi.utils.PropertiesUtils;
 import com.bluemobi.utils.Result;
+import com.bluemobi.utils.YqssUtils;
 
 /**
  * 商品controller
@@ -69,11 +74,34 @@ public class ProductApp {
 		Product _product = null;
 		try {
 			_product = service.findProductDetail(product);
+			countStagePrice(_product);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return Result.failure();
 		}
 		return Result.success(_product);
+	}
+	
+	/**
+	 * 
+     * @Title: countStagePrice
+     * @Description: 计算月供与总利息
+     * @param @param product    参数
+     * @return void    返回类型
+     * @throws
+	 */
+	public void countStagePrice(Product product) {
+		List<Stage> list = product.getStageList();
+		Double price = product.getPrice();
+		for (Stage stage : list) {
+			int _stage = stage.getStage();
+			int rate  = Integer.parseInt(PropertiesUtils.getPropertiesValues("rate", "phyy.properties"));
+			
+			double monthlyPayments = YqssUtils.countRate((rate*1.0)/100.0, _stage, price); // 月供
+			double interest = monthlyPayments * _stage - price;
+			stage.setPrice(YqssUtils.numberFormat(monthlyPayments));
+			stage.setAll(YqssUtils.numberFormat(interest));
+		}
 	}
 	
 	/**

@@ -126,10 +126,15 @@ public class ProductService extends BaseService{
 		Iterator<String> fileNames =  fileRequest.getFileNames();
 		while(fileNames.hasNext()) {
 			String fileName = fileNames.next();
-			MultipartFile imageFile = (MultipartFile) fileRequest.getAttribute(fileName);
-			ProductImage image = (ProductImage) ImageUtils.saveImage(imageFile, false);
-			image.setProductId(shp.getId());
-			insertProductImage(image);
+			MultipartFile imageFile = (MultipartFile) fileRequest.getFile(fileName);
+			Image image = ImageUtils.saveImage(imageFile, false);
+			ProductImage pImage = new ProductImage();
+			pImage.setImage(image.getImage());
+			pImage.setWidth(image.getWidth());
+			pImage.setHeight(image.getHeight());
+			pImage.setProductId(shp.getProductId());
+			
+			insertProductImage(pImage);
 		}
 	}
 	

@@ -17,6 +17,8 @@ public class Ads extends BaseEntity {
 	
 	private String content;
 	
+	private Integer productId;
+	
 	@ExcludeFile
 	private String linkUrl;
 	
@@ -24,6 +26,14 @@ public class Ads extends BaseEntity {
 	
 	@ExcludeFile
 	private Integer type;
+
+	public Integer getProductId() {
+		return productId;
+	}
+
+	public void setProductId(Integer productId) {
+		this.productId = productId;
+	}
 
 	public Integer getType() {
 		return type;

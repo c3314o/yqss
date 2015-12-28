@@ -53,10 +53,10 @@ public class MemberApp {
 	 */
 	@RequestMapping(value = "modify", method = RequestMethod.POST)
 	@ResponseBody
-	public Result modifyMemberInfo(UserInfo userInfo,@RequestParam(value = "headPic",required = false) MultipartFile file) {
+	public Result modifyMemberInfo(UserInfo userInfo) {
 
 		try {
-			service.modifyUser(userInfo,file);
+			service.modifyUser(userInfo,null);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return Result.failure();

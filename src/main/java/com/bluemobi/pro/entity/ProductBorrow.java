@@ -55,12 +55,12 @@ public class ProductBorrow extends BaseEntity {
 	/**
 	 * 每期还的金额
 	 */
-	private Double once;
+	private double once;
 	
 	/**
 	 * 剩余还款金额
 	 */
-	private Double surplus;
+	private double surplus;
 	
 	/**
 	 * 剩余期数
@@ -247,7 +247,7 @@ public class ProductBorrow extends BaseEntity {
 		return rate;
 	}
 
-	public void setRate(Double rate) {
+	public void setRate(double rate) {
 		this.rate = rate;
 	}
 
@@ -256,21 +256,21 @@ public class ProductBorrow extends BaseEntity {
 		return all;
 	}
 
-	public void setAll(Double all) {
+	public void setAll(double all) {
 		this.all = all;
 	}
 
 	public double getOnce() {
-		once = getSurplus() / getSurplusStages();
+		once = YqssUtils.numberFormat(getSurplus()) / YqssUtils.numberFormat(getSurplusStages() == 0 ? 1 : getSurplusStages());
 		return once;
 	}
 
-	public void setOnce(Double once) {
+	public void setOnce(double once) {
 		this.once = once;
 	}
 
-	public Double getSurplus() {
-		Double rrMoney = 0.0;
+	public double getSurplus() {
+		double rrMoney = 0.0;
 		for (ProductBorrowRepayRecord pbrr : list) {
 			rrMoney += pbrr.getAmount();
 		}
@@ -278,7 +278,7 @@ public class ProductBorrow extends BaseEntity {
 		return surplus;
 	}
 
-	public void setSurplus(Double surplus) {
+	public void setSurplus(double surplus) {
 		this.surplus = surplus;
 	}
 

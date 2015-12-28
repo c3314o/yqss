@@ -85,10 +85,11 @@ public class UserService extends BaseService{
 	 * @param user
 	 * @throws Exception
 	 */
-	public void modifyUser(UserInfo userInfo,MultipartFile file) throws Exception {
+	public UserInfo modifyUser(UserInfo userInfo,MultipartFile file) throws Exception {
 		Image image = ImageUtils.saveImage(file, false);
 		userInfo.setHeadPic(image.getImage());
 		this.getBaseDao().update(PRIFIX_USER_INFO + ".update", userInfo);
+		return userInfo;
 	}
 	
 	/**

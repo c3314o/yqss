@@ -117,6 +117,8 @@
 				create_date = #{createDate}
 			</if>
 		</set>
+		WHERE
+			id = #{productId}
 	</update>
 
 	<!-- 查询二手商品 -->
@@ -211,6 +213,9 @@
 			AND 
 				t.to_user_id = #{userId}
 		</if>
+		ORDER BY 
+			t.create_date
+		DESC
 	</select>
 	
 	<!-- 新增二手商品评论 -->
