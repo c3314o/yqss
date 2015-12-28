@@ -21,6 +21,8 @@ import com.bluemobi.pro.entity.BorrowInfo;
 import com.bluemobi.pro.entity.FeedBack;
 import com.bluemobi.pro.entity.Help;
 import com.bluemobi.pro.entity.Home;
+import com.bluemobi.pro.entity.Message;
+import com.bluemobi.pro.entity.MsgCount;
 import com.bluemobi.pro.entity.RegisterUser;
 import com.bluemobi.pro.entity.UserInfo;
 import com.bluemobi.pro.entity.UserLogin;
@@ -152,6 +154,11 @@ public class CommonsApp {
 		}
 	}
 
+	public Result sysMsgCount() {
+		
+		return null;
+	}
+	
 	/**
 	 * 
      * @Title: home

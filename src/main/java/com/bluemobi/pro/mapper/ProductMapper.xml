@@ -127,5 +127,6 @@
 			AND
 				t.product_id = #{productId}
 		</if>
+		ORDER BY t.id DESC
 	</select>
 </mapper> 

@@ -233,6 +233,7 @@
 			AND
 				t.user_id = #{userId}
 		</if>
+		ORDER BY t.id DESC
 	</select>
 	
 	<!-- 解除银行卡绑定 -->

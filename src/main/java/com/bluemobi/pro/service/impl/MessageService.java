@@ -2,7 +2,9 @@ package com.bluemobi.pro.service.impl;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.bluemobi.pro.entity.Message;
 import com.bluemobi.sys.service.BaseService;
@@ -45,5 +47,25 @@ public class MessageService extends BaseService {
 	 */
 	public Integer deleteMessage(Message message) throws Exception {
 		return this.getBaseDao().delete(PRIFIX + ".delete", message);
+	}
+	
+	/**
+	 * 计算用户未读消息数
+	 * @param msg
+	 * @return
+	 * @throws Exception
+	 */
+	public int sysMsgcount(Message msg) throws Exception {
+		return this.getBaseDao().get(PRIFIX + ".msgCount", msg);
+	}
+	
+	@Transactional
+	public void readMsg(String ids, Integer userId) throws Exception {
+		if(StringUtils.isNotBlank(ids)) {
+			String[] idss = ids.split(",");
+			for (String id : idss) {
+				this.getBaseDao().update(PRIFIX + ".readMsg", id);
+			}
+		}
 	}
 }

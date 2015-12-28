@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.bluemobi.pro.entity.Bank;
 import com.bluemobi.pro.entity.Help;
+import com.bluemobi.pro.entity.Message;
 import com.bluemobi.pro.entity.Qanda;
 import com.bluemobi.sys.service.BaseService;
 
@@ -22,6 +23,7 @@ public class CommonService extends BaseService {
 
 	public static final String PRIFIX_BANK = Bank.class.getName();
 	public static final String PRIFIX_HELPER = Help.class.getName();
+	public static final String PRIFIX_MESSAGE = Message.class.getName();
 	
 	/**
 	 * 查询所有银行

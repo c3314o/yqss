@@ -31,4 +31,28 @@
 		WHERE
 			id = #{id}
 	</delete>
+	
+	<!-- 计算系统消息 -->
+	<select id="msgCount" parameterType="com.bluemobi.pro.entity.Message" resultType="java.lang.Integer">
+		SELECT
+			COUNT(*)
+		FROM
+			message t
+		WHERE
+			1 = 1
+		AND
+			t.user_id = #{userId}
+		AND
+			t.is_list = 1
+	</select>
+	
+	<!-- 读取消息 -->
+	<update id="readMsg" parameterType="java.lang.Integer">
+		UPDATE
+			message 
+		SET
+			is_list = 2
+		WHERE
+			id = #{id}
+	</update>
 </mapper> 

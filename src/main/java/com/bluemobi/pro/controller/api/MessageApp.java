@@ -6,9 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bluemobi.pro.entity.Message;
+import com.bluemobi.pro.entity.MsgCount;
 import com.bluemobi.pro.service.impl.MessageService;
 import com.bluemobi.utils.Result;
 
@@ -65,6 +67,35 @@ public class MessageApp {
 		
 		try {
 			service.deleteMessage(message);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Result.failure();
+		}
+		return Result.success();
+	}
+	
+	@RequestMapping(value="sysMsgCount", method = RequestMethod.POST)
+	@ResponseBody
+	public Result sysMsgCount(Message msg) {
+		
+		int count = 0;
+		MsgCount mc = new MsgCount();
+		try {
+			count = service.sysMsgcount(msg);
+			mc.setNum(count);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Result.failure();
+		}
+		return Result.success(mc);
+	}
+	
+	@RequestMapping(value="readMsg", method = RequestMethod.POST)
+	@ResponseBody
+	public Result readMessage(@RequestParam("ids") String ids,@RequestParam("userId") Integer userId) {
+		
+		try {
+			service.readMsg(ids, userId);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return Result.failure();
