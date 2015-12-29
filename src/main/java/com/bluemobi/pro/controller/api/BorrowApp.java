@@ -63,6 +63,7 @@ public class BorrowApp {
 				pb.setAddress(borrowInfo.getAddress());
 				pb.setProductId(borrowInfo.getProductId());
 				pb.setStage(borrowInfo.getStage());
+				pb.setPeriod(borrowInfo.getStage());
 				pbService.borrowProduct(pb);
 				
 				ProductBorrow _pb = new ProductBorrow();

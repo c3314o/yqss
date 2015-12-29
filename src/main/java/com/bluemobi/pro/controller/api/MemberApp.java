@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.bluemobi.cache.CacheService;
 import com.bluemobi.constant.ErrorCode;
@@ -240,5 +239,27 @@ public class MemberApp {
 			return Result.failure();
 		}
 		return Result.success(m);
+	}
+	
+	/**
+	 * 
+     * @Title: readMsg
+     * @Description: 读取消息
+     * @param @param userId
+     * @param @return    参数
+     * @return Result    返回类型
+     * @throws
+	 */
+	@RequestMapping(value="readMsg", method = RequestMethod.POST)
+	@ResponseBody
+	public Result readMsg(@RequestParam("userId") Integer userId) {
+		
+		try {
+			service.readMsg(userId);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Result.failure();
+		}
+		return Result.success();
 	}
 }

@@ -8,6 +8,7 @@
 		<id column="id" property="id" />
 		<result column="title" property="msgTitle" />
 		<result column="content" property="msgContent" />
+		<result column="is_list" property="isList"/>
 		<result column="create_date" property="createDate" />
 	</resultMap>
 	
@@ -17,6 +18,7 @@
 			t.id,
 			t.title,
 			t.content,
+			t.is_list,
 			t.create_date
 		FROM
 			message t

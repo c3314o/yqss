@@ -22,6 +22,16 @@ public class Message extends BaseEntity {
 	
 	private String userId;
 	
+	private Integer isList;
+	
+	public Integer getIsList() {
+		return isList;
+	}
+
+	public void setIsList(Integer isList) {
+		this.isList = isList;
+	}
+
 	public String getUserId() {
 		return userId;
 	}

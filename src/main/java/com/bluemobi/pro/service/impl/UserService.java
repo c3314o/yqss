@@ -2,6 +2,7 @@ package com.bluemobi.pro.service.impl;
 
 import java.util.List;
 
+import org.apache.cassandra.cli.CliParser.exitStatement_return;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -164,5 +165,9 @@ public class UserService extends BaseService{
 	 */
 	public int countMgsNum(UserInfo userInfo)  throws Exception {
 		return this.getBaseDao().get(PRIFIX_USER_INFO + ".countMgsNum", userInfo);
+	}
+	
+	public void readMsg(Integer userId) throws Exception {
+		this.getBaseDao().update(PRIFIX_USER_INFO + ".readMsg", userId);
 	}
 }

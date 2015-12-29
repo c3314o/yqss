@@ -257,4 +257,13 @@
 				to_user_id = #{userId}
 		</if>
 	</select>
+	
+	<update id="readMsg" parameterType="java.lang.Integer">
+		UPDATE
+			product_comment
+		SET
+			is_list = 2
+		WHERE
+			to_user_id = #{userId}
+	</update>
 </mapper> 
