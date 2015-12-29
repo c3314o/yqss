@@ -252,6 +252,8 @@
 			product_comment
 		WHERE
 			1 = 1
+		AND
+			is_list = 1
 		<if test="userId != null and userId != ''">
 			AND
 				to_user_id = #{userId}
