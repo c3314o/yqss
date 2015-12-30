@@ -36,6 +36,9 @@
 			<if test="name != null and name != ''">
 				name,
 			</if>
+			<if test="nickname!= null and nickname != ''">
+				nickname,
+			</if>
 			<if test="gender != null and gender != ''">
 				gender,
 			</if>
@@ -64,6 +67,9 @@
 		   </if>
 			<if test="name != null and name != ''">
 				#{name},
+			</if>
+			<if test="nickname!= null and nickname != ''">
+				#{nickname},
 			</if>
 			<if test="gender != null and gender != ''">
 				#{gender},
@@ -120,7 +126,10 @@
 				address = #{address},
 			</if>
 			<if test="headPic != null and headPic != ''">
-				head_url = #{headPic}
+				head_url = #{headPic},
+			</if>
+			<if test="nickname != null and nickname != ''">
+				nickname = #{nickname}
 			</if>
 		</set>
 		WHERE
@@ -137,6 +146,7 @@
 			t.id,
 			t.user_id,
 			t.name,
+			t.nickname,
 			t.mobile,
 			t.gender,
 			t.id_card,

@@ -26,7 +26,7 @@
 		(
 			user_id,
 			username,
-			id_cartd,
+			id_card,
 			phone,
 			school_name,
 			address,

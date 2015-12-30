@@ -38,6 +38,7 @@ public class UserService extends BaseService{
 		UserInfo userInfo = new UserInfo();
 		userInfo.setUserId(user.getId());
 		userInfo.setMobile(user.getMobile());
+		userInfo.setNickname(user.getNickname());
 		return this.getBaseDao().save(PRIFIX_USER_INFO + ".insert", userInfo);
 	}
 	

@@ -21,6 +21,14 @@ public class UserInfo extends BaseEntity {
 	private String address;
 	private String headPic;
 	
+	private String nickname;
+	
+	public String getNickname() {
+		return nickname;
+	}
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
+	}
 	public Integer getUserId() {
 		return userId;
 	}

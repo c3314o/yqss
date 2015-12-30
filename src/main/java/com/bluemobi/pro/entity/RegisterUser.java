@@ -10,7 +10,16 @@ public class RegisterUser extends UserLogin{
 	private String code;
 	
 	private String mobile;
+	
+	private String nickname;
+	
+	public String getNickname() {
+		return nickname;
+	}
 
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
+	}
 
 	public String getMobile() {
 		return mobile;
