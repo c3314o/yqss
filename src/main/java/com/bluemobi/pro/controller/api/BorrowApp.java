@@ -3,6 +3,8 @@ package com.bluemobi.pro.controller.api;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.bluemobi.constant.ErrorCode;
 import com.bluemobi.pro.entity.BorrowInfo;
 import com.bluemobi.pro.entity.BorrowRepayRecord;
 import com.bluemobi.pro.entity.ProductBorrow;
@@ -34,7 +36,7 @@ public class BorrowApp {
 	/**
 	 * 
      * @Title: insertBorrow
-     * @Description: TODO(这里用一句话描述这个方法的作用)
+     * @Description: 借款基本信息
      * @param @param borrowInfo
      * @param @return    参数
      * @return Result    返回类型
@@ -49,8 +51,12 @@ public class BorrowApp {
 			BorrowInfo _info = new BorrowInfo();
 			if(flag == 0) {
 				// 借款
-				service.borrowInsertUserInfo(borrowInfo);
+				int _flag = service.borrowInsertUserInfo(borrowInfo);
 				_info.setId(borrowInfo.getId());
+				
+				if(_flag == -1) {
+					return Result.failure(ErrorCode.ERROR_18);
+				}
 				return Result.success(_info);
 			}
 			else if(flag == 1) {

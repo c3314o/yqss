@@ -1,6 +1,7 @@
 package com.bluemobi.pro.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
@@ -40,10 +41,13 @@ public class CommonService extends BaseService {
 	
 	
 	public Help findAllHelper() throws Exception {
-		
-		Help help = this.getBaseDao().getObject(PRIFIX_HELPER + ".findHelper",null);
+		Help help = new Help();
+		Map<String, Object> commons = this.getBaseDao().getObject(PRIFIX_HELPER + ".findHelper",null);
 		List<Qanda> list = this.getBaseDao().getList(PRIFIX_HELPER + ".findInnerHelper");
 		if(help != null) {
+			help.setId(Integer.parseInt(commons.get("id").toString()));
+			help.setQq(commons.get("qq").toString());
+			help.setPhone(commons.get("phone").toString());
 			help.setList(list);
 		}
 		return help;

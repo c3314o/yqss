@@ -18,17 +18,14 @@
 	</resultMap>
 	
 	<!-- 查询qq，电话信息 type_id = 1 是为qq,phone查询信息-->
-	<select id="findHelper" parameterType="com.bluemobi.pro.entity.Help" resultMap="helpResultMap">
+	<select id="findHelper" parameterType="com.bluemobi.pro.entity.Help" resultType="map">
 		SELECT
 			t.id,
-			t.question qq,
-			t.answer phone
+			t.qq qq,
+			t.mobile phone
 		FROM
-			helper t
-		WHERE
-			t.type = ''
-		OR
-			t.type IS NULL
+			commons t
+		LIMIT 1
 	</select>
 	
 	<!-- 查询帮助信息 -->

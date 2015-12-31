@@ -46,9 +46,25 @@ public class YqssUtils {
      * @return double    返回类型
      * @throws
 	 */
+	@Deprecated
 	public static double countRate(double rate,int stage,double money) {
 		double interest = ((money * rate * Math.pow((1 + rate), stage))) / (Math.pow((1 + rate), stage) -1); 
 		return interest;
+	}
+	
+	/**
+	 * 
+     * @Title: countRate0
+     * @Description: 计算月供
+     * @param @param stage
+     * @param @param money
+     * @param @return    参数
+     * @return double    返回类型
+     * @throws
+	 */
+	public static double countRate0(int stage,double money) {
+		double rate = DBUtils.getRate();
+		return (money / stage * 1.0) + (money * (rate/100.0));
 	}
 	
 	
@@ -209,6 +225,7 @@ public class YqssUtils {
 //		System.out.println(firstResidueDay());
 //		System.out.println(borrowResidueDate(16));
 //		System.out.println(countRate(0.02, 15, 3000));
-		System.out.println(numberFormat(100000.123456798));
+//		System.out.println(numberFormat(100000.123456798));
+		System.out.println(countRate0(10,1000));
 	}
 }

@@ -19,9 +19,9 @@ import cn.emay.channel.httpclient.SDKHttpClient;
  */
 public class SDKClientTest {
 
-	public static String sn = "2SDK-XXX-6688-XXXXX";// 软件序列号,请通过亿美销售人员获取
-	public static String key = "123456";// 序列号首次激活时自己设定
-	public static String password = "123456";// 密码,请通过亿美销售人员获取
+	public static String sn = "6SDK-EMY-6688-JDTTQ";// 软件序列号,请通过亿美销售人员获取
+	public static String key = "506980";// 序列号首次激活时自己设定
+	public static String password = "506980";// 密码,请通过亿美销售人员获取
 	public static String baseUrl = "http://sdk4rptws.eucp.b2m.cn:8080/sdkproxy/";
 
 	public static void main(String[] args) {
@@ -54,12 +54,12 @@ public class SDKClientTest {
 					System.out.println("当前余额:" + balance);
 					break;
 				case 3:
-					String mdn = "15831988955";
-					String message = "send->" + System.currentTimeMillis();
+					String mdn = "13476107753";
+					String message = "【验证码】你的验证码为";
 					message = URLEncoder.encode(message, "UTF-8");
-					String code = "888";
+					String code = "123456";
 					long seqId = System.currentTimeMillis();
-					param = "cdkey=" + sn + "&password=" + key + "&phone=" + mdn + "&message=" + message + "&addserial=" + code + "&seqid=" + seqId;
+					param = "cdkey=" + sn + "&password=" + key + "&phone=" + mdn + "&message=" + (message + code) + "&addserial=&seqid=" + seqId;
 					url = baseUrl + "sendsms.action";
 					ret = SDKHttpClient.sendSMS(url, param);
 					System.out.println("发送结果:" + ret);

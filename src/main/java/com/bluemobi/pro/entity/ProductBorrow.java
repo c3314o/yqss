@@ -261,7 +261,7 @@ public class ProductBorrow extends BaseEntity {
 	}
 
 	public double getOnce() {
-		once = YqssUtils.numberFormat(getSurplus()) / YqssUtils.numberFormat(getSurplusStages() == 0 ? 1 : getSurplusStages());
+		once = YqssUtils.countRate0(this.getStage(), this.getPrice());
 		return once;
 	}
 
