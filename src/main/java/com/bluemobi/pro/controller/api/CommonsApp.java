@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,6 +36,8 @@ import com.bluemobi.utils.ImageUtils;
 import com.bluemobi.utils.ParamUtils;
 import com.bluemobi.utils.Result;
 import com.bluemobi.utils.SmsUtils;
+
+import cn.emay.channel.SmsSend;
 
 @Controller
 @RequestMapping("/app/common/")
@@ -79,9 +82,8 @@ public class CommonsApp {
 			code = CommonUtils.getCode(6);
 
 			String mobile = params.get("mobile").toString();
-//			String result = JavaSmsApi.sendShortMessage(mobile, code);
 			// 成功
-			if (SmsUtils.cjsmsSend(code, mobile)) {
+			if (SmsSend.send(mobile, code)) {
 				cacheService.put(mobile, code);
 				return Result.success();
 			}
@@ -111,9 +113,9 @@ public class CommonsApp {
 			if (service.isExist(user)) {
 				return Result.failure(ErrorCode.ERROR_05);
 			}
-//			 else if(StringUtils.isBlank(requestCode) || !requestCode.equals(code)) {
-//				 return Result.failure(ErrorCode.ERROR_10);
-//			 }
+			 else if(StringUtils.isBlank(requestCode) || !requestCode.equals(code)) {
+				 return Result.failure(ErrorCode.ERROR_10);
+			 }
 			else {
 				service.addUser(user);
 				return Result.success();

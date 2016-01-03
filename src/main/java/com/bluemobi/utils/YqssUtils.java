@@ -46,10 +46,8 @@ public class YqssUtils {
      * @return double    返回类型
      * @throws
 	 */
-	@Deprecated
 	public static double countRate(double rate,int stage,double money) {
-		double interest = ((money * rate * Math.pow((1 + rate), stage))) / (Math.pow((1 + rate), stage) -1); 
-		return interest;
+		return (money / stage * 1.0) + (money * (rate/100.0));
 	}
 	
 	/**
@@ -62,12 +60,29 @@ public class YqssUtils {
      * @return double    返回类型
      * @throws
 	 */
-	public static double countRate0(int stage,double money) {
+	public static double countRate0(String residueDate,int stage,double money) {
 		double rate = DBUtils.getRate();
-		return (money / stage * 1.0) + (money * (rate/100.0));
+		int exceedDays = residueDay(residueDate);
+		double surplus = 0;
+		if(exceedDays < 0) {
+			surplus = (rate * money * (exceedDays * -1)) / 100.0 + (money / stage * 1.0);
+		}
+		return (money / stage * 1.0) + (money * (rate/100.0)) + surplus;
 	}
 	
-	
+	/**
+	 * 计算过期利息
+	 * @param residueDay
+	 * @param rate
+	 * @return
+	 */
+	public static double getInterest(String residueDate,double money,double rate,int stage){
+		int exceedDays = residueDay(residueDate);
+		if(exceedDays < 0) {
+			return (rate * (money / stage * 1.0) * (exceedDays * -1)) / 100.0;
+		}
+		return 0;
+	}
 	
 	/**
 	 * 计算剩余还款天数
@@ -137,7 +152,9 @@ public class YqssUtils {
 	 * @return
 	 */
 	public static String nextResidueDay(Date residueDate) {
-		return firstResidueDay();
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(Calendar.MONTH, 1);
+		return DateUtils.toString(calendar.getTime(), DEFAULT_FORMAT);
 	}
 	
 	/**
@@ -226,6 +243,7 @@ public class YqssUtils {
 //		System.out.println(borrowResidueDate(16));
 //		System.out.println(countRate(0.02, 15, 3000));
 //		System.out.println(numberFormat(100000.123456798));
-		System.out.println(countRate0(10,1000));
+//		System.out.println(countRate0(10,1000));
+		System.out.println(nextResidueDay("2016-1-30 15:09:00"));
 	}
 }

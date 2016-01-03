@@ -199,7 +199,7 @@
 			t.from_user_id,
 			t.to_user_id,
 			t.content,
-			(SELECT i.image_url FROM second_hand_images i WHERE i.second_hand_id = t.product_id LIMIT 1) pic,
+			IFNULL((SELECT i.image_url FROM second_hand_images i WHERE i.second_hand_id = t.product_id LIMIT 1),"") pic,
 			t.create_date
 		FROM
 			product_comment t

@@ -23,15 +23,14 @@ public class SmsSend {
      * @throws
 	 */
 	public static boolean send(String mobile,String code) {
-		String mdn = "13476107753";
-		String message = "【验证码】你的验证码为";
+		String message = "【验证码】您的验证码为:";
 		try {
 			message = URLEncoder.encode(message, "UTF-8");
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
 		long seqId = System.currentTimeMillis();
-		String param = "cdkey=" + sn + "&password=" + key + "&phone=" + mdn + "&message=" + (message + code) + "&addserial=&seqid=" + seqId;
+		String param = "cdkey=" + sn + "&password=" + key + "&phone=" + mobile + "&message=" + (message + code) + "&addserial=&seqid=" + seqId;
 		String url = baseUrl + "sendsms.action";
 		String ret = SDKHttpClient.sendSMS(url, param);
 		

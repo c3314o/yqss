@@ -3,6 +3,7 @@ package com.bluemobi.pro.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.bluemobi.utils.DBUtils;
 import com.bluemobi.utils.YqssUtils;
 
 /**
@@ -45,7 +46,7 @@ public class ProductBorrow extends BaseEntity {
 	/**
 	 * 利率
 	 */
-	private double rate = 20;
+	private double rate = DBUtils.getRate();
 	
 	/**
 	 * 利息
@@ -252,7 +253,8 @@ public class ProductBorrow extends BaseEntity {
 	}
 
 	public double getAll() {
-		all = getSurplus() % (rate / 100);
+		all = YqssUtils.getInterest(nextDate, this.getPrice(), rate, getStage());
+//		all = getSurplus() % (rate / 100);
 		return all;
 	}
 
@@ -261,7 +263,7 @@ public class ProductBorrow extends BaseEntity {
 	}
 
 	public double getOnce() {
-		once = YqssUtils.countRate0(this.getStage(), this.getPrice());
+		once = YqssUtils.countRate0(nextDate,this.getStage(), this.getPrice());
 		return once;
 	}
 

@@ -90,9 +90,9 @@ public class MemberApp {
 				String requestCode = rUser.getCode();
 				String code = cacheService.get(rUser.getMobile());
 				
-//				if (StringUtils.isBlank(requestCode) || !requestCode.equals(code)) {
-//					return Result.failure(ErrorCode.ERROR_10);
-//				}
+				if (StringUtils.isBlank(requestCode) || !requestCode.equals(code)) {
+					return Result.failure(ErrorCode.ERROR_10);
+				}
 				service.modifyUserLoginPassword(userLogin);
 				
 				UserInfo userInfo = new UserInfo();
@@ -132,9 +132,9 @@ public class MemberApp {
 
 				if (userLogin == null)
 					return Result.failure(ErrorCode.ERROR_06);
-//				if (StringUtils.isBlank(requestCode) || !requestCode.equals(code)) {
-//					return Result.failure(ErrorCode.ERROR_10);
-//				}
+				if (StringUtils.isBlank(requestCode) || !requestCode.equals(code)) {
+					return Result.failure(ErrorCode.ERROR_10);
+				}
 			}
 			userLogin.setPassword(user.getPassword());
 			service.modifyUserLoginPassword(userLogin);

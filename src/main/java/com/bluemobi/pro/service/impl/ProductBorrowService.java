@@ -1,5 +1,6 @@
 package com.bluemobi.pro.service.impl;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -51,7 +52,7 @@ public class ProductBorrowService extends BaseService {
 		pb.setPeriod(pb.getStage());
 		pb.setProductName(_product.getTitle());
 		pb.setPic(image);
-		pb.setNextDate(YqssUtils.firstResidueDay());
+		pb.setNextDate(YqssUtils.nextResidueDay(new Date()));
 		
 		return this.getBaseDao().save(PRIFIX + ".insertBrrow", pb);
 	}
@@ -74,6 +75,10 @@ public class ProductBorrowService extends BaseService {
 	 * 
      * @Title: findBorrowById
      * @Description: 购物借款详情
+     * 本月还款数
+     * 上月是否有未还的金额
+     * 1.有：上月的应还的金额加上利息
+     * 
      * @param @param pb
      * @param @return
      * @param @throws Exception    参数

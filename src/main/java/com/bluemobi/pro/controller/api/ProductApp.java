@@ -1,8 +1,6 @@
 package com.bluemobi.pro.controller.api;
 
-import java.io.File;
 import java.util.List;
-
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,8 +9,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
-
-import com.bluemobi.constant.Constant;
 import com.bluemobi.constant.ErrorCode;
 import com.bluemobi.pro.entity.Collection;
 import com.bluemobi.pro.entity.Product;
