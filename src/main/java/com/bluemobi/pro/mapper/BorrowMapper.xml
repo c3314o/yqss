@@ -74,11 +74,14 @@
 			t.user_id,
 			t.limit_money,
 			t.repay_date,
-			t.create_date
+			t.create_date,
+			t.sn
 		FROM
 			borrow_info t
 		WHERE
 			1 = 1
+		AND
+			t.is_list = 1
 		<if test="userId != null and userId != ''">
 			AND
 				t.user_id = #{userId}
@@ -100,6 +103,11 @@
 			repay_record t
 		WHERE
 			t.borrow_info_id = #{id}
+		AND
+			t.money > 0
+		ORDER BY
+		 	t.id
+		 DESC
 	</select>
 	
 	<!-- 删除还款信息 -->
@@ -117,13 +125,35 @@
 		(
 			borrow_info_id,
 			money,
+			sn,
 			create_date
 		)
 		VALUES
 		(
 			#{borrowId},
 			#{amount},
+			#{sn},
 			#{createDate}
 		)
 	</insert>
+	
+	<!-- 支付完成修改金额 -->
+	<update id="repayFinish" parameterType="com.bluemobi.pro.entity.BorrowRepayRecord">
+		UPDATE
+			repay_record
+		SET	
+			money = #{amount}
+		WHERE
+			sn = #{sn}
+	</update>
+	
+	<!-- 根据订单号查询借款ID -->
+	<select id="getIdBySn" parameterType="java.lang.String" resultType="java.lang.Double">
+		SELECT
+			t.money
+		FROM
+			repay_record t
+		WHERE
+			t.sn = #{sn}
+	</select>
 </mapper> 

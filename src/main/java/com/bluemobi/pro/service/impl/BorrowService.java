@@ -38,8 +38,13 @@ public class BorrowService extends BaseService {
 		List<BorrowInfo> list = findBorrowByUserId(borrowInfo);
 		if(list != null && list.size() >0 ) {
 			BorrowInfo _info = list.get(list.size() - 1);
-			if(_info != null &&_info.getState() != 0) {
+			if(_info != null && _info.getMoney() != 0) {
+				borrowInfo.setId(_info.getId());
 				return -1;
+			}
+			if(_info != null && _info.getMoney() == 0) {
+				borrowInfo.setId(_info.getId());
+				return -2;
 			}
 		}
 		return this.getBaseDao().save(PRIFIX + ".insertBrrow", borrowInfo);
@@ -47,13 +52,13 @@ public class BorrowService extends BaseService {
 	
 	/**
 	 * 
-	     * @Title: borrowInsertBorrowInfo
-	     * @Description: TODO(这里用一句话描述这个方法的作用)
-	     * @param @param borrowInfo
-	     * @param @return
-	     * @param @throws Exception    参数
-	     * @return int    返回类型
-	     * @throws
+     * @Title: borrowInsertBorrowInfo
+     * @Description: TODO(这里用一句话描述这个方法的作用)
+     * @param @param borrowInfo
+     * @param @return
+     * @param @throws Exception    参数
+     * @return int    返回类型
+     * @throws
 	 */
 	public int borrowInsertBorrowInfo(BorrowInfo borrowInfo) throws Exception {
 		if(borrowInfo.getTimeLimite() != null ) {
@@ -121,5 +126,27 @@ public class BorrowService extends BaseService {
 	 */
 	public int residueMoney(List<BorrowInfo> list) {
 		return 0;
+	}
+	
+	public int getIdBySn(String sn) throws Exception {
+		return this.getBaseDao().getObject(PRIFIX + ".getIdBySn", sn);
+	}
+	
+	/**
+	 * 
+     * @Title: repayFinish
+     * @Description: 支付完成修改金额
+     * @param @param brr
+     * @param @throws Exception    参数
+     * @return void    返回类型
+     * @throws
+	 */
+	public void repayFinish(BorrowRepayRecord brr) throws Exception {
+		Double amount = this.getBaseDao().getObject(PRIFIX + ".getIdBySn", brr.getSn());
+		System.out.println("sql:amount==" + amount );
+		if(amount != null && amount.doubleValue() == 0.0) {
+			System.out.println("excute sql");
+			this.getBaseDao().update(PRIFIX + ".repayFinish", brr);
+		}
 	}
 }

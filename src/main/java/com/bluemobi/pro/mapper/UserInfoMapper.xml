@@ -259,23 +259,33 @@
 		SELECT
 			COUNT(*)
 		FROM
-			product_comment
+			product_comment pc
+		LEFT JOIN
+			second_hand sh
+		ON
+			pc.`product_id` = sh.`id`
 		WHERE
 			1 = 1
 		AND
-			is_list = 1
+			pc.is_list = 1
 		<if test="userId != null and userId != ''">
 			AND
-				to_user_id = #{userId}
+				(pc.to_user_id = #{userId} or sh.user_id = #{userId})
 		</if>
 	</select>
 	
 	<update id="readMsg" parameterType="java.lang.Integer">
 		UPDATE
-			product_comment
+			product_comment pc
+		join 
+			second_hand sh
+		on
+		    pc.product_id = sh.id
 		SET
 			is_list = 2
 		WHERE
 			to_user_id = #{userId}
+		or
+			sh.user_id = #{userId}
 	</update>
 </mapper> 

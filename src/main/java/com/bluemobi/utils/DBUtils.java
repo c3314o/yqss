@@ -82,4 +82,30 @@ public class DBUtils {
 		}
 		return (value == 0 ? 2 : value);
 	}
+	
+	/**
+	 * 逾期利息
+	 * @return
+	 */
+	public static double getRate0() {
+		Connection conn = getConnection(driverName, url, username, password);
+		String sql = "SELECT overdue FROM commons limit 1";
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		double value = 0.0;
+		try {
+			ps = conn.prepareStatement(sql);
+		    rs = ps.executeQuery();
+		    
+		    while (rs.next()) {
+		    	value = rs.getDouble("overdue");
+			}
+		   
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			closeConnection(conn, ps, rs);
+		}
+		return (value == 0 ?  10 : value);
+	}
 }

@@ -38,4 +38,8 @@ public class ErrorCode {
     public final static String ERROR_17="error_17"; // 已收藏该商品
     
     public final static String ERROR_18="error_18"; // 已借过款，无法再此借款
+    
+    public final static String ERROR_19="error_19"; // 第三方未绑定手机
+    
+    public final static String ERROR_20="error_20"; // 本月已还款，无法再次还款
 }

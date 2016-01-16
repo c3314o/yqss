@@ -52,7 +52,7 @@ public class AccessTokenRequestHandler extends RequestHandler {
 				System.out.println("锟斤拷取access_token值锟斤拷锟截达拷锟襟！ｏ拷锟斤拷");
 			}
 		} else {
-			System.out.println("锟斤拷台锟斤拷锟斤拷通锟斤拷失锟斤拷");
+			System.out.println("");
 			System.out.println(httpClient.getResponseCode());
 			System.out.println(httpClient.getErrInfo());
 			// 锟叫匡拷锟斤拷锟斤拷为锟斤拷锟斤拷原锟斤拷锟斤拷锟斤拷锟窖撅拷锟斤拷锟�?锟斤拷未锟秸碉拷应锟斤拷

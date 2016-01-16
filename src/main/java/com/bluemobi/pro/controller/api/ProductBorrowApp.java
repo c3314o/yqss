@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.bluemobi.constant.ErrorCode;
 import com.bluemobi.pro.entity.ProductBorrow;
 import com.bluemobi.pro.entity.ProductBorrowRepayRecord;
 import com.bluemobi.pro.service.impl.ProductBorrowService;
@@ -87,7 +88,10 @@ public class ProductBorrowApp {
 	public Result repay(ProductBorrowRepayRecord pbrr) {
 		
 		try {
-			service.repay(pbrr);
+			int flag = service.repay(pbrr);
+			if(flag == -1) {
+				return Result.failure(ErrorCode.ERROR_20);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			return Result.failure();

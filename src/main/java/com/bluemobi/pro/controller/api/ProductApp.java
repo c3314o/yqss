@@ -43,10 +43,15 @@ public class ProductApp {
 	 */
 	@RequestMapping(value = "list", method = RequestMethod.POST)
 	@ResponseBody
-	public Result findProduct(Product product,@RequestParam(value = "pageNum",required = false) Integer pageNum,
+	public Result findProduct(Product product,@RequestParam(value="tag", required = false) Integer tag,
+			                  @RequestParam(value="condition", required = false) String condition,
+							  @RequestParam(value = "pageNum",required = false) Integer pageNum,
 										@RequestParam(value = "pageSize", required = false) Integer pageSize) {
 		pageNum =( pageNum == null ? 1 : pageNum);
 		pageSize = ( pageSize == null ? 10 : pageSize );
+		
+		product.setProductType(tag);
+		product.setTitle(condition);
 		
 		Page<Product> page = null;
 		try {
@@ -94,7 +99,7 @@ public class ProductApp {
 			int rate  = Integer.parseInt(PropertiesUtils.getPropertiesValues("rate", "phyy.properties"));
 			
 			double monthlyPayments = YqssUtils.countRate((rate*1.0)/100.0, _stage, price); // 月供
-			double interest = monthlyPayments * _stage - price;
+			double interest = (price * rate / 100.0) * _stage;
 			stage.setPrice(YqssUtils.numberFormat(monthlyPayments));
 			stage.setAll(YqssUtils.numberFormat(interest));
 		}

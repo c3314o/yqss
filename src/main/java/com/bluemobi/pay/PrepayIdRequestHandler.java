@@ -84,7 +84,7 @@ public class PrepayIdRequestHandler extends RequestHandler {
 		}
 		sb.append("key=").append(ConstantUtil.API_KEY);
 		
-		String appsign = MD5Util.MD5Encode(sb.toString(), null).toUpperCase();
+		String appsign = MD5Util.MD5Encode(sb.toString(), "UTF-8").toUpperCase();
 		System.out.println("appsign:" + appsign);
 		return appsign;
 	}
@@ -117,6 +117,10 @@ public class PrepayIdRequestHandler extends RequestHandler {
 			resContent = httpClient.getResContent();
 			try {
 				Map<String,Object> resultMap = XMLUtil.doXMLParse(resContent);
+				
+				for (Map.Entry<String, Object> map: resultMap.entrySet()) {
+					System.out.println(map.getKey() + ":" + map.getValue());
+				}
 				prepayid = resultMap.get("prepay_id").toString();
 				System.out.println("prepayid================:" + prepayid);
 			} catch (JDOMException | IOException e) {

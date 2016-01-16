@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.bluemobi.utils.DBUtils;
 import com.bluemobi.utils.DateUtils;
 import com.bluemobi.utils.YqssUtils;
 
@@ -19,69 +20,93 @@ import com.bluemobi.utils.YqssUtils;
 public class BorrowInfo extends BaseEntity {
 
 	private Integer userId;
-	
+
 	/**
 	 * 借款金额
 	 */
 	private double money;
-	
+
 	/**
 	 * 借款时间
 	 */
 	private Long jkTime;
-	
+
 	/**
 	 * 借款组大天数
 	 */
 	private Integer timeLimite;
-	
-	
+
 	/**
 	 * 最后还款时间
 	 */
 	private String lastRepayDate;
-	
+
 	/**
 	 * 剩余还款天数
 	 */
 	private Integer residueDays;
-	
+
 	/**
 	 * 借款总天数
 	 */
 	private Integer totalDays;
-	
+
 	/**
 	 * 还款时间
 	 */
 	private String nextResidueDate;
-	
+
 	/**
 	 * 剩余应还金额
 	 */
 	private Double residueMoney;
-	
+
 	/**
-	 * 还款状态  0 已结清  1  还款中  2  催款中
+	 * 还款状态 0 已结清 1 还款中 2 催款中
 	 */
 	private Integer state;
-	
+
 	private double repay;
 	
-	// =====================================
+	private double rate = DBUtils.getRate();
 	
+	private double all;
+
+	// =====================================
+
 	private String name;
 	private String identity;
 	private String mobile;
 	private String school;
 	private String address;
-	private Integer flag ;
-	private Integer productId ;
+	private Integer flag;
+	private Integer productId;
 	private Integer stage;
 	private Integer type;
-	
+
 	private List<BorrowRepayRecord> list = new ArrayList<BorrowRepayRecord>();
 	
+	public double getRate() {
+		return rate;
+	}
+
+	public void setRate(double rate) {
+		this.rate = rate;
+	}
+
+	public double getAll() {
+		all = YqssUtils.getInterest(lastRepayDate, money, rate, 1);
+		return all;
+	}
+
+	public void setAll(double all) {
+		this.all = all;
+	}
+
+	public void setMoney(double money) {
+		this.money = money;
+	}
+
 	public double getRepay() {
 		Double rrMoney = 0.0;
 		for (BorrowRepayRecord borrowRepayRecord : list) {
@@ -91,11 +116,9 @@ public class BorrowInfo extends BaseEntity {
 		return repay;
 	}
 
-
 	public void setRepay(double repay) {
 		this.repay = repay;
 	}
-
 
 	public Double getResidueMoney() {
 		Double rrMoney = 0.0;
@@ -208,14 +231,12 @@ public class BorrowInfo extends BaseEntity {
 
 	/**
 	 * 
-     * @Title: getTotalDays
-     * @Description:  计算借款总天数
-     * @param @return    参数
-     * @return Integer    返回类型
-    * @throws
+	 * @Title: getTotalDays @Description: 计算借款总天数 @param @return 参数 @return
+	 * Integer 返回类型 @throws
 	 */
 	public Integer getTotalDays() {
-		if(jkTime == null) return -1;
+		if (jkTime == null)
+			return -1;
 		totalDays = YqssUtils.totalDays(DateUtils.parse(jkTime, YqssUtils.DEFAULT_FORMAT));
 		return totalDays;
 	}
@@ -225,14 +246,12 @@ public class BorrowInfo extends BaseEntity {
 	}
 
 	/**
-     * @Title: getResidueDays
-     * @Description: 计算剩余天数
-     * @param @return    参数
-     * @return Integer    返回类型
-     * @throws
+	 * @Title: getResidueDays @Description: 计算剩余天数 @param @return 参数 @return
+	 * Integer 返回类型 @throws
 	 */
 	public Integer getResidueDays() {
-		if(StringUtils.isBlank(lastRepayDate)) return -1;
+		if (StringUtils.isBlank(lastRepayDate))
+			return -1;
 		residueDays = YqssUtils.residueDay(lastRepayDate);
 		return residueDays;
 	}
@@ -275,12 +294,8 @@ public class BorrowInfo extends BaseEntity {
 
 	/**
 	 * 
-     * @Title: getState
-     * @Description: 计算还款状态
-     * @param  参数
-     * @return   
-     * @return Integer    返回类型
-     * @throws
+	 * @Title: getState @Description: 计算还款状态 @param 参数 @return @return Integer
+	 * 返回类型 @throws
 	 */
 	public Integer getState() {
 		int allReypayMoney = 0;
@@ -288,13 +303,11 @@ public class BorrowInfo extends BaseEntity {
 			allReypayMoney += borrowRepayRecord.getAmount();
 		}
 		int residueDays = YqssUtils.residueDay(lastRepayDate);
-		if( residueDays <= 0) {
+		if (residueDays <= 0) {
 			state = 2;
-		}
-		else if( money <=  allReypayMoney){
+		} else if (money <= allReypayMoney) {
 			state = 0;
-		}
-		else if(money > allReypayMoney) {
+		} else if (money > allReypayMoney) {
 			state = 1;
 		}
 		return state;
@@ -302,5 +315,5 @@ public class BorrowInfo extends BaseEntity {
 
 	public void setState(Integer state) {
 		this.state = state;
-	} 
+	}
 }

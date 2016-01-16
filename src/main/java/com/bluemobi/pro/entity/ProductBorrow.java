@@ -59,6 +59,11 @@ public class ProductBorrow extends BaseEntity {
 	private double once;
 	
 	/**
+	 * 月供
+	 */
+	private double installment;
+	
+	/**
 	 * 剩余还款金额
 	 */
 	private double surplus;
@@ -75,6 +80,8 @@ public class ProductBorrow extends BaseEntity {
 	
 	private Integer state;// 还款状态  0 已结清  1  还款中  2  催款中”
 	
+	private Integer surplusDays;
+	
 	// =======================================================
 	private String name;
 	private String identity;
@@ -85,11 +92,33 @@ public class ProductBorrow extends BaseEntity {
 	private Integer stage;
 	private Integer type;
 	
+	public Integer getSurplusDays() {
+		surplusDays = YqssUtils.residueDay(nextDate);
+		return surplusDays;
+	}
+
+	public void setSurplusDays(Integer surplusDays) {
+		this.surplusDays = surplusDays;
+	}
+
 	/**
 	 * 还款记录
 	 */
 	private List<ProductBorrowRepayRecord> list = new ArrayList<ProductBorrowRepayRecord>();
-	
+
+	public double getInstallment() {
+		installment = YqssUtils.numberFormat( YqssUtils.countRate0(nextDate,this.getStage(), this.getPrice()));
+		return installment;
+	}
+
+	public void setInstallment(double installment) {
+		this.installment = installment;
+	}
+
+	public void setPrice(double price) {
+		this.price = price;
+	}
+
 	public Integer getState() {
 		int allReypayMoney = 0;
 		for (ProductBorrowRepayRecord pbrr : list) {
@@ -263,7 +292,7 @@ public class ProductBorrow extends BaseEntity {
 	}
 
 	public double getOnce() {
-		once = YqssUtils.countRate0(nextDate,this.getStage(), this.getPrice());
+		once = YqssUtils.countRate(rate, stage, price);
 		return once;
 	}
 

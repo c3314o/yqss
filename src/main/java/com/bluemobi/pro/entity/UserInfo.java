@@ -23,6 +23,21 @@ public class UserInfo extends BaseEntity {
 	
 	private String nickname;
 	
+	private Integer bind; // 第三方是否绑定手机 0:未绑定 1:已绑定
+	private Integer platform; // 平台 0:正常 1:第三方
+	
+	public Integer getPlatform() {
+		return platform;
+	}
+	public void setPlatform(Integer platform) {
+		this.platform = platform;
+	}
+	public Integer getBind() {
+		return bind;
+	}
+	public void setBind(Integer bind) {
+		this.bind = bind;
+	}
 	public String getNickname() {
 		return nickname;
 	}

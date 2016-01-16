@@ -53,8 +53,12 @@ public final class Result {
 		return result;
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static Result success(Object data) {
+	@SuppressWarnings({ "rawtypes" })
+	public static Result success(Object data,String... args) {
+		if(data == null) {
+			Map<String,Object> map = new HashMap<String,Object>();
+			data = map;
+		}
 		Result result = new Result();
 		result.status = SUCCESS;
 		result.msg = "";
@@ -72,7 +76,7 @@ public final class Result {
             result.data.put("list", BeanUtils.listToMap(list));
 		}
 		else if(data instanceof Map) {
-			result.data.put("object", BeanUtils.mapToMap((Map)data));
+			result.data.put(args[0], data);
 		}
 		else {
 			String objName = data.getClass().getSimpleName().toLowerCase();
@@ -80,10 +84,6 @@ public final class Result {
 		}
 		return result;
 	}
-	
-//	private static Gson buildGson() {
-//		return new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
-//	}
 	
 	public static Result failure(String... errorMessage) {
 		Result result = new Result();

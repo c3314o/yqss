@@ -56,6 +56,10 @@
 			AND
 				product_type = #{productType}
 		</if>
+		<if test="title != null and title != ''">
+			AND
+				t.name LIKE CONCAT('%',#{title},'%')
+		</if>
 	</select>
 	
 	<!-- 查询商品图片 -->

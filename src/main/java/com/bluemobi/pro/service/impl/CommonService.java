@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 
 import com.bluemobi.pro.entity.Bank;
+import com.bluemobi.pro.entity.Contants;
 import com.bluemobi.pro.entity.Help;
 import com.bluemobi.pro.entity.Message;
 import com.bluemobi.pro.entity.Qanda;
@@ -25,6 +26,7 @@ public class CommonService extends BaseService {
 	public static final String PRIFIX_BANK = Bank.class.getName();
 	public static final String PRIFIX_HELPER = Help.class.getName();
 	public static final String PRIFIX_MESSAGE = Message.class.getName();
+	public static final String PRIFIX_CONTANTS = Contants.class.getName();
 	
 	/**
 	 * 查询所有银行
@@ -51,5 +53,23 @@ public class CommonService extends BaseService {
 			help.setList(list);
 		}
 		return help;
+	}
+	
+	/**
+	 * 查询用户是否有通讯录的记录
+	 * @return
+	 * @throws Exception 
+	 */
+	public int countUserContants(Contants c) throws Exception {
+		return this.getBaseDao().get(PRIFIX_CONTANTS + ".findByUserId", c);
+	}
+	
+	/**
+	 * 保存联系人
+	 * @param c
+	 * @throws Exception
+	 */
+	public void insertContants(Contants c) throws Exception {
+		this.getBaseDao().save(PRIFIX_CONTANTS + ".insert", c);
 	}
 }

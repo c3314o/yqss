@@ -3,6 +3,7 @@ package com.bluemobi.utils;
 import java.text.DecimalFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Random;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -47,6 +48,7 @@ public class YqssUtils {
      * @throws
 	 */
 	public static double countRate(double rate,int stage,double money) {
+		if(stage == 0) {return money;}
 		return (money / stage * 1.0) + (money * (rate/100.0));
 	}
 	
@@ -61,11 +63,12 @@ public class YqssUtils {
      * @throws
 	 */
 	public static double countRate0(String residueDate,int stage,double money) {
+		if(stage == 0) return money;
 		double rate = DBUtils.getRate();
 		int exceedDays = residueDay(residueDate);
 		double surplus = 0;
 		if(exceedDays < 0) {
-			surplus = (rate * money * (exceedDays * -1)) / 100.0 + (money / stage * 1.0);
+			surplus = getInterest(residueDate, money, rate, stage);
 		}
 		return (money / stage * 1.0) + (money * (rate/100.0)) + surplus;
 	}
@@ -78,11 +81,13 @@ public class YqssUtils {
 	 */
 	public static double getInterest(String residueDate,double money,double rate,int stage){
 		int exceedDays = residueDay(residueDate);
+		double overdue = DBUtils.getRate0();
 		if(exceedDays < 0) {
-			return (rate * (money / stage * 1.0) * (exceedDays * -1)) / 100.0;
+			return exceedDays * overdue * -1;
 		}
 		return 0;
 	}
+	
 	
 	/**
 	 * 计算剩余还款天数
@@ -153,7 +158,7 @@ public class YqssUtils {
 	 */
 	public static String nextResidueDay(Date residueDate) {
 		Calendar calendar = Calendar.getInstance();
-		calendar.set(Calendar.MONTH, 1);
+		calendar.add(Calendar.MONTH, 1);
 		return DateUtils.toString(calendar.getTime(), DEFAULT_FORMAT);
 	}
 	
@@ -218,12 +223,41 @@ public class YqssUtils {
 	 */
 	public static String borrowResidueDate(int days) {
 		Calendar calendar = Calendar.getInstance();
-		calendar.add(Calendar.DAY_OF_YEAR, (days + 1));
+		calendar.add(Calendar.DAY_OF_YEAR, days);
 		calendar.set(Calendar.HOUR_OF_DAY, 0);
 		calendar.set(Calendar.MINUTE, 0);
 		calendar.set(Calendar.SECOND, 0);
 		return DateUtils.toString(calendar.getTime(), DEFAULT_FORMAT);
 	}
+	
+	/**
+	 * 判断日期是否在当前月
+	 * @param date
+	 * @return
+	 */
+	public static boolean isThisMonth(long date,String nextDate,int month) {
+		
+		long nextDateLong = DateUtils.stringToLong(nextDate, DEFAULT_FORMAT);
+		Calendar c = Calendar.getInstance();
+		c.setTime(new Date(nextDateLong));
+		c.add(Calendar.MONTH, month * -1);
+		
+		long preDateLong = c.getTimeInMillis();
+		if(date < nextDateLong && date > preDateLong) {
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * 生成订单号
+	 */
+	public static String generateSn() {
+		Random r = new Random();
+		int random = r.nextInt(1000);
+		long current = System.currentTimeMillis();
+		return String.valueOf(current) + String.valueOf(random);
+	} 
 	
 	/**
 	 * 计算是否闰年
@@ -240,10 +274,16 @@ public class YqssUtils {
 //		System.out.println(residueDay("2014-10-15 00:00:00"));
 //		System.out.println(nextResidueDay("2016-01-15 00:00:00"));
 //		System.out.println(firstResidueDay());
-//		System.out.println(borrowResidueDate(16));
+//		System.out.println(borrowResidueDate(3));
 //		System.out.println(countRate(0.02, 15, 3000));
 //		System.out.println(numberFormat(100000.123456798));
 //		System.out.println(countRate0(10,1000));
-		System.out.println(nextResidueDay("2016-1-30 15:09:00"));
+//		System.out.println(nextResidueDay("2016-1-30 15:09:00"));
+//		System.out.println(generateSn());
+//		System.out.println(totalDays("2016-01-18 00:00:00"));
+//		System.out.println(countRate0("2016-01-15 00:00:00", 1, 6000));
+//		System.out.println(isThisMonth(1451290808295L));
+		System.out.println(isThisMonth(1452913923311L, "2016-02-16 11:12:11", 1));
+		
 	}
 }

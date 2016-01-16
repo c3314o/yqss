@@ -31,7 +31,15 @@
 			</bean>
 		</mvc:message-converters>
 	</mvc:annotation-driven>
-
+	
+	<!-- 
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/app/**"/>
+			<bean class="com.bluemobi.sys.filter.TokenInterceptor" />
+		</mvc:interceptor>
+	</mvc:interceptors>
+	-->
 	<!-- Handles HTTP GET requests for /resources/** by efficiently serving 
 		up static resources in the ${webappRoot}/resources directory -->
 	<!--

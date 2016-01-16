@@ -166,9 +166,12 @@ public class CommonUtils {
 	}
 	
 	public static void main(String[] args) {
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("user", "yesong");
-		System.out.println(mapToXml(map));
+//		Map<String, Object> map = new HashMap<String, Object>();
+//		map.put("user", "yesong");
+//		System.out.println(mapToXml(map));
+		
+		String reg = "^[0-9]+(,[0-9]+)*$";
+		
 	}
 
 	public static String getSessionId() {

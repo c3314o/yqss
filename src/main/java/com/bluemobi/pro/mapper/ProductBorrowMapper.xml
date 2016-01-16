@@ -20,11 +20,12 @@
 	<resultMap type="com.bluemobi.pro.entity.ProductBorrowRepayRecord" id="pbrrResultMap">
 		<id column="id" property="id" />
 		<result column="money" property="amount"/>
+		<result column="borrow_info_id" property="pdId"/>
 		<result column="create_date" property="createDate" />
 	</resultMap>
 	
 	<!-- 查询本月是否已还过款 -->
-	<select id="findIsBorrow" parameterType="com.bluemobi.pro.entity.ProductBorrow" resultType="int">
+	<select id="findIsBorrow" parameterType="com.bluemobi.pro.entity.ProductBorrowRepayRecord" resultType="int">
 		SELECT 
 			COUNT(*) 
 		FROM 
@@ -36,7 +37,9 @@
 		WHERE 
 			FROM_UNIXTIME(t.`create_date` / 1000) &lt;= b.`next_date`
 		AND 
-			FROM_UNIXTIME(t.`create_date` / 1000) &gt;= DATE_SUB(FROM_UNIXTIME(t.`create_date` / 1000), INTERVAL 30 DAY);
+			FROM_UNIXTIME(t.`create_date` / 1000) &gt;= DATE_SUB(FROM_UNIXTIME(t.`create_date` / 1000), INTERVAL 30 DAY)
+		AND	
+			t.borrow_info_id = #{pdId}
 	</select>
 	
 	<!-- 创建借款记录信息 -->
@@ -50,6 +53,7 @@
 			price,
 			image_url,
 			stage,
+			period,
 			next_date,
 			
 			username,
@@ -67,6 +71,7 @@
 			#{price,javaType = java.lang.Double},
 			#{pic},
 			#{stage},
+			#{period},
 			#{nextDate},
 			
 			#{name},
@@ -96,6 +101,8 @@
 			buy_borrow_info t
 		WHERE
 			1 = 1
+		AND
+			t.is_list = 1
 		<if test="userId != null and userId != ''">
 			AND
 				t.user_id = #{userId}
@@ -104,6 +111,9 @@
 			AND
 				t.id = #{id}
 		</if>
+		ORDER BY
+			t.id
+		DESC
 	</select>
 	
 	<!-- 根据贷款ID查询还款记录 -->
@@ -118,6 +128,11 @@
 		   1 = 1
 		AND
 			t.borrow_info_id = #{pdId}
+		AND
+			t.money > 0
+		ORDER BY
+			t.id 
+		DESC
 	</select>
 	
 	<!-- 新增商品贷款信息 -->
@@ -168,12 +183,14 @@
 		(
 			borrow_info_id,
 			money,
+			sn,
 			create_date
 		)
 		VALUES
 		(
 		    #{pdId},
 			#{amount},
+			#{sn},
 			#{createDate}
 		)
 	</insert>
@@ -193,4 +210,40 @@
 		WHERE
 			borrow_info_id = #{_paramater}
 	</delete>
+	
+	<!-- 根据订单号查询借款ID -->
+	<select id="getIdBySn" parameterType="java.lang.String" resultMap="pbrrResultMap">
+		SELECT
+			t.money,
+			t.borrow_info_id
+		FROM
+			buy_repay_record t
+		WHERE
+			t.sn = #{sn}
+	</select>
+	
+	<!-- 最后一次还款日期 -->
+	<select id="lastRepay" parameterType="com.bluemobi.pro.entity.ProductBorrowRepayRecord" resultMap="pbrrResultMap">
+		SELECT
+			t.create_date,
+			t.money
+		FROM
+			buy_repay_record t
+		WHERE
+			t.borrow_info_id = #{pdId}
+		ORDER BY 
+			t.id
+		DESC LIMIT 1
+			
+	</select>
+	
+	<!-- 支付完成修改金额 -->
+	<update id="repayFinish" parameterType="com.bluemobi.pro.entity.ProductBorrowRepayRecord">
+		UPDATE
+			buy_repay_record
+		SET	
+			money = #{amount}
+		WHERE
+			sn = #{sn}
+	</update>
 </mapper> 

@@ -10,6 +10,12 @@
 		<result column="password" property="password" />
 	</resultMap>
 	
+	<resultMap type="com.bluemobi.pro.entity.Oauth" id="oauthResultMap">
+		<id column="id" property="id"/>
+		<result column="open_id" property="openId"/>
+		<result column="user_id" property="userId"/>
+	</resultMap>
+	
 	<!-- 根据条件查询用户登录信息 -->
 	<select id="findOne" parameterType="com.bluemobi.pro.entity.RegisterUser" resultMap="userLoginResultMap" >
 		SELECT
@@ -28,6 +34,17 @@
 			AND
 				t.username = #{mobile}
 		</if>
+	</select>
+	
+	<!-- 查询是否有对应的openID -->
+	<select id="findOauthByOpenId" parameterType="java.lang.String" resultMap="oauthResultMap">
+		SELECT
+			o.user_id, 
+			o.open_id
+		FROM
+			oauth o
+		WHERE
+			o.open_id = #{openId}
 	</select>
 	
 	<!-- 用户注册 -->
@@ -59,5 +76,30 @@
 		</set>
 		WHERE
 			id = #{id}
+	</update>
+	
+	<!-- 新增第三方信息 -->
+	<insert id="insertAuth" parameterType="com.bluemobi.pro.entity.Oauth">
+		INSERT INTO
+			oauth
+		(
+			open_id,
+			user_id
+		)
+		VALUES
+		(
+			#{openId},
+			#{userId}
+		)
+	</insert>
+	
+	<!-- 第三方绑定手机 -->
+	<update id="updateOauth" parameterType="com.bluemobi.pro.entity.Oauth">
+		UPDATE
+			oauth
+		SET
+			user_id = #{userId}
+		WHERE
+			open_id = #{openId}
 	</update>
 </mapper> 

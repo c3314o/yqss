@@ -20,6 +20,16 @@ public class ProductBorrowRepayRecord extends BaseEntity {
 	 */
 	private Integer pdId;
 	
+	private String sn;
+	
+	public String getSn() {
+		return sn;
+	}
+
+	public void setSn(String sn) {
+		this.sn = sn;
+	}
+
 	public Integer getPdId() {
 		return pdId;
 	}

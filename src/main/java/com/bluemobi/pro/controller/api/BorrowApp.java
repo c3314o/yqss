@@ -11,9 +11,15 @@ import com.bluemobi.pro.entity.ProductBorrow;
 import com.bluemobi.pro.service.impl.BorrowService;
 import com.bluemobi.pro.service.impl.ProductBorrowService;
 import com.bluemobi.utils.Result;
+import com.bluemobi.utils.YqssUtils;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 
@@ -48,16 +54,19 @@ public class BorrowApp {
 		
 		try {
 			int flag = borrowInfo.getFlag();
-			BorrowInfo _info = new BorrowInfo();
 			if(flag == 0) {
 				// 借款
 				int _flag = service.borrowInsertUserInfo(borrowInfo);
-				_info.setId(borrowInfo.getId());
 				
+				Map<String,String> resultMap = new HashMap<String,String>();
+				resultMap.put("id", String.valueOf(borrowInfo.getId()));
 				if(_flag == -1) {
-					return Result.failure(ErrorCode.ERROR_18);
+					resultMap.put("status", "1"); // 已借款，无法再次借款
 				}
-				return Result.success(_info);
+				else if(_flag == -2) {
+					resultMap.put("status", "2"); // 已填写用户信息，尚未借款
+				}
+				return Result.success(resultMap,"borrowinfo");
 			}
 			else if(flag == 1) {
 				ProductBorrow pb = new ProductBorrow();
@@ -70,11 +79,12 @@ public class BorrowApp {
 				pb.setProductId(borrowInfo.getProductId());
 				pb.setStage(borrowInfo.getStage());
 				pb.setPeriod(borrowInfo.getStage());
+				
 				pbService.borrowProduct(pb);
 				
-				ProductBorrow _pb = new ProductBorrow();
-				_pb.setId(pb.getId());
-				return Result.success(_pb);
+				Map<String,String> resutlMap = new HashMap<String,String>();
+				resutlMap.put("id", String.valueOf(pb.getId()));
+				return Result.success(resutlMap,"productborrow");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -94,9 +104,11 @@ public class BorrowApp {
 	 */
 	@RequestMapping(value = "borrowinfo", method = RequestMethod.POST)
 	@ResponseBody
+	@Transactional
 	public Result updateBorrow(BorrowInfo borrowInfo) {
 		
 		try {
+			service.borrowInsertUserInfo(borrowInfo);
 			service.borrowInsertBorrowInfo(borrowInfo);
 		} catch (Exception e) {
 			e.printStackTrace();

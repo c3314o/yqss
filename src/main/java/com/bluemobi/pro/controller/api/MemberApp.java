@@ -128,7 +128,7 @@ public class MemberApp {
 			}
 			else {
 				String requestCode = user.getCode();
-				String code = cacheService.get(user.getUsername());
+				String code = cacheService.get(user.getMobile());
 
 				if (userLogin == null)
 					return Result.failure(ErrorCode.ERROR_06);

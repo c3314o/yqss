@@ -11,7 +11,8 @@
 		<result column="title" property="title" />
 		<result column="content" property="content" />
 		<result column="price" property="price" />
-		<association property="user" select="findUser" column="{userId = user_id" />
+		<result column="create_date" property="createDate"/>
+		<association property="user" select="findUser" column="{userId = user_id}" />
 		<collection property="picList" ofType="com.bluemobi.pro.entity.ProductImage" column="{spid = id}" select="findSPImage" />
 	</resultMap>
 
@@ -27,6 +28,7 @@
 		<id column="id" property="id" />
 		<result column="user_id" property="userId" />
 		<result column="name" property="name" />
+		<result column="nickname" property="nickname"/>
 		<result column="gender" property="gender" />
 		<result column="mobile" property="mobile" />
 		<result column="id_card" property="identity" />
@@ -130,7 +132,8 @@
 			t.user_id,
 			t.title,
 			t.content,
-			t.price
+			t.price,
+			t.create_date
 		FROM
 			second_hand t
 		WHERE
@@ -169,6 +172,7 @@
 			t.id,
 			t.user_id,
 			t.name,
+			t.nickname,
 			t.mobile,
 			t.gender,
 			t.id_card,
@@ -203,6 +207,12 @@
 			t.create_date
 		FROM
 			product_comment t
+		<if test="userId != null and userId != ''">
+			left join 
+				second_hand sh
+			on
+				t.product_id = sh.id
+		</if>
 		WHERE
 			1 = 1
 		<if test="productId != null and productId != ''">
@@ -211,7 +221,8 @@
 		</if>
 		<if test="userId != null and userId != ''">
 			AND 
-				t.to_user_id = #{userId}
+				(t.to_user_id = #{userId} or sh.user_id = #{userId})
+				
 		</if>
 		ORDER BY 
 			t.create_date

@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.bluemobi.pro.entity.Image;
+import com.bluemobi.pro.entity.Oauth;
 import com.bluemobi.pro.entity.RegisterUser;
 import com.bluemobi.pro.entity.UserBank;
 import com.bluemobi.pro.entity.UserInfo;
@@ -36,10 +37,13 @@ public class UserService extends BaseService{
 		
 		// 新增用户基本信息
 		UserInfo userInfo = new UserInfo();
+		if(user.getGender() != null) userInfo.setGender(user.getGender());
+		if(user.getHeadPic() != null) userInfo.setHeadPic(user.getHeadPic());
 		userInfo.setUserId(user.getId());
 		userInfo.setMobile(user.getMobile());
 		userInfo.setNickname(user.getNickname());
-		return this.getBaseDao().save(PRIFIX_USER_INFO + ".insert", userInfo);
+		this.getBaseDao().save(PRIFIX_USER_INFO + ".insert", userInfo);
+		return user.getId();
 	}
 	
 	/**
@@ -81,6 +85,16 @@ public class UserService extends BaseService{
 		UserLogin userLogin = this.getBaseDao().getObject(PRIFIX_USER_LOGIN + ".findOne", user);
 		return userLogin;
 	} 
+	
+	/**
+	 * 查询第三方openID是否有对应userId
+	 * @param openId
+	 * @return
+	 * @throws Exception
+	 */
+	public Oauth findOauthByOpenId(String openId) throws Exception {
+		return this.getBaseDao().get(PRIFIX_USER_LOGIN + ".findOauthByOpenId", openId);
+	}
 	
 	/**
 	 * 修改用户信息
@@ -170,5 +184,23 @@ public class UserService extends BaseService{
 	
 	public void readMsg(Integer userId) throws Exception {
 		this.getBaseDao().update(PRIFIX_USER_INFO + ".readMsg", userId);
+	}
+	
+	/**
+	 * 新增第三方信息
+	 * @param auth
+	 * @throws Exception
+	 */
+	public void insertAuth(Oauth auth) throws Exception {
+		this.getBaseDao().save(PRIFIX_USER_LOGIN + ".insertAuth", auth);
+	}
+	
+	/**
+	 * 绑定用户
+	 * @param auth
+	 * @throws Exception
+	 */
+	public void updateOauth(Oauth auth) throws Exception {
+		this.getBaseDao().update(PRIFIX_USER_LOGIN + ".updateOauth", auth);
 	}
 }
