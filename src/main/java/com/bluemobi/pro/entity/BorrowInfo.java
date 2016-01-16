@@ -84,8 +84,18 @@ public class BorrowInfo extends BaseEntity {
 	private Integer stage;
 	private Integer type;
 
+	private Integer isList;
+	
 	private List<BorrowRepayRecord> list = new ArrayList<BorrowRepayRecord>();
 	
+	public Integer getIsList() {
+		return isList;
+	}
+
+	public void setIsList(Integer isList) {
+		this.isList = isList;
+	}
+
 	public double getRate() {
 		return rate;
 	}

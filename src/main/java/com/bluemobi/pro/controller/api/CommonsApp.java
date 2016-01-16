@@ -1,12 +1,10 @@
 package com.bluemobi.pro.controller.api;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,10 +25,9 @@ import com.bluemobi.pro.entity.ContantsList;
 import com.bluemobi.pro.entity.FeedBack;
 import com.bluemobi.pro.entity.Help;
 import com.bluemobi.pro.entity.Home;
-import com.bluemobi.pro.entity.Message;
-import com.bluemobi.pro.entity.MsgCount;
 import com.bluemobi.pro.entity.Oauth;
 import com.bluemobi.pro.entity.RegisterUser;
+import com.bluemobi.pro.entity.Report;
 import com.bluemobi.pro.entity.UserInfo;
 import com.bluemobi.pro.entity.UserLogin;
 import com.bluemobi.pro.service.impl.BorrowService;
@@ -38,11 +35,9 @@ import com.bluemobi.pro.service.impl.CommonService;
 import com.bluemobi.pro.service.impl.FeedBackService;
 import com.bluemobi.pro.service.impl.UserService;
 import com.bluemobi.utils.CommonUtils;
-import com.bluemobi.utils.ImageUtils;
 import com.bluemobi.utils.ParamUtils;
 import com.bluemobi.utils.Result;
 import com.bluemobi.utils.ResultUtils;
-import com.bluemobi.utils.SmsUtils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -275,13 +270,14 @@ public class CommonsApp {
 		List<BorrowInfo> list = null;
 		
 		try {
-			list = borrowService.findBorrowByUserId(info);
+			list = borrowService.findBorrowByUserId2(info);
 			if(list == null || list.size() == 0 || list.get(0).getMoney() == 0) {
 				home.setAvailable(5000);
 				home.setBorrowday(30);
 				
 				home.setAmount(0.0);
 				home.setSurplusday(0);
+				home.setIsList(-1);
 			}
 			else {
 				BorrowInfo info2 = new BorrowInfo();
@@ -295,6 +291,8 @@ public class CommonsApp {
 				home.setId(list.get(list.size() - 1).getId());
 				home.setAmount(list.get(list.size() - 1).getResidueMoney());
 				home.setSurplusday(list.get(list.size() - 1).getResidueDays());
+				
+				home.setIsList(list.get(list.size() - 1).getIsList());
 			}
 		
 		} catch (Exception e) {
@@ -415,6 +413,24 @@ public class CommonsApp {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+		return Result.success();
+	}
+	
+	/**
+	 * 创建举报信息
+	 * @param report
+	 * @return
+	 */
+	@RequestMapping(value="report/insert", method = RequestMethod.POST)
+	@ResponseBody
+	public Result insertReport(Report report) {
+		
+		try {
+			commonService.insertReport(report);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Result.failure();
 		}
 		return Result.success();
 	}

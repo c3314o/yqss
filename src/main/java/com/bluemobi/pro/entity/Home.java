@@ -19,6 +19,16 @@ public class Home {
 	private double amount;
 
 	private int surplusday;
+	
+	private int isList;
+
+	public int getIsList() {
+		return isList;
+	}
+
+	public void setIsList(int isList) {
+		this.isList = isList;
+	}
 
 	public int getAvailable() {
 		return available;

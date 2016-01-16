@@ -8,6 +8,7 @@
 		<id column="id" property="id" />
 		<result column="user_id" property="userId" />
 		<result column="limit_money" property="money"/>
+		<result column="is_list" property="isList"/>
 		<result column="create_date" property="jkTime"/>
 		<result column="repay_date" property="lastRepayDate"/>
 	</resultMap>
@@ -75,13 +76,40 @@
 			t.limit_money,
 			t.repay_date,
 			t.create_date,
-			t.sn
+			t.sn,
+			t.is_list
 		FROM
 			borrow_info t
 		WHERE
 			1 = 1
 		AND
 			t.is_list = 1
+		<if test="userId != null and userId != ''">
+			AND
+				t.user_id = #{userId}
+		</if>
+		<if test="id != null and id != ''">
+			AND
+				id = #{id}
+		</if>
+	</select>
+	
+	<!-- 根据用户ID查询借款信息 -->
+	<select id="findBorrowListByUserId2" resultMap="borrowResultMap" parameterType="com.bluemobi.pro.entity.BorrowInfo">
+		SELECT
+			t.id,
+			t.user_id,
+			t.limit_money,
+			t.repay_date,
+			t.create_date,
+			t.sn,
+			t.is_list
+		FROM
+			borrow_info t
+		WHERE
+			1 = 1
+		AND
+			is_list != 2
 		<if test="userId != null and userId != ''">
 			AND
 				t.user_id = #{userId}

@@ -10,6 +10,7 @@ import com.bluemobi.pro.entity.Contants;
 import com.bluemobi.pro.entity.Help;
 import com.bluemobi.pro.entity.Message;
 import com.bluemobi.pro.entity.Qanda;
+import com.bluemobi.pro.entity.Report;
 import com.bluemobi.sys.service.BaseService;
 
 /**
@@ -27,6 +28,7 @@ public class CommonService extends BaseService {
 	public static final String PRIFIX_HELPER = Help.class.getName();
 	public static final String PRIFIX_MESSAGE = Message.class.getName();
 	public static final String PRIFIX_CONTANTS = Contants.class.getName();
+	public static final String PRIFIX_REPORT = Report.class.getName();
 	
 	/**
 	 * 查询所有银行
@@ -71,5 +73,14 @@ public class CommonService extends BaseService {
 	 */
 	public void insertContants(Contants c) throws Exception {
 		this.getBaseDao().save(PRIFIX_CONTANTS + ".insert", c);
+	}
+	
+	/**
+	 * 创建举报信息
+	 * @param report
+	 * @throws Exception
+	 */
+	public void insertReport(Report report) throws Exception {
+		this.getBaseDao().save(PRIFIX_REPORT + ".insertReport", report);
 	}
 }

@@ -82,6 +82,20 @@ public class BorrowService extends BaseService {
 	}
 	
 	/**
+	 * 
+     * @Title: findBorrowByUserId
+     * @Description: 查询用户借款信息
+     * @param @param userInfo
+     * @param @return
+     * @param @throws Exception    参数
+     * @return List<BorrowInfo>    返回类型
+     * @throws
+	 */
+	public List<BorrowInfo> findBorrowByUserId2(BorrowInfo bi) throws Exception{
+		return this.getBaseDao().getList(PRIFIX + ".findBorrowListByUserId2",bi);
+	}
+	
+	/**
 	 * 查询借款详情
 	 * @param bi
 	 * @return

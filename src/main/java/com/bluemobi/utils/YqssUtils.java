@@ -158,7 +158,8 @@ public class YqssUtils {
 	 */
 	public static String nextResidueDay(Date residueDate) {
 		Calendar calendar = Calendar.getInstance();
-		calendar.add(Calendar.MONTH, 1);
+		calendar.setTime(residueDate);
+		calendar.add(Calendar.MONTH,1);
 		return DateUtils.toString(calendar.getTime(), DEFAULT_FORMAT);
 	}
 	
@@ -241,9 +242,12 @@ public class YqssUtils {
 		Calendar c = Calendar.getInstance();
 		c.setTime(new Date(nextDateLong));
 		c.add(Calendar.MONTH, month * -1);
-		
 		long preDateLong = c.getTimeInMillis();
-		if(date < nextDateLong && date > preDateLong) {
+		
+		c.add(Calendar.MONTH, (month+1) * -1);
+		long prepreDateLong = c.getTimeInMillis();
+		
+		if(date < preDateLong && date > prepreDateLong) {
 			return true;
 		}
 		return false;
@@ -272,7 +276,7 @@ public class YqssUtils {
 	
 	public static void main(String[] args) {
 //		System.out.println(residueDay("2014-10-15 00:00:00"));
-//		System.out.println(nextResidueDay("2016-01-15 00:00:00"));
+//		System.out.println(nextResidueDay("2016-02-16 13:46:23"));
 //		System.out.println(firstResidueDay());
 //		System.out.println(borrowResidueDate(3));
 //		System.out.println(countRate(0.02, 15, 3000));
@@ -283,7 +287,7 @@ public class YqssUtils {
 //		System.out.println(totalDays("2016-01-18 00:00:00"));
 //		System.out.println(countRate0("2016-01-15 00:00:00", 1, 6000));
 //		System.out.println(isThisMonth(1451290808295L));
-		System.out.println(isThisMonth(1452913923311L, "2016-02-16 11:12:11", 1));
+		System.out.println(isThisMonth(1452922490570L, "2016-02-16 13:34:59", 1));
 		
 	}
 }
