@@ -254,6 +254,74 @@ public class YqssUtils {
 	}
 	
 	/**
+	 * 
+	 * @param lastDate 最后还款时间
+	 * @param nextDate 下次还款时间
+	 * @return
+	 */
+	public static int exceedMonth(long lastDate,String nextDate) {
+		
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(new Date(lastDate));
+		int lasdMonth = calendar.get(Calendar.MONTH);
+		calendar.setTime(DateUtils.parse(nextDate, DEFAULT_FORMAT));
+		
+		int nextMonth = calendar.get(Calendar.MONTH);
+		return nextMonth - lasdMonth;
+	}
+	
+	
+	/**
+     * 计算两个日期之间的月数
+     * @param time1 下次还款时间
+     * @param time2 最后还款时间
+     * @return
+     * @throws ParseException
+     * @author sg/2014-6-26/上午10:09:01
+     */
+    public static int getMonthSpace(long time1, long time2){
+        int result = 0;
+        Date date1 = null;
+        Date date2 = null;
+         
+        date1 = new Date(time1);
+        date2 = new Date(time2);
+         
+        Calendar c1 = Calendar.getInstance();
+        Calendar c2 = Calendar.getInstance();
+        c1.setTime(date1);
+        c2.setTime(date2);
+        result = (c2.get(Calendar.YEAR) - c1.get(Calendar.YEAR))*12+(c2.get(Calendar.MONTH) - c1.get(Calendar.MONTH));
+        int dayMonths = c2.get(Calendar.DAY_OF_MONTH)-c1.get(Calendar.DAY_OF_MONTH);
+        if(dayMonths<0){
+            result--;
+        }else if(dayMonths>0){
+            result ++;
+        }else{//日期相同,时间不同情况
+            int hourDays = c2.get(Calendar.HOUR_OF_DAY)-c1.get(Calendar.HOUR_OF_DAY);
+            if(hourDays>0){//判断小时
+                result++;
+            }else if(hourDays==0){//判断分钟
+                int minHours = c2.get(Calendar.MINUTE)-c1.get(Calendar.MINUTE);
+                if(minHours>0){
+                    result++;
+                }else if(minHours==0){//判断秒
+                    int secMins = c2.get(Calendar.SECOND)-c1.get(Calendar.SECOND);
+                    if(secMins>0){
+                        result++;
+                    }else if(secMins==0){//判断毫秒
+                        int millSecs = c2.get(Calendar.MILLISECOND )-c1.get(Calendar.MILLISECOND );
+                        if(millSecs>0){
+                            result++;
+                        }
+                    }
+                }
+            }
+        }
+        return  result < 0 ? result + 1 : 0;
+    }
+	
+	/**
 	 * 生成订单号
 	 */
 	public static String generateSn() {
@@ -287,7 +355,8 @@ public class YqssUtils {
 //		System.out.println(totalDays("2016-01-18 00:00:00"));
 //		System.out.println(countRate0("2016-01-15 00:00:00", 1, 6000));
 //		System.out.println(isThisMonth(1451290808295L));
-		System.out.println(isThisMonth(1452922490570L, "2016-02-16 13:34:59", 1));
-		
+//		System.out.println(isThisMonth(1452922490570L, "2016-02-16 13:34:59", 1));
+//		System.out.println(exceedMonth(System.currentTimeMillis(), "2015-12-18 00:00:00"));
+		System.out.println(getMonthSpace( DateUtils.stringToLong("2016-3-17 17:13:00", DEFAULT_FORMAT),DateUtils.stringToLong("2016-1-16 17:11:00", DEFAULT_FORMAT)));
 	}
 }

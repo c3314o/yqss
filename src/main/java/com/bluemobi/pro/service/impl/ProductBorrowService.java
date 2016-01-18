@@ -82,8 +82,16 @@ public class ProductBorrowService extends BaseService {
      * @return ProductBorrow    返回类型
      * @throws
 	 */
+	@Transactional
 	public ProductBorrow findBorrowById(ProductBorrow pb) throws Exception {
 		ProductBorrow productBorrow = this.getBaseDao().get(PRIFIX + ".findByUserId", pb);
+		
+		long nexDate = DateUtils.stringToLong(productBorrow.getNextDate(), YqssUtils.DEFAULT_FORMAT);
+		long currentDate = System.currentTimeMillis();
+		if(currentDate >= nexDate) {
+			productBorrow.setPeriod(productBorrow.getPeriod() - 1);
+			modifyProductBorrow(productBorrow.getId(),productBorrow.getPeriod(), YqssUtils.nextResidueDay(productBorrow.getNextDate()));
+		}
 		
 		if(productBorrow != null) {
 			Map<String,Object> paramMap = new HashMap<String,Object>();
@@ -92,6 +100,14 @@ public class ProductBorrowService extends BaseService {
 			productBorrow.setList(pbrrList);
 		}
 		return productBorrow;
+	}
+	
+	public void modifyProductBorrow(Integer pbId,Integer period,String nextDate) throws Exception {
+		ProductBorrow pb = new ProductBorrow();
+		pb.setId(pbId);
+		pb.setPeriod(period);
+		pb.setNextDate(nextDate);
+		this.getBaseDao().update(PRIFIX + ".update", pb);
 	}
 	
 	/**

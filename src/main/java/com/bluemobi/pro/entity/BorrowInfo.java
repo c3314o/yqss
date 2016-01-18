@@ -245,9 +245,9 @@ public class BorrowInfo extends BaseEntity {
 	 * Integer 返回类型 @throws
 	 */
 	public Integer getTotalDays() {
-		if (jkTime == null)
-			return -1;
-		totalDays = YqssUtils.totalDays(DateUtils.parse(jkTime, YqssUtils.DEFAULT_FORMAT));
+//		if (jkTime == null)
+//			return -1;
+//		totalDays = YqssUtils.totalDays(DateUtils.parse(jkTime, YqssUtils.DEFAULT_FORMAT));
 		return totalDays;
 	}
 

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.bluemobi.utils.DBUtils;
+import com.bluemobi.utils.DateUtils;
 import com.bluemobi.utils.YqssUtils;
 
 /**
@@ -107,8 +108,29 @@ public class ProductBorrow extends BaseEntity {
 	private List<ProductBorrowRepayRecord> list = new ArrayList<ProductBorrowRepayRecord>();
 
 	public double getInstallment() {
-		installment = YqssUtils.numberFormat( YqssUtils.countRate0(nextDate,this.getStage(), this.getPrice()));
-		return installment;
+		installment = YqssUtils.numberFormat(YqssUtils.countRate0(nextDate,this.getStage(), this.getPrice()));
+		double exceedMoney = 0;
+		
+		List<ProductBorrowRepayRecord> recordList = getList();
+		if(recordList != null && recordList.size() > 0) {
+			// 如果有还款记录,则取最后一条记录的还款时间
+			ProductBorrowRepayRecord record = recordList.get(0);
+			if(record != null) {
+				long recordDate = record.getCreateDate();
+				int exceed = YqssUtils.getMonthSpace(DateUtils.stringToLong(this.getNextDate(), YqssUtils.DEFAULT_FORMAT) , recordDate); // 过期月数
+				if(exceed < 0) {
+					exceed = Math.abs(exceed);
+					exceedMoney = this.getOnce() * exceed;
+				}
+			}
+		}
+		else {
+			// 无还款记录,则取下次还款时间，总期数，剩余期数,计算过期月数
+			int exceed = this.getStage() - this.getPeriod();
+			exceedMoney = exceed * this.getOnce();
+			
+		}
+		return installment + exceedMoney;
 	}
 
 	public void setInstallment(double installment) {

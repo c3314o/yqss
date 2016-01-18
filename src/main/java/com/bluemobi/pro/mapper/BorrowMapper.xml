@@ -8,6 +8,7 @@
 		<id column="id" property="id" />
 		<result column="user_id" property="userId" />
 		<result column="limit_money" property="money"/>
+		<result column="max_day" property="totalDays"/>
 		<result column="is_list" property="isList"/>
 		<result column="create_date" property="jkTime"/>
 		<result column="repay_date" property="lastRepayDate"/>
@@ -73,6 +74,7 @@
 		SELECT
 			t.id,
 			t.user_id,
+			t.max_day,
 			t.limit_money,
 			t.repay_date,
 			t.create_date,
