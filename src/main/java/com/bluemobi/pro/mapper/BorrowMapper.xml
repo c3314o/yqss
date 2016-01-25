@@ -102,6 +102,7 @@
 			t.id,
 			t.user_id,
 			t.limit_money,
+			t.max_day,
 			t.repay_date,
 			t.create_date,
 			t.sn,

@@ -49,6 +49,16 @@ public class HrMessage extends BaseEntity {
 	 * 联系电话
 	 */
 	private String phone;
+	
+	private String content;
+
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
+	}
 
 	public String getAddress() {
 		return address;

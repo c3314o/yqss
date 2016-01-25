@@ -48,6 +48,8 @@
 			product t
 		WHERE
 			1 = 1
+		AND
+			t.is_list = 1
 		<if test="id != null and id != ''">
 			AND
 				id = #{id}

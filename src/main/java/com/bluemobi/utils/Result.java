@@ -76,7 +76,14 @@ public final class Result {
             result.data.put("list", BeanUtils.listToMap(list));
 		}
 		else if(data instanceof Map) {
-			result.data.put(args[0], data);
+			String name = "";
+			if(args == null || args.length == 0) {
+				name = "object";
+			}
+			else {
+				name = args[0];
+			}
+			result.data.put(name, data);
 		}
 		else {
 			String objName = data.getClass().getSimpleName().toLowerCase();

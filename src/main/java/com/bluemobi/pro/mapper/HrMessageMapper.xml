@@ -7,8 +7,10 @@
 	<resultMap type="com.bluemobi.pro.entity.HrMessage" id="hrMessageResultMap">
 		<id column="id" property="id" />
 		<result column="title" property="title"/>
+		<result column="content" property="content"/>
 		<result column="salary_min" property="salaryMin"/>
 		<result column="salary_max" property="salaryMax"/>
+		<result column="phone" property="phone"/>
 		<result column="tel" property="phone"/>
 		<result column="address" property="address" />
 		<result column="company" property="company"/>
@@ -22,9 +24,10 @@
 		SELECT
 			t.id,
 			t.title,
+			t.content,
 			t.salary_min,
 			t.salary_max,
-			t.tel,
+			t.mobile phone,
 			t.address,
 			t.company,
 			t.position,

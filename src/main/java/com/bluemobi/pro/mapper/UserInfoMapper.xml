@@ -87,7 +87,7 @@
 				#{address},
 			</if>
 			<if test="headPic != null and headPic != ''">
-				#{headPic}
+				#{headPic},
 			</if>
 			1,
 			#{createDate}

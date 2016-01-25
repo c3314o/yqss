@@ -347,7 +347,7 @@ public class YqssUtils {
 //		System.out.println(nextResidueDay("2016-02-16 13:46:23"));
 //		System.out.println(firstResidueDay());
 //		System.out.println(borrowResidueDate(3));
-//		System.out.println(countRate(0.02, 15, 3000));
+		System.out.println(countRate(2, 6, 6288));
 //		System.out.println(numberFormat(100000.123456798));
 //		System.out.println(countRate0(10,1000));
 //		System.out.println(nextResidueDay("2016-1-30 15:09:00"));
@@ -357,6 +357,6 @@ public class YqssUtils {
 //		System.out.println(isThisMonth(1451290808295L));
 //		System.out.println(isThisMonth(1452922490570L, "2016-02-16 13:34:59", 1));
 //		System.out.println(exceedMonth(System.currentTimeMillis(), "2015-12-18 00:00:00"));
-		System.out.println(getMonthSpace( DateUtils.stringToLong("2016-3-17 17:13:00", DEFAULT_FORMAT),DateUtils.stringToLong("2016-1-16 17:11:00", DEFAULT_FORMAT)));
+//		System.out.println(getMonthSpace( DateUtils.stringToLong("2016-3-17 17:13:00", DEFAULT_FORMAT),DateUtils.stringToLong("2016-1-16 17:11:00", DEFAULT_FORMAT)));
 	}
 }
