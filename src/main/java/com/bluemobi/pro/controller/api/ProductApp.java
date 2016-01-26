@@ -17,6 +17,7 @@ import com.bluemobi.pro.entity.SecondHandProduct;
 import com.bluemobi.pro.entity.Stage;
 import com.bluemobi.pro.service.impl.ProductService;
 import com.bluemobi.sys.page.Page;
+import com.bluemobi.utils.DBUtils;
 import com.bluemobi.utils.PropertiesUtils;
 import com.bluemobi.utils.Result;
 import com.bluemobi.utils.YqssUtils;
@@ -94,11 +95,11 @@ public class ProductApp {
 	public void countStagePrice(Product product) {
 		List<Stage> list = product.getStageList();
 		Double price = product.getPrice();
+		double rate  = DBUtils.getRate();
 		for (Stage stage : list) {
 			int _stage = stage.getStage();
-			int rate  = Integer.parseInt(PropertiesUtils.getPropertiesValues("rate", "phyy.properties"));
 			
-			double monthlyPayments = YqssUtils.countRate((rate*1.0)/100.0, _stage, price); // 月供
+			double monthlyPayments = YqssUtils.countRate(rate, _stage, price); // 月供
 			double interest = (price * rate / 100.0) * _stage;
 			stage.setPrice(YqssUtils.numberFormat(monthlyPayments));
 			stage.setAll(YqssUtils.numberFormat(interest));
