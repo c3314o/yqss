@@ -40,4 +40,8 @@ public class SmsSend {
 		}
 		return false;
 	}
+	
+	public static void main(String[] args) {
+		send("13476107753", "523698");
+	}
 }

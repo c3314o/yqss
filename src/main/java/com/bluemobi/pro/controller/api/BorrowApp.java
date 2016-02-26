@@ -6,8 +6,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bluemobi.constant.ErrorCode;
 import com.bluemobi.pro.entity.BorrowInfo;
+import com.bluemobi.pro.entity.BorrowRelevanceInfo;
 import com.bluemobi.pro.entity.BorrowRepayRecord;
 import com.bluemobi.pro.entity.ProductBorrow;
+import com.bluemobi.pro.service.impl.BorrowRIService;
 import com.bluemobi.pro.service.impl.BorrowService;
 import com.bluemobi.pro.service.impl.ProductBorrowService;
 import com.bluemobi.utils.Result;
@@ -38,6 +40,9 @@ public class BorrowApp {
 	
 	@Autowired
 	private ProductBorrowService pbService;
+	
+	@Autowired
+	private BorrowRIService briService;
 	
 	/**
 	 * 
@@ -107,9 +112,30 @@ public class BorrowApp {
 	@Transactional
 	public Result updateBorrow(BorrowInfo borrowInfo) {
 		
+		Map<String,String> resutlMap = new HashMap<String,String>();
 		try {
 			service.borrowInsertUserInfo(borrowInfo);
 			service.borrowInsertBorrowInfo(borrowInfo);
+			resutlMap.put("id", String.valueOf(borrowInfo.getId()));
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Result.failure();
+		}
+		return Result.success(resutlMap,"borrowinfo");
+	}
+	
+	/**
+	 * 新增借贷 / 购物 相关信息
+	 * @param bri
+	 * @return
+	 */
+	@RequestMapping(value = "insertBorrowRI", method = RequestMethod.POST)
+	@ResponseBody
+	public Result insertBorrowRI(BorrowRelevanceInfo bri) {
+		
+		try {
+			briService.insert(bri);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return Result.failure();

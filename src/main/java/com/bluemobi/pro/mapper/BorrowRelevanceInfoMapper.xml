@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bluemobi.pro.entity.BorrowRelevanceInfo">
+
+	<!-- 新增借贷/购物相关信息 -->
+	<insert id="insert" parameterType="com.bluemobi.pro.entity.BorrowRelevanceInfo">
+		INSERT INTO 
+			borrowre_levance_info
+		(
+			id,
+			type,
+			user_id,
+			borrow_id,
+			parent_name,
+			parent_mobile,
+			parent_address,
+			friend_name,
+			friend_mobile,
+			friend_qq,
+			friend_address,
+			classmate_name,
+			classmate_mobile,
+			classmate_qq,
+			classmate_address
+		)
+		VALUES
+		(
+			#{id},
+			#{type},
+			#{userId},
+			#{borrowId},
+			#{parentName},
+			#{parentMobile},
+			#{parentAddress},
+			#{friendName},
+			#{friendMobile},
+			#{friendQq},
+			#{friendAddress},
+			#{classmateName},
+			#{classmateMobile},
+			#{classmateQq},
+			#{classmateAddress}
+		)
+	</insert>
+</mapper> 

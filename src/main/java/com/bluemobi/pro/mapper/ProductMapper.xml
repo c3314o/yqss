@@ -62,6 +62,11 @@
 			AND
 				t.name LIKE CONCAT('%',#{title},'%')
 		</if>
+		ORDER BY
+			t.is_top 
+		DESC,
+			t.id 
+		DESC
 	</select>
 	
 	<!-- 查询商品图片 -->
