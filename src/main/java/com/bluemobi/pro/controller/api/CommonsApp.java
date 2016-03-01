@@ -271,7 +271,7 @@ public class CommonsApp {
 		
 		try {
 			list = borrowService.findBorrowByUserId2(info);
-			if(list == null || list.size() == 0 || list.get(0).getMoney() == 0) {
+			if(list == null || list.size() == 0 || list.get(0).getMoney() == 0 || isEnd(list)) {
 				home.setAvailable(5000);
 				home.setBorrowday(30);
 				
@@ -301,6 +301,28 @@ public class CommonsApp {
 		return Result.success(home);
 	}
 	
+	private boolean isEnd(List<BorrowInfo> list) {
+		if(list != null && !list.isEmpty()) {
+			BorrowInfo info = list.get(list.size() - 1);
+			double money = info.getMoney();
+			BorrowInfo info2 = new BorrowInfo();
+			info2.setId(list.get(list.size() - 1).getId());
+			try {
+				List<BorrowRepayRecord> recordList = borrowService.findBRR(info2);
+				double repaymoney = 0.0;
+				for (BorrowRepayRecord borrowRepayRecord : recordList) {
+					repaymoney += borrowRepayRecord.getAmount();
+				}
+				if(money <= repaymoney) {
+					return true;
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return false;
+	}
+
 	@RequestMapping(value = "feedback", method = RequestMethod.POST)
 	@ResponseBody
 	public Result feedback(FeedBack feedBack) {
