@@ -456,4 +456,19 @@ public class CommonsApp {
 		}
 		return Result.success();
 	}
+	
+	 // 根据区ID查询街道集合
+    @RequestMapping(value = "/findStreet", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String,Object> findStreet(@RequestParam Map<String,Object> params) {
+    	List<Map<String,Object>> list = null;
+    	try {
+    		list = commonService.findStreet(params);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ResultUtils.error();
+		}
+    	return ResultUtils.list(list);
+    }
+	
 }

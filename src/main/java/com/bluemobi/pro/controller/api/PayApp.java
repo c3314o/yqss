@@ -1,5 +1,6 @@
 package com.bluemobi.pro.controller.api;
 
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bluemobi.constant.ErrorCode;
@@ -18,6 +20,8 @@ import com.bluemobi.pro.entity.BorrowRepayRecord;
 import com.bluemobi.pro.entity.ProductBorrowRepayRecord;
 import com.bluemobi.pro.service.impl.BorrowService;
 import com.bluemobi.pro.service.impl.ProductBorrowService;
+import com.bluemobi.pro.service.impl.XxShopServiceImpl;
+import com.bluemobi.utils.ParamUtils;
 import com.bluemobi.utils.ResultUtils;
 import com.bluemobi.utils.YqssUtils;
 
@@ -38,6 +42,9 @@ public class PayApp {
 	
 	@Autowired
 	private ProductBorrowService pbService;
+	
+	@Autowired
+	private XxShopServiceImpl iShopServiceImpl;
 	
 	@RequestMapping(value="weixin/borrow", method = RequestMethod.POST)
 	@ResponseBody
@@ -127,5 +134,40 @@ public class PayApp {
 			e.printStackTrace();
 			return ResultUtils.error();
 		}
+	}
+	
+	// 获取预支付ID
+	@RequestMapping(value = "weixin/product", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> payWeixin(@RequestParam Map<String, Object> params, HttpServletRequest request,
+			HttpServletResponse response) {
+
+		if (ParamUtils.existEmpty(params, "sn"))
+			return ResultUtils.error(ErrorCode.ERROR_02);
+		Map<String,Object> countAndprepayidMap = null;
+		Double fee = 1.0;
+		String prepayid = null;
+//		try {
+//			countAndprepayidMap = iShopServiceImpl.countPrice(params.get("sn").toString());
+//			fee = countAndprepayidMap.get("price") != null ? Double.parseDouble(countAndprepayidMap.get("price").toString()) : 0.0;
+//			prepayid = countAndprepayidMap.get("prepayid") != null ? countAndprepayidMap.get("prepayid").toString() : null;
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+		String sn = params.get("sn").toString();
+		request.setAttribute("sn", sn);
+		String feeStr = ( fee != null && fee.doubleValue() != 0.0 ? String.valueOf(new DecimalFormat("0").format(fee * 100)) : "1");
+		request.setAttribute("fee", Integer.parseInt(feeStr)); // 正确价格
+		request.setAttribute("prepayid", prepayid);
+		Map<String, Object> resultMap = PayRequest.pay(3,request, response);
+		
+		prepayid = resultMap.get("prepayid").toString();
+		params.put("prepayid", prepayid);
+		try {
+			iShopServiceImpl.modifyPrepayid(params);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return ResultUtils.map2(resultMap);
 	}
 }

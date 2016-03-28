@@ -31,10 +31,13 @@ public class PayRequest {
 		// 回调地址(测试)
 //		String notify_url_borrow = "http://121.40.63.108:8082/yqss/pay/notify/weixinborrow";
 //		String notify_url_pb = "http://121.40.63.108:8082/yqss/pay/notify/weixinpb";
-
+//		String notify_url_product = "http://121.40.63.108:8082/yqss/pay/notify/weixinpb";
+		
 		// 回调地址(正式)
 		String notify_url_borrow = "http://121.41.17.108:8080/yqss/pay/notify/weixinborrow";
 		String notify_url_pb = "http://121.41.17.108:8080/yqss/pay/notify/weixinpb";
+		String notify_url_product = "http://121.41.17.108:8080/yqss/pay/notifyWeixin";
+		
 		
 		String currTime = TenpayUtil.getCurrTime();
 		String strTime = currTime.substring(8, currTime.length());

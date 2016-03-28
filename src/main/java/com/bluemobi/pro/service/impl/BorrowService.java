@@ -36,7 +36,7 @@ public class BorrowService extends BaseService {
 	public int borrowInsertUserInfo(BorrowInfo borrowInfo) throws Exception {
 		// 判断是否有未还完的借款
 		List<BorrowInfo> list = findBorrowByUserId(borrowInfo);
-		if(list != null && list.size() >0 ) {
+		if(list != null && list.size() >0  && !isEnd(list)) {
 			BorrowInfo _info = list.get(list.size() - 1);
 			if(_info != null && _info.getMoney() != 0) {
 				borrowInfo.setId(_info.getId());
@@ -48,6 +48,28 @@ public class BorrowService extends BaseService {
 			}
 		}
 		return this.getBaseDao().save(PRIFIX + ".insertBrrow", borrowInfo);
+	}
+	
+	private boolean isEnd(List<BorrowInfo> list) {
+		if(list != null && !list.isEmpty()) {
+			BorrowInfo info = list.get(list.size() - 1);
+			double money = info.getMoney();
+			BorrowInfo info2 = new BorrowInfo();
+			info2.setId(list.get(list.size() - 1).getId());
+			try {
+				List<BorrowRepayRecord> recordList = findBRR(info2);
+				double repaymoney = 0.0;
+				for (BorrowRepayRecord borrowRepayRecord : recordList) {
+					repaymoney += borrowRepayRecord.getAmount();
+				}
+				if(money <= repaymoney) {
+					return true;
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return false;
 	}
 	
 	/**

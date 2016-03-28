@@ -1,6 +1,7 @@
 package com.bluemobi.pro.controller.api;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -22,6 +23,7 @@ import com.bluemobi.pro.entity.UserInfo;
 import com.bluemobi.pro.entity.UserLogin;
 import com.bluemobi.pro.service.impl.UserService;
 import com.bluemobi.utils.Result;
+import com.bluemobi.utils.ResultUtils;
 
 /**
  * 
@@ -261,5 +263,76 @@ public class MemberApp {
 			return Result.failure();
 		}
 		return Result.success();
+	}
+	
+	
+	///////////////////////////////////// 二期接口  /////////////////////////////////////////
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@RequestMapping(value = "allAddress", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String,Object> findAllAddress(@RequestParam Map<String,Object> params) {
+		List list = null;
+		try {
+			list = service.findAllAddress(params);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return ResultUtils.list(list);
+	}
+	
+	// 新增/更新 地址信息
+	@RequestMapping(value = "edit", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String,Object> addOrEditAddress(@RequestParam Map<String,Object> params) {
+		Object obj = params.get("addressId");
+		String addressId = params.get("addressId") != null && !params.get("addressId").toString().equals("") ?  params.get("addressId").toString() : null;
+		// 设置是否默认地址
+		params.put("is_default", params.get("is_default") == null ? (byte)0 : Byte.parseByte(params.get("is_default").toString()));
+		try {
+			if (StringUtils.isNotBlank(addressId)) {
+				edit(params);
+			}
+			else{
+				add(params);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ResultUtils.error();
+		}
+		return ResultUtils.success();
+	}
+
+	@RequestMapping(value = "remove", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String,Object> removeAddress(@RequestParam Map<String,Object> params) {
+		
+		try {
+			service.removeAddress(params);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ResultUtils.error();
+		}
+		return ResultUtils.success();
+	}	
+	
+	@RequestMapping(value = "default", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String,Object> selectDefaultAddress(@RequestParam Map<String,Object> params) {
+		
+		try {
+			service.selectDefaultAddres(params);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ResultUtils.error();
+		}
+		return ResultUtils.success();
+	}
+	
+	private void add(Map<String, Object> params) throws Exception {
+		service.addAddress(params);
+	}
+
+	private void edit(Map<String, Object> params) throws Exception {
+		service.editAddress(params);
 	}
 }

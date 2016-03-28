@@ -5,12 +5,14 @@ import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
+import com.bluemobi.pro.entity.Address;
 import com.bluemobi.pro.entity.Bank;
 import com.bluemobi.pro.entity.Contants;
 import com.bluemobi.pro.entity.Help;
 import com.bluemobi.pro.entity.Message;
 import com.bluemobi.pro.entity.Qanda;
 import com.bluemobi.pro.entity.Report;
+import com.bluemobi.pro.entity.UserInfo;
 import com.bluemobi.sys.service.BaseService;
 
 /**
@@ -29,6 +31,7 @@ public class CommonService extends BaseService {
 	public static final String PRIFIX_MESSAGE = Message.class.getName();
 	public static final String PRIFIX_CONTANTS = Contants.class.getName();
 	public static final String PRIFIX_REPORT = Report.class.getName();
+	public static final String PRIFIX_ADDRESS = UserInfo.class.getName();
 	
 	/**
 	 * 查询所有银行
@@ -82,5 +85,10 @@ public class CommonService extends BaseService {
 	 */
 	public void insertReport(Report report) throws Exception {
 		this.getBaseDao().save(PRIFIX_REPORT + ".insertReport", report);
+	}
+	
+	// 根据区ID查询街道
+	public List<Map<String,Object>> findStreet(Map<String,Object> params) throws Exception {
+		return this.getBaseDao().getList(PRIFIX_ADDRESS + ".findStreet", params);
 	}
 }

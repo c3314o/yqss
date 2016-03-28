@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,6 +18,7 @@ import com.bluemobi.pro.entity.BorrowRepayRecord;
 import com.bluemobi.pro.entity.ProductBorrowRepayRecord;
 import com.bluemobi.pro.service.impl.BorrowService;
 import com.bluemobi.pro.service.impl.ProductBorrowService;
+import com.bluemobi.pro.service.impl.XxShopServiceImpl;
 
 @RequestMapping("/pay/")
 @Controller
@@ -27,6 +29,9 @@ public class PayNotifyApp {
 	
 	@Autowired
 	private ProductBorrowService pbService;
+	
+	@Autowired
+	private XxShopServiceImpl iShopServiceImpl;
 	
 	/**************************************************************************
 	 *******************************notify*************************************
@@ -133,4 +138,37 @@ public class PayNotifyApp {
 		}
 		return resultMap;
 	}
+	
+	// ----------------------------------------------------------------------------------
+		// ------------------------------------通知方法-----------------------------------------
+		// ----------------------------------------------------------------------------------
+		@RequestMapping(value = "notifyAlipay", method = RequestMethod.POST)
+		public void notifyAlipay(HttpServletRequest request) {
+			try {
+				iShopServiceImpl.toEntityByAlipay(request);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+		// 微信支付回调地址
+		@SuppressWarnings("unchecked")
+		@RequestMapping(value = "notifyWeixin", method = RequestMethod.POST)
+		public void notifyWeixin(HttpServletRequest request, HttpServletResponse response) {
+			try {
+				BufferedReader reader = new BufferedReader(new InputStreamReader(request.getInputStream()));
+				String line = null;
+				String result = "";
+				while ((line = reader.readLine()) != null) {
+					result += line;
+				}
+				System.out.println("result:" + result);
+				Map<String,Object> resultMap = XMLUtil.doXMLParse(result);
+				iShopServiceImpl.toEntityByWeixin(resultMap);
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 }
