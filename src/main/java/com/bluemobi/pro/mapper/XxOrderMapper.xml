@@ -68,7 +68,8 @@
 			payment_method,
 			shipping_method,
 			is_common,
-			business_member
+			business_member,
+			bj
 		)
 		VALUES
 		(
@@ -108,7 +109,8 @@
 			#{payment_method},
 			#{shipping_method},
 			#{is_common},
-			#{business_member}
+			#{business_member},
+			#{bj}
 		)
 	</insert>
 	
@@ -163,6 +165,7 @@
 			<if test="order_status != null and order_status != ''"> u.order_status = #{order_status}, </if>
 			<if test="payment_status != null and payment_status != ''"> u.payment_status = #{payment_status} ,</if>
 			<if test="shipping_status != null and shipping_status != ''"> u.shipping_status = #{shipping_status} ,</if>
+			<if test="payment_date != null and payment_date != ''"> u.payment_date = #{payment_date} ,</if>
 		</set>
 		WHERE
 			1 = 1
@@ -177,6 +180,8 @@
 			u.create_date,
 			u.expire,
 			u.sn,
+			u.freight,
+			u.bj,
 			u.order_status
 		FROM
 			xx_order u 
@@ -186,7 +191,7 @@
 			AND
 				u.order_status IN (3,4)
 		</if>
-		<if test="type != 3">
+		<if test="type != 3 and type != null">
 			AND
 				u.order_status = #{type}
 		</if>
@@ -205,6 +210,10 @@
 			u.zip_code,
 			u.area,
 			u.expire,
+			u.order_status,
+			u.freight,
+			u.bj,
+			u.payment_date,
 			u.create_date,
 			u.sn
 		FROM

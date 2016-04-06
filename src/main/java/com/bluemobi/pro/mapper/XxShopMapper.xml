@@ -661,4 +661,10 @@
 		WHERE
 			sn = #{sn}
 	</update>
+	
+	<!-- 根据区域ID -->
+	<select id="findCityByArea" parameterType="map" resultType="java.lang.String">
+		SELECT a.shot_name FROM xx_area a WHERE id = 
+			(SELECT parent FROM xx_area a WHERE a.id = #{area})
+	</select>
 </mapper> 

@@ -287,7 +287,7 @@ public class MemberApp {
 		Object obj = params.get("addressId");
 		String addressId = params.get("addressId") != null && !params.get("addressId").toString().equals("") ?  params.get("addressId").toString() : null;
 		// 设置是否默认地址
-		params.put("is_default", params.get("is_default") == null ? (byte)0 : Byte.parseByte(params.get("is_default").toString()));
+		params.put("isDefault", params.get("isDefault") == null ? (byte)0 : Byte.parseByte(params.get("isDefault").toString()));
 		try {
 			if (StringUtils.isNotBlank(addressId)) {
 				edit(params);

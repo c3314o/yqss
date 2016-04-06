@@ -29,14 +29,14 @@ public class PayRequest {
 		//---------------------------------------------------------
 
 		// 回调地址(测试)
-//		String notify_url_borrow = "http://121.40.63.108:8082/yqss/pay/notify/weixinborrow";
-//		String notify_url_pb = "http://121.40.63.108:8082/yqss/pay/notify/weixinpb";
-//		String notify_url_product = "http://121.40.63.108:8082/yqss/pay/notify/weixinpb";
+		String notify_url_borrow = "http://121.40.63.108:8081/caimi/pay/notify/weixinborrow";
+		String notify_url_pb = "http://121.40.63.108:8081/caimi/pay/notify/weixinpb";
+		String notify_url_product = "http://121.40.63.108:8081/caimi/pay/notifyWeixin";
 		
 		// 回调地址(正式)
-		String notify_url_borrow = "http://121.41.17.108:8080/yqss/pay/notify/weixinborrow";
-		String notify_url_pb = "http://121.41.17.108:8080/yqss/pay/notify/weixinpb";
-		String notify_url_product = "http://121.41.17.108:8080/yqss/pay/notifyWeixin";
+//		String notify_url_borrow = "http://121.41.17.108:8080/yqss/pay/notify/weixinborrow";
+//		String notify_url_pb = "http://121.41.17.108:8080/yqss/pay/notify/weixinpb";
+//		String notify_url_product = "http://121.41.17.108:8080/yqss/pay/notifyWeixin";
 		
 		
 		String currTime = TenpayUtil.getCurrTime();
@@ -69,7 +69,23 @@ public class PayRequest {
 			prepayReqHandler.setParameter("mch_id", ConstantUtil.PARTNER);
 			String noncestr = WXUtil.getNonceStr();
 			prepayReqHandler.setParameter("nonce_str", noncestr);
-			prepayReqHandler.setParameter("notify_url", type == 1?notify_url_borrow:notify_url_pb); 
+			
+			
+			String notify_url = null;
+			switch (type) {
+			case 1:
+				notify_url = notify_url_borrow;
+				break;
+			case 2:
+				notify_url = notify_url_pb;
+				break;
+			case 3:
+				notify_url = notify_url_product;
+				break;
+			default:
+				break;
+			}
+			prepayReqHandler.setParameter("notify_url",notify_url);
 			prepayReqHandler.setParameter("out_trade_no", out_trade_no);
 			
 //			packageReqHandler.setParameter("input_charset", "GBK"); 
@@ -83,7 +99,8 @@ public class PayRequest {
 //			prepayReqHandler.setParameter("traceid", traceid);
 
 			prepayReqHandler.setParameter("spbill_create_ip",CommonUtils.getRealAddress(request));
-			prepayReqHandler.setParameter("total_fee", request.getAttribute("fee").toString());    
+			prepayReqHandler.setParameter("total_fee", "1"); 
+//			prepayReqHandler.setParameter("total_fee", request.getAttribute("fee").toString()); 
 			prepayReqHandler.setParameter("trade_type", ConstantUtil.TRADE_TYPE); 
 			
 			

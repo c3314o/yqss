@@ -217,26 +217,26 @@ public class UserService extends BaseService{
 		params.put("create_date", DateUtils.getCurrentTime());
 		params.put("modify_date", DateUtils.getCurrentTime());
 		
-		Integer isDefault = Integer.parseInt(params.get("is_default").toString());
+		Integer isDefault = Integer.parseInt(params.get("isDefault").toString());
 		
 		this.getBaseDao().save(PRIFIX_USER_INFO + ".addAddress", params);
 		params.put("addressId", params.get("id"));
 		
 		if(isDefault == 1){
 			this.getBaseDao().update(PRIFIX_USER_INFO + ".editAddressIsDefault", params);
-			this.getBaseDao().update(PRIFIX_USER_INFO + ".selectDefaultAddress", params);
+//			this.getBaseDao().update(PRIFIX_USER_INFO + ".selectDefaultAddress", params);
 		}
 		this.getBaseDao().update(PRIFIX_USER_INFO + ".editAddress", params);
 	}
 	
 	public void editAddress(Map<String,Object> params) throws Exception {
 		
-		String is_default = params.get("is_default").toString();
+		String is_default = params.get("isDefault").toString();
 		if("1".equals(is_default)){
 			this.getBaseDao().update(PRIFIX_USER_INFO + ".editAddressIsDefault", params);
-			this.getBaseDao().update(PRIFIX_USER_INFO + ".selectDefaultAddress", params);
+//			this.getBaseDao().update(PRIFIX_USER_INFO + ".selectDefaultAddress", params);
 		}
-		params.put("is_default", Byte.parseByte(params.get("is_default").toString()));
+		params.put("is_default", Byte.parseByte(params.get("isDefault").toString()));
 		this.getBaseDao().update(PRIFIX_USER_INFO + ".editAddress", params);
 	}
 	

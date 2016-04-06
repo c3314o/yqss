@@ -250,7 +250,7 @@ public class XxShopServiceImpl extends BaseService {
 		orderMap.put("amount_paid", 0);
 		orderMap.put("coupon_discount", 0);
 		orderMap.put("fee", 0);
-		orderMap.put("freight", 0);
+		orderMap.put("freight", params.get("freight") == null ? 0 : params.get("freight"));
 		orderMap.put("is_allocated_stock", 0);
 		orderMap.put("is_invoice", 0);
 		orderMap.put("offset_amount", 0);
@@ -259,6 +259,7 @@ public class XxShopServiceImpl extends BaseService {
 		orderMap.put("payment_status", 0);
 		orderMap.put("shipping_status", 0);
 		orderMap.put("tax", 0);
+		orderMap.put("bj", params.get("bj") == null ? 0 : params.get("bj"));
 
 		orderMap.put("payment_status", Constant.ORDER_STATUS_WAIT_PAY);
 		orderMap.put("shipping_status", Constant.SHIP_NOT);
@@ -507,6 +508,22 @@ public class XxShopServiceImpl extends BaseService {
 		orders.add(orderMap.get("id").toString());
 		List<Map<String, Object>> list = this.getBaseDao().getList(PRIFIX + ".listItem", orders);
 
+		Double money = 0.0;
+		if(list != null && !list.isEmpty()) {
+			for (Map<String,Object> ordetItem : list) {
+				int product_quantity = Integer.parseInt(ordetItem.get("product_quantity").toString());
+				double price = Double.parseDouble(ordetItem.get("price").toString());
+				
+				money += product_quantity * price;
+			}
+		}
+		
+		money += Double.parseDouble(orderMap.get("freight").toString());
+		money += Double.parseDouble(orderMap.get("bj").toString());
+		
+		orderMap.put("money",money);
+		orderMap.put("mobile","1383838438");
+		
 		Map<String, Object> addressMap = new HashMap<String, Object>();
 		addressMap.put("address", orderMap.get("address"));
 		addressMap.put("area_name", orderMap.get("area_name"));
@@ -549,9 +566,10 @@ public class XxShopServiceImpl extends BaseService {
 		case Constant.ORDER_RECEICE: // 确认收货
 			confirmReceive(params);
 			break;
-		case Constant.ORDER_CANCEL: // 取消
+		case Constant.ORDER_CANCEL: //删除订单
 			cancel(params);
-			break;
+			deleteOrder(params);
+			return;
 		case Constant.ORDER_PAY:// 支付 (回调改变状态)
 			pay(params);
 			break;
@@ -559,6 +577,18 @@ public class XxShopServiceImpl extends BaseService {
 			break;
 		}
 		this.getBaseDao().update(PRIFIX + ".motifyOrderStatus", params);
+	}
+
+	@Transactional
+	private void deleteOrder(Map<String, Object> params) {
+		try {
+			this.getBaseDao().delete(PRIFIX + ".deleteOrder", params);
+			this.getBaseDao().delete(PRIFIX + ".deleteOrderItem", params);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 	// 支付
@@ -616,7 +646,7 @@ public class XxShopServiceImpl extends BaseService {
 
 	// 查询订单列表
 	public Page findOrderList(Map<String, Object> params) throws Exception {
-		params.put("type", params.get("type") == null ? 0 : Integer.parseInt(params.get("type").toString()));
+//		params.put("type", params.get("type") == null ? null : Integer.parseInt(params.get("type").toString()));
 		Integer pageNum = params.get("pageNum") == null ? 0 : (Integer.parseInt(params.get("pageNum").toString()) - 1);
 		Integer pageSize = params.get("pageSize") == null ? 10 : Integer.parseInt(params.get("pageSize").toString());
 		Page page = this.getBaseDao().page(PRIFIX + ".findOrderByMemberId", params, pageNum, pageSize);
@@ -634,6 +664,8 @@ public class XxShopServiceImpl extends BaseService {
 						orderMap.get("create_date") != null ? sdf.format((Date) orderMap.get("create_date")) : "");
 				map.put(orderMap.get("id").toString(), orderMap);
 				orders.add(orderMap.get("id").toString());
+				
+				orderMap.put("mobile","1383838438");
 			}
 		}
 		if (page.getRows() != null && page.getRows().size() > 0) {
@@ -803,6 +835,7 @@ public class XxShopServiceImpl extends BaseService {
 			Map<String, Object> opMap = new HashMap<String, Object>();
 			opMap.put("operation", Constant.ORDER_PAY);
 			opMap.put("orderId", orderMap.get("id"));
+			opMap.put("payment_date", new Date());
 			this.operationOrder(opMap);
 			
 		}
@@ -826,6 +859,17 @@ public class XxShopServiceImpl extends BaseService {
 
 	public void modifyPrepayid(Map<String,Object> params) throws Exception {
 		this.getBaseDao().update(PRIFIX + ".modifyPrepayid", params);
+	}
+	
+	public Double countFreight(long area) throws Exception {
+		
+		Map<String,Object> params = new HashMap<String,Object>();
+		params.put("area", area);
+		String cityName = this.getBaseDao().get(PRIFIX + ".findCityByArea", params);
+		if("武汉".equals(cityName)) {
+			return 0.0;
+		}
+		return 15.0;
 	}
 	
 	public static void main(String[] args) {

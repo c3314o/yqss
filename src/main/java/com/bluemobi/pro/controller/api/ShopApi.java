@@ -1,5 +1,6 @@
 package com.bluemobi.pro.controller.api;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +17,7 @@ import com.bluemobi.pro.entity.CartVO;
 import com.bluemobi.pro.service.impl.XxShopServiceImpl;
 import com.bluemobi.sys.page.Page;
 import com.bluemobi.utils.ParamUtils;
+import com.bluemobi.utils.Result;
 import com.bluemobi.utils.ResultUtils;
 
 @Controller
@@ -81,13 +83,17 @@ public class ShopApi {
 	@ResponseBody
 	public Map<String,Object> cartList(@RequestParam Map<String,Object> params) {
 		List<CartVO> cart = null;
+		Map<String,Object> map = null;
 		try {
 			cart = xxShopService.findCart(params);
+			
+			map = new HashMap<String,Object>();
+			map.put("list", cart != null  && cart.size() > 0 ?cart.get(0).getList() : new ArrayList());
 		} catch (Exception e) {
 			e.printStackTrace();
 			return ResultUtils.error();
 		}
-		return ResultUtils.object(cart);
+		return ResultUtils.map2(map);
 	}
 	
 	// 加入购物车
@@ -249,6 +255,30 @@ public class ShopApi {
 			return ResultUtils.error();
 		}
 		return ResultUtils.success();
+	}
+	
+	/**
+	 * 计算运费
+	 * @param params
+	 * @return
+	 */
+	@RequestMapping(value = "freight", method = RequestMethod.POST)
+	@ResponseBody
+	public Result freight(@RequestParam Map<String,Object> params) {
+		
+		if(ParamUtils.existEmpty(params, "area")) return Result.failure(ErrorCode.ERROR_02);
+		
+		long area = Long.parseLong(params.get("area").toString());
+		try {
+			Double freight = xxShopService.countFreight(area);
+			
+			Map<String,Object> result = new HashMap<String,Object>();
+			result.put("freight", freight);
+			return Result.success(result);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Result.failure();
+		}
 	}
 	
 //	// 评论列表

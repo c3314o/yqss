@@ -27,7 +27,7 @@
 				#{address},
 				#{area_name},
 				#{consignee},
-				#{is_default},
+				#{isDefault},
 				#{phone},
 				#{zip_code},
 				#{area},
@@ -47,7 +47,7 @@
 			<if test="zip_code != null and zip_code != ''">u.zip_code = #{zip_code},</if>
 			<if test="area != null and area != ''">u.area = #{area},</if>
 			<if test="modify_date != null and modify_date != ''">u.modify_date = #{modify_date},</if>
-			u.is_default = #{is_default}
+			u.is_default = #{isDefault}
 		</set>
 		WHERE
 			u.id = #{addressId}
