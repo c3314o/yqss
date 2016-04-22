@@ -8,7 +8,7 @@ public class ConstantUtil {
 	public static String APP_SECRET = "9ae35dcd6580adde34ab3584cb46cfc6";// �ͻ�
 	
 	public static String APP_KEY = "";
-	public static String PARTNER = "1304179001";// �ͻ�
+	public static String PARTNER = "1304179001";// �ͻ� 
 //	public static String PARTNER = "1269932701";// �ͻ�
 	
 //	public static String API_KEY = "Uhoem20151008123weixin4000279600";
