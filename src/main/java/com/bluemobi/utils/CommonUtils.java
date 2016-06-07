@@ -7,7 +7,10 @@ import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.net.URISyntaxException;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -172,9 +175,25 @@ public class CommonUtils {
 		
 		String reg = "^[0-9]+(,[0-9]+)*$";
 		
+//		OpenUrl("http://localhost/yqss/moneymag/index?userId=7");
+		Calendar c = Calendar.getInstance();
+		c.add(Calendar.DAY_OF_YEAR, -5);
+		System.out.println(c.getTimeInMillis());
 	}
 
 	public static String getSessionId() {
 		return null;
+	}
+	
+	public static void OpenUrl(String url) {
+		java.net.URI uri;
+		try {
+			uri = new java.net.URI(url);
+			 java.awt.Desktop.getDesktop().browse(uri);
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }

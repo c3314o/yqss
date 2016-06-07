@@ -12,13 +12,18 @@ import com.bluemobi.pro.entity.ProductBorrow;
 import com.bluemobi.pro.service.impl.BorrowRIService;
 import com.bluemobi.pro.service.impl.BorrowService;
 import com.bluemobi.pro.service.impl.ProductBorrowService;
+import com.bluemobi.utils.CommonUtils;
 import com.bluemobi.utils.Result;
+import com.bluemobi.utils.WebserviceUtil;
 import com.bluemobi.utils.YqssUtils;
+import com.google.gson.GsonBuilder;
+import com.google.gson.internal.LinkedTreeMap;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.collections.map.LinkedMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -216,5 +221,26 @@ public class BorrowApp {
 			return Result.failure();
 		}
 		return Result.success();
+	}
+	
+	/**
+	 * 理财主页
+	 * 获取用户总资产以及累计收益
+	 * @param userId
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	@RequestMapping(value = "h5Index", method = RequestMethod.POST)
+	@ResponseBody
+	public Result h5Index(Integer userId) {
+		
+		String basepath = "http://localhost:8080/yqss_server/";
+		String resultParmas = WebserviceUtil.post(basepath + "moneymag/h5Index?userId=" + userId);
+		
+		Map<String,Object> mapParams = new GsonBuilder().create().fromJson(resultParmas, Map.class);
+		LinkedTreeMap data = (LinkedTreeMap)mapParams.get("data");
+		Object obj = data.get("h5Index");
+		System.out.println("resultParmas:" + resultParmas);
+		return Result.success(obj, "h5Index");
 	}
 }
