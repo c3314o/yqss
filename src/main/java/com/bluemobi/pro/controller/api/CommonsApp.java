@@ -471,4 +471,20 @@ public class CommonsApp {
     	return ResultUtils.list(list);
     }
 	
+    // 根据区ID查询街道集合
+    @RequestMapping(value = "/findIos", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String,Object> findIos() {
+    	Integer isOpen = 0;
+    	Map<String,Object> map = new HashMap<String,Object>();
+    	try {
+    		
+    		isOpen = commonService.findIsOpen();
+    		map.put("isOpen", isOpen);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ResultUtils.error();
+		}
+    	return ResultUtils.map2(map);
+    }
 }

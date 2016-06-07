@@ -91,4 +91,9 @@ public class CommonService extends BaseService {
 	public List<Map<String,Object>> findStreet(Map<String,Object> params) throws Exception {
 		return this.getBaseDao().getList(PRIFIX_ADDRESS + ".findStreet", params);
 	}
+	
+	public Integer findIsOpen() throws Exception {
+		return this.getBaseDao().getObject(Contants.class.getName() + ".findIosOpen",null);
+		
+	}
 }
