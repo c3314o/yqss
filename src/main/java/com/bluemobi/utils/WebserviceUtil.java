@@ -38,7 +38,7 @@ public class WebserviceUtil {
             url = new URL(urlStr);
             httpConn = (HttpURLConnection) url.openConnection();
             // 提交模式
-            httpConn.setRequestMethod("GET");
+            httpConn.setRequestMethod("POST");
             in = new BufferedReader(new InputStreamReader(httpConn.getInputStream(), "UTF-8"));
             String str = null;
             while ((str = in.readLine()) != null) {

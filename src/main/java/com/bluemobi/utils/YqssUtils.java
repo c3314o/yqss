@@ -3,9 +3,14 @@ package com.bluemobi.utils;
 import java.text.DecimalFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Random;
 
 import org.apache.commons.lang3.StringUtils;
+
+import net.sf.json.JSONObject;
 
 
 public class YqssUtils {
@@ -341,6 +346,27 @@ public class YqssUtils {
 			return true;
 		return false;
 	}
+	
+	 /**
+     * 将json格式的字符串解析成Map对象 <li>
+     * json格式：{"name":"admin","retries":"3fff","testname" :"ddd","testretries":"fffffffff"}
+     */
+    @SuppressWarnings("rawtypes")
+    public static Map<String, Object> jsontoMap(Object object) {
+        Map<String, Object> data = new HashMap<String, Object>();
+        // 将json字符串转换成jsonObject
+        JSONObject jsonObject = JSONObject.fromObject(object);
+        Iterator it = jsonObject.keys();
+        // 遍历jsonObject数据，添加到Map对象
+        while (it.hasNext()) {
+            String key = String.valueOf(it.next());
+            Object value = (Object) jsonObject.get(key);
+            data.put(key, value);
+        }
+        return data;
+    }
+    
+    
 	
 	public static void main(String[] args) {
 //		System.out.println(residueDay("2014-10-15 00:00:00"));
