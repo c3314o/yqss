@@ -194,6 +194,15 @@ public class BorrowApp {
 			List<BorrowRepayRecord> list = service.findBRR(bi);
 			_borrow.setList(list);
 			
+//			// 新需求 新增 剩余期数和本期应还金额字段
+//			int residuePeriod = YqssUtils.residuePeriod(_borrow.getLastRepayDate()); // 剩余期数
+//			double currentMoney = _borrow.getAll() / YqssUtils.allPeriod(_borrow.getTotalDays()); // 本期应还金额
+//			currentMoney = YqssUtils.numberFormat(currentMoney);
+			
+			double[] result = service.currentMoney(_borrow);
+			_borrow.setResiduePeriod((int)result[1]);
+			_borrow.setCurrentMoney(result[0]);
+			_borrow.setTotalPeriod((int)result[2]);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return Result.failure();

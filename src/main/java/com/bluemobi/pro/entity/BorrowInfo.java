@@ -72,6 +72,12 @@ public class BorrowInfo extends BaseEntity {
 	
 	private double all;
 
+	private Integer residuePeriod; // 剩余期数
+	
+	private Double currentMoney; // 本期应还金额
+	
+	private Integer totalPeriod; // 总期数
+	
 	// =====================================
 
 	private String name;
@@ -88,6 +94,30 @@ public class BorrowInfo extends BaseEntity {
 	
 	private List<BorrowRepayRecord> list = new ArrayList<BorrowRepayRecord>();
 	
+	public Integer getTotalPeriod() {
+		return totalPeriod;
+	}
+
+	public void setTotalPeriod(Integer totalPeriod) {
+		this.totalPeriod = totalPeriod;
+	}
+
+	public Integer getResiduePeriod() {
+		return residuePeriod;
+	}
+
+	public void setResiduePeriod(Integer residuePeriod) {
+		this.residuePeriod = residuePeriod;
+	}
+
+	public Double getCurrentMoney() {
+		return currentMoney;
+	}
+
+	public void setCurrentMoney(Double currentMoney) {
+		this.currentMoney = currentMoney;
+	}
+
 	public Integer getIsList() {
 		return isList;
 	}
