@@ -50,15 +50,16 @@
 		<dispatcher>REQUEST</dispatcher>
 		<dispatcher>FORWARD</dispatcher>
 	</filter-mapping>
-
-	<filter>
+	
+	<!-- <filter>
 		<filter-name>AdminFilter</filter-name>
 		<filter-class>com.bluemobi.sys.filter.AdminFilter</filter-class>
 	</filter>
 	<filter-mapping>
 		<filter-name>AdminFilter</filter-name>
 		<url-pattern>/app/*</url-pattern>
-	</filter-mapping>
+	</filter-mapping> -->
+	
 
 
 	<error-page>

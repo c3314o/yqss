@@ -447,9 +447,10 @@ public class YqssUtils {
 	}
 
 	public static void main(String[] args) {
-		long createDate = 1455033600000L;
-		long lastDate = 1457366400000L;
-		int a = nextDateByLastRepayDateAndCreateDate(lastDate, createDate);
-		System.out.println(System.currentTimeMillis());
+//		long createDate = 1455033600000L;
+//		long lastDate = 1457366400000L;
+//		int a = nextDateByLastRepayDateAndCreateDate(lastDate, createDate);
+//		System.out.println(System.currentTimeMillis());
+		System.out.println(getAll(4000, 6));
 	}
 }

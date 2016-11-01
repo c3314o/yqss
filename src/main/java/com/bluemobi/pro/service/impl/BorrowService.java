@@ -215,6 +215,7 @@ public class BorrowService extends BaseService {
 		long date2 = 0;
 		if (list == null || list.isEmpty()) {
 			date2 = jdTime;
+			return false;
 		} else {
 			date2 = list.get(list.size() - 1).getRepayTime();
 		}
@@ -293,13 +294,14 @@ public class BorrowService extends BaseService {
 
 		List<BorrowRepayRecord> list = borrowInfo.getList();
 		long date2 = 0;
+		boolean flag = true;
 		if (list == null || list.isEmpty()) {
 			date2 = createDate;
+			flag = false;
 		} else {
 			date2 = list.get(list.size() - 1).getRepayTime();
+			flag = YqssUtils.isThisMonth2(date2, date1Str, 1);
 		}
-		boolean flag = YqssUtils.isThisMonth2(date2, date1Str, 1);
-		
 		if ((currentDay > lastDay) && flag) {
 			--intervalMonth2;
 		}
@@ -308,6 +310,7 @@ public class BorrowService extends BaseService {
 		// double all2 = YqssUtils.getAll(borrowInfo.getMoney(), totalPeriod);
 		double pm = (intervalMonth2 <= 0 ? (YqssUtils.getAll(borrowInfo.getMoney(), totalPeriod) - repayMoney)
 				: ((YqssUtils.getAll(borrowInfo.getMoney(), totalPeriod) - repayMoney) / intervalMonth2)); // 月供
+		System.out.println("月供:" + pm);
 		double rate0 = DBUtils.getRate0();
 		// while(intervalMonth > 0) {
 		// int days = intervalMonth * 30;
@@ -323,6 +326,7 @@ public class BorrowService extends BaseService {
 			lastRepay = list.get(list.size() - 1).getRepayTime();
 		}
 		double overdueMoney = YqssUtils.nextDateByLastRepayDateAndCreateDate(lastRepay, createDate) * rate0;
+		
 		all = pm + overdueMoney;
 		return new double[] { YqssUtils.numberFormat(all), intervalMonth2, totalPeriod };
 	}
